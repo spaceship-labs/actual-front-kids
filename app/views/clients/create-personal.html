@@ -1,0 +1,177 @@
+<form name="vm.createPersonalForm" class="form-section-content">
+
+  <div class="checkbox-client-type">
+    <md-checkbox
+      ng-model="vm.client.isMoral"
+      aria-label="Persona moral">
+      <strong>Persona moral</strong>
+    </md-checkbox>    
+  </div>
+
+  <div layout="row" ng-if="!vm.client.isMoral">
+    
+    <div flex="20" class="input-element select-element-wrapper">
+      <label><strong>Titulo</strong></label>
+      <md-select
+        ng-model="vm.client.Title"
+        name="title"
+        class="select-element"
+        placeholder="Sr/ Sra/ Srita"
+      >
+        <md-option
+          ng-repeat="title in vm.titles"
+          ng-value="title.value"
+        >
+          {{title.label}}
+        </md-option>
+      </md-select>
+    </div>
+
+
+    <div flex="20" class="input-element select-element-wrapper">
+      <label><strong>Genero</strong></label>
+      <md-select
+        ng-model="vm.client.Gender"
+        name="gender"
+        class="select-element"
+        placeholder="Masculino / Femenino"
+      >
+        <md-option
+          ng-repeat="gender in vm.genders"
+          ng-value="gender.value"
+        >
+          {{gender.label}}
+        </md-option>
+      </md-select>
+    </div>
+
+    <div flex="20" class="input-element">
+      <label>
+        <strong>Fecha de nacimiento</strong>
+      </label>
+      <div class="input-element-inner">
+        <input
+          type="text"
+          pikaday="vm.pikadayDate"
+          readonly
+          name="birthdate"
+          show-month-after-year="true"
+          year-range="[1900,2016]"
+          on-select="vm.onPikadaySelect(pikaday)">
+      </div>
+    </div>
+
+  </div>
+
+  <div layout="row">
+    <div flex="50" class="input-element">
+      <label ng-show="!vm.client.isMoral">
+        <strong>Nombres
+          <span class="hl-label">*</span>
+        </strong>
+      </label>
+      <label ng-show="vm.client.isMoral">
+        <strong>Razón social
+          <span class="hl-label">*</span>
+        </strong>
+      </label>      
+      <div class="input-element-inner">
+        <input
+          type="text"
+          name="name"
+          ng-model="vm.client.FirstName"
+          required
+        >
+      </div>
+    </div>
+
+    <div flex class="input-element" ng-if="!vm.client.isMoral">
+      <label>
+        <strong>
+          Apellidos <span class="hl-label">*</span>
+        </strong>
+      </label>
+      <div class="input-element-inner">
+        <input
+          type="text"
+          name="lastName"
+          ng-model="vm.client.LastName"
+          required
+        >
+      </div>
+    </div>
+
+
+  </div>
+
+  <div layout="row">
+
+    <div flex="20" class="input-element">
+      <label>
+        <strong>
+          Teléfono fijo<span class="hl-label">*</span>
+        </strong>
+      </label>
+        <div class="input-element-inner">
+          <input
+            type="tel"
+            name="phone"
+            ng-model="vm.client.Phone1"
+            placeholder="Lada + Número"
+            required
+          >
+        </div>
+    </div>
+
+
+    <div flex="20" class="input-element">
+      <label>
+        <strong>
+          Teléfono celular<span class="hl-label">*</span>
+        </strong>
+      </label>
+      <div class="input-element-inner">
+        <input
+          type="tel"
+          name="mobile"
+          ng-model="vm.client.Cellular"
+          placeholder="Lada + Número"
+          required
+        >
+      </div>
+
+    </div>
+
+
+    <div flex class="input-element">
+      <label>
+        <strong>Email</strong>
+        <span class="hl-label">*</span>
+      </label>
+      <div class="input-element-inner">
+        <input
+          type="email"
+          name="email"
+          ng-model="vm.client.E_Mail"
+          required
+        >
+      </div>
+    </div>
+   <div flex class="input-element">
+      <label>
+        <strong>Confirmar email</strong>
+        <span class="hl-label">*</span>
+      </label>
+      <div class="input-element-inner">
+        <input
+          type="email"
+          name="_email"
+          ng-model="vm.client._email"
+          ng-pattern="vm.client.E_Mail"
+          required
+        >
+      </div>
+    </div>
+  </div>
+
+</form>

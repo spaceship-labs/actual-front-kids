@@ -1,0 +1,59 @@
+<section class="method-block">
+  <div ng-if="vm.isLoadingPayments" layout="row" layout-align="center center">
+    <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+  </div>
+
+  <ul ng-if="!vm.isLoadingPayments">
+    <li ng-repeat="payment in vm.quotation.Payments" class="applied-payment">
+
+      <div layout="row" layout-align="space-between center">
+        <div ng-if="!payment.msi" flex="30">
+          <strong>{{payment.name}}</strong>
+          <p class="pull-left">
+            {{payment.description}}
+          </p>
+        </div>
+
+        <div ng-if="payment.msi" flex="30">
+          <strong>{{payment.msi}} Meses</strong>
+          <div class="hl-label">
+            <strong>Sin intereses</strong>
+          </div>
+        </div>
+
+        <div class="method-data" flex="60" layout="row">
+          <div flex="33" ng-show="payment.terminal">
+            <p>
+              <strong>TERMINAL</strong>
+            </p>
+            <p>{{payment.terminal}}</p>
+          </div>
+          <div flex="33" ng-show="payment.verificationCode">
+            <p>
+              <strong># AUTORIZACIÓN</strong>
+            </p>
+            <p>{{payment.verificationCode}}</p>
+          </div>
+          <div flex="33">
+            <p>
+              <strong>CANTIDAD</strong>
+            </p>
+            <p ng-if="payment.currency !== 'usd'">{{payment.ammount | roundCurrency}} MXN</p>
+            <p ng-if="payment.currency ==='usd'">{{payment.ammount | roundCurrency}} USD.</p>
+          </div>
+          <div ng-if="vm.isPaymentCanceled(payment)" flex="20">
+            <p>
+              <strong>CANCELADO</strong>
+            </p>
+          </div>
+
+        </div>
+
+        <div ng-if="!vm.isPaymentCanceled(payment) && vm.isUserAdmin" flex="20" class="payment-icon-wrap">
+          <a href="#" ng-click="vm.openCancelPaymentConfirmDialog(payment)" class="action-btn">Cancelar</a>
+        </div>
+      </div>
+    </li>
+
+  </ul>
+</section>

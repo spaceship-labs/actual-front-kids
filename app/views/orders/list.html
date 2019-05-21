@@ -1,0 +1,140 @@
+<section class="form-view container container-xlg">
+
+  <h1><i class="icon-pedidos"></i> <strong>PEDIDOS</strong></h1>
+
+  <div layout="row" layout-align="space-between end" class="form-view-filters">
+
+    <div flex="50" class="date-filters">
+      <p>
+        <strong id="trigger-start-date-orders" class="date-filter-trigger">
+          <i  class="icon-pedidos"></i> DEL:
+          <input
+            pikaday="vm.dateStart"
+            format="DD/MM/YYYY"
+            trigger="trigger-start-date-orders"
+            readonly
+            type="text"
+            set-default-date="true"
+            default-date="{{vm.startDate}}"
+            on-select="vm.onDateStartSelect(pikaday)">
+        </strong>
+        <strong id="trigger-end-date-orders" class="date-filter-trigger">
+          <i  class="icon-pedidos"></i> AL:
+          <input
+            pikaday="vm.dateEnd"
+            format="DD/MM/YYYY"
+            trigger="trigger-end-date-orders"
+            readonly
+            set-default-date="true"
+            default-date="{{vm.endDate}}"
+            type="text"
+            on-select="vm.onDateEndSelect(pikaday)">
+        </strong>
+      </p>
+    </div>
+
+    <div
+      ng-if="vm.isSellerReport"
+      flex="30"
+      class="input-element select-element-wrapper"
+    >
+      <label><strong>Buscar sobre:</strong></label>
+      <select 
+        ng-if="vm.listScopes.length > 0" 
+        ng-model="vm.filters.User" 
+        ng-options="option.value as option.label for option in vm.listScopes"
+        class="select-element">
+      </select>
+    </div>
+
+    <div ng-if="!vm.isBrokerReport" flex="20">
+      <a ng-click="vm.applyFilters()" href="#" class="action-btn">Aplicar filtros</a>
+    </div>
+
+  </div>
+
+  <hr/>
+
+  <div
+    ng-if="vm.isLoading"
+    layout-fill
+    layout="row"
+    layout-sm="column"
+    layout-align="center center"
+    class="loading-circle"
+  >
+    <md-progress-circular md-mode="indeterminate" class="md-accent" md-diameter="150"></md-progress-circular>
+  </div>
+
+  <div ng-show="!vm.isLoading" class="nested-table">
+
+    <!--
+      IF MANAGER
+    -->
+    <div ng-if="vm.isManagerReport">
+
+      <md-content>
+        <md-tabs md-dynamic-height>
+          <md-tab 
+            ng-repeat="store in vm.stores" 
+            label="{{store.name}}"
+            class=""
+          >
+            <md-content> 
+              <ng-include src="'views/orders/manager-list.html'"></ng-include>
+              <ng-include src="'views/orders/store-charts.html'"></ng-include>
+            </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+    <!--
+    END IF MANAGER
+    -->
+
+    <!---
+    IF SELLER
+    -->
+    <div
+      ng-if="vm.isSellerReport"
+      class="nested-item"
+    >
+      <ng-include src="'views/orders/seller-list.html'"></ng-include>
+    </div>
+    <!--
+    END IF SELLER
+    -->
+
+    <!--
+      IF BROKER
+    -->
+
+    <div
+      ng-if="vm.isBrokerReport"
+      class="nested-item"
+    >
+      <ng-include src="'views/orders/broker-list.html'"></ng-include>
+    </div>
+
+    <!--END IF BROKER-->
+
+  </div>
+
+  <!--STORE MANAGER-->
+  <ng-include 
+    ng-if="vm.sellers"
+    src="'views/orders/store-charts.html'">
+  </ng-include>
+  <!--END STORE MANAGER-->  
+
+  <!--SELLER-->
+  <!--
+  <ng-include 
+    ng-if="!vm.isBroker"
+    src="'views/orders/seller-charts.html'">
+  </ng-include> 
+  --> 
+  <!--END SELLER-->
+
+
+</section>

@@ -1,0 +1,41 @@
+<section class="dashboard-card chart-section">
+  <h2><a href="/commissions/list"><i class="icon-comisiones"></i> <strong>COMISIONES</strong></a></h2>
+  <div class="chart-section-inner">
+
+  <div layout="row">
+    <div class="chart-section-col" flex="45">
+      <h3>Cantidad</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-data="vm.quotationsData.quantities.data"
+        chart-labels="vm.quotationsData.quantities.labels"
+        chart-colors="vm.quotationsData.quantities.colors">
+      </canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{vm.quotationsData.todayQty}} | {{vm.quotationsData.fortnightQty}}</p>
+    </div>
+
+    <div class="chart-section-col" flex="45">
+      <h3>Monto</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-options="vm.quotationsData.ammounts.options"
+        chart-data="vm.quotationsData.ammounts.data"
+        chart-labels="vm.quotationsData.ammounts.labels"
+        chart-colors="vm.quotationsData.ammounts.colors">
+      </canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{vm.quotationsData.todayAmmount | currency}} | {{vm.quotationsData.fortnightAmount | currency}}</p>
+    </div>
+  </div>
+
+  <div class="container container-xsm chart-section-legends" layout="row">
+    <p flex><span class="chart-section-sqr"></span> Hoy</p>
+    <p flex><span class="chart-section-sqr chart-section-sqr2"></span> Resto del mes</p>
+  </div>
+
+
+  </div>
+</section>

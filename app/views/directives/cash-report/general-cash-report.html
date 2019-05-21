@@ -1,0 +1,102 @@
+<section class="cash-report-wrapper">
+
+  <h1>Corte de caja</h1>
+
+  <div class="cash-report-header" layout="row">
+    <div flex>
+
+      <h3>
+        <strong>Vista regional - por tiendas</strong>
+      </h3>
+      <h3>
+        <strong>Usuario:</strong>
+        {{user.firstName + ' ' + user.lastName}}
+      </h3>
+      <h3>
+        <strong>Período:</strong>
+        {{startDate | date:'dd/MM/yyyy h:mm a'}} | {{endDate | date:'dd/MM/yyyy h:mm a'}}
+      </h3>
+      <h3>
+        <strong>Total global ventas:</strong> {{ report.total | currency }} MXN
+      </h3>
+    </div>
+
+    <div flex="25" class="input-element select-element-wrapper">
+      <label>
+        <strong>Tienda:</strong>
+      </label>
+      <md-select ng-model="storeFilter" class="select-element" required>
+        <md-option ng-value="'all'">
+          Todas las tiendas
+        </md-option>
+        <md-option ng-repeat="store in report.stores" ng-value="store.id">
+          {{store.name}}
+        </md-option>
+      </md-select>
+    </div>
+
+
+  </div>
+
+
+
+  <section ng-repeat="store in filterStores(report.stores, storeFilter)" class="cash-report-inner seller-item">
+
+    <h2>
+      <strong>Tienda:</strong> {{store.name}}
+    </h2>
+    <h2>
+      <strong>Total general ventas: </strong> {{ store.total | currency }} MXN
+    </h2>
+
+
+    <section class="payment-group" ng-repeat="division in store.divisions">
+      <h2 class="payment-group-title">{{division.name}}</h2>
+
+      <div layout="row">
+        <div class="payment-item-header pull-left" flex>
+          <strong>Tipo de pago</strong>
+        </div>
+        <div class="payment-item-header" flex>
+          <strong>Movimientos(cantidad)</strong>
+        </div>
+        <div class="payment-item-header" flex>
+          <strong>Movimientos cancelados(cantidad)</strong>
+        </div>
+        <div class="payment-item-header" flex>
+          <strong>Total</strong>
+        </div>
+      </div>
+
+      <div class="method-group" ng-repeat="subdivision in division.subdivisions track by $index">
+        <div>
+          <div layout="row" class="payment-item">
+            <div class="payment-item-cell pull-left" flex>
+              {{subdivision.name}}
+            </div>
+
+            <div class="payment-item-cell" flex>{{subdivision.payments.length}}</div>
+            <div class="payment-item-cell" flex>{{ getPaymentsCanceledQuantity(subdivision.payments) }}</div>
+            <div class="payment-item-cell" flex>{{ subdivision.total | currency}} MXN</div>
+          </div>
+        </div>
+
+      </div>
+
+      <h2 class="pull-right total-group">
+        <strong>Total General {{division.name}} MXN: {{ division.total | currency}}</strong>
+      </h2>
+
+    </section>
+
+    <hr/>
+  </section>
+
+
+  <div layout="row" layout-align="center center" class="form-view-btns no-margin">
+    <button ng-click="print()" flex="50" class="form-view-btn form-view-btn-primary print-btn">
+      Imprimir reporte
+    </button>
+  </div>
+
+</section>

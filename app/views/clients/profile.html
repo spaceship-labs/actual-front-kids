@@ -1,0 +1,121 @@
+<div ng-show="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<section ng-show="!vm.isLoading" class="form-view container container-xlg">
+
+  <div layout="row" layout-align="space-between center" class="action-links">
+    <h1 flex>
+      <i class="icon-login"></i> <strong>PERFIL DEL CLIENTE</strong>
+      | <span>{{vm.client.CardCode}}</span>
+    </h1>
+    <div flex="30">
+      <h4>
+        <a class="primary-link" href="#" ng-click="vm.createQuotation()">
+          <i class="icon-oportunidades"></i> CREAR NUEVA COTIZACIÓN
+        </a>
+      </h4>
+    </div>
+  </div>
+
+  <div ng-show="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+    <md-progress-circular md-mode="indeterminate"  md-diameter="150"></md-progress-circular>
+  </div>
+
+  <!--START FORM-->
+  <section ng-show="!vm.isLoading" class="form-view-content">
+
+    <p class="form-view-hint"><strong>SELECCIONA UNA PESTAÑA</strong> | PARA VISUALIZAR Y/O EDITAR LA INFORMACIÓN REQUERIDA</p>
+
+    <section class="form-section">
+
+      <div layout="row" class="form-section-tabs">
+        <div
+          flex
+          ng-click="vm.changeTab(0)"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 0}">
+          <a href="#">Datos personales</a>
+        </div>
+        <div
+          flex
+          ng-click="vm.changeTab(1)"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 1}">
+          <a href="#">Datos de facturación</a>
+        </div>
+        <!--
+        <div
+          flex
+          ng-click="vm.activeTab = 2"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 2}">
+          <a href="#">Datos de pago</a>
+        </div>
+        -->
+        <div
+          flex
+          ng-click="vm.changeTab(3)"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 3}">
+          <a href="#">Datos de envío</a>
+        </div>
+
+      </div>
+
+      <!--DATOS PERSONALES-->
+      <ng-include ng-show="vm.activeTab==0" src="'views/clients/profile-personal.html'"></ng-include>
+      <!--END DATOS PERSONALES-->
+
+      <!--DATOS DE FACTURACION-->
+      <ng-include ng-show="vm.activeTab==1" src="'views/clients/profile-fiscal.html'"></ng-include>
+      <!--END DATOS FACTURACION-->
+
+      <!--DATOS DE PAGO-->
+      <!--
+        <ng-include ng-show="vm.activeTab==2" src="'views/clients/profile-payment.html'"></ng-include>
+      -->
+      <!--END DATOS PAGO-->
+
+      <!--DATOS DEL ENVIO-->
+      <ng-include ng-show="vm.activeTab==3" src="'views/clients/profile-delivery.html'"></ng-include>
+
+
+    </section>
+    <!--END FORM SECTION-->
+
+
+  </section>
+  <!--END PROFILE EDIT-->
+
+
+  <h1><strong>HISTORIAL POR SEGMENTOS</strong></h1>
+
+  <section class="table-list-wrap">
+    <label><strong>OPORTUNIDADES</strong></label>
+    <hr>
+    <div
+      ng-if="vm.client"
+      table-list
+      class="table-list"
+      columns="vm.columnsLeads"
+      filters="vm.filtersQuotations"
+      api-resource="vm.apiResourceLeads">
+    </div>
+  </section>
+
+  <section class="table-list-wrap">
+    <label><strong>PEDIDOS</strong></label>
+    <hr>
+    <div
+      table-list
+      ng-if="vm.client && vm.filtersOrders"
+      class="table-list"
+      columns="vm.columnsOrders"
+      filters="vm.filtersOrders"
+      api-resource="vm.apiResourceOrders">
+    </div>
+  </section>
+
+
+</section>

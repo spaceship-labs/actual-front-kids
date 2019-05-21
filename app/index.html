@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Actual</title>
+
+  <base href="/" />
+  <meta name="fragment" content="!">
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel='stylesheet' href='bower_components/slick-carousel/slick/slick.css' />
+  <link rel='stylesheet' href='bower_components/slick-carousel/slick/slick-theme.css' />
+  <link rel='stylesheet' href='bower_components/angular-material/angular-material.css' />
+  <link rel='stylesheet' href='bower_components/angular-material-datetimepicker/css/material-datetimepicker.css' />
+  <link rel='stylesheet' href='bower_components/angular-datatables/dist/css/angular-datatables.css' />
+  <link rel='stylesheet' href='bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css' />
+  <link rel='stylesheet' href='bower_components/ez-plus/css/jquery.ez-plus.css' />
+  <link rel='stylesheet' href='bower_components/pikaday/css/pikaday.css' />
+  <link rel='stylesheet' href='bower_components/jquery-timepicker-jt/jquery.timepicker.css' />
+  <link rel='stylesheet' href='bower_components/photoswipe/dist/photoswipe.css' />
+  <link rel='stylesheet' href='bower_components/photoswipe/dist/default-skin/default-skin.css' />
+  <link rel='stylesheet' href='bower_components/chosen/chosen.css' />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/stickyFooter.css">
+  <link rel="stylesheet" href="styles/icomoon.css">
+  <link rel="stylesheet" href="styles/custom.datatables.css">
+  <link rel='stylesheet' href='styles/default-skin.css' />
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body ng-app="actualApp" ng-controller="MainCtrl as main">
+  <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <div ng-show="main.isActiveBackdrop" class="backdrop"></div>
+
+  <ng-include src="'views/partials/pointers.html'"></ng-include>
+
+
+  <div id="wrap">
+    <div id="main" class="clearfix">
+      <div id="topBackRepeat" layout='row' flex layout-fill>
+
+        <div layout="column" flex>
+          <ng-include ng-if="main.activeModule !== 'policies' && main.activeModule !== 'manuals' " src="'views/header.html'"></ng-include>
+          <md-content ng-view autoscroll>
+          </md-content>
+
+        </div>
+      </div>
+      <!-- END topBackRepeat -->
+    </div>
+    <!-- END main -->
+  </div>
+  <!-- END wrap -->
+  <div class="clear"></div>
+
+  <!--FOOTER-->
+  <ng-include src="'views/footer.html'"></ng-include>
+
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <!--
+     <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-XXXXX-X');
+       ga('send', 'pageview');
+    </script>
+    -->
+  <!--
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpLv18a2AvczWYaEv_HMA9T_m2ElMJgro"></script>
+    -->
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvLCjzJKSl6XQg-k0fcpPWbg8nNbKEFZI">
+  </script>
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/angularLocalStorage/dist/angularLocalStorage.min.js"></script>
+  <script src="bower_components/ngstorage/ngStorage.js"></script>
+  <script src="bower_components/slick-carousel/slick/slick.min.js"></script>
+  <script src="bower_components/angular-slick/dist/slick.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+  <script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
+  <script src="bower_components/underscore/underscore.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-material/angular-material.js"></script>
+  <script src="bower_components/angular-material-datetimepicker/js/angular-material-datetimepicker.js"></script>
+  <script src="bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <script src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/colreorder/angular-datatables.colreorder.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/columnfilter/angular-datatables.columnfilter.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/light-columnfilter/angular-datatables.light-columnfilter.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/colvis/angular-datatables.colvis.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/fixedcolumns/angular-datatables.fixedcolumns.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/fixedheader/angular-datatables.fixedheader.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/scroller/angular-datatables.scroller.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/tabletools/angular-datatables.tabletools.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.js"></script>
+  <script src="bower_components/angular-datatables/dist/plugins/select/angular-datatables.select.js"></script>
+  <script src="bower_components/angular-ez-plus/js/angular-ezplus.js"></script>
+  <script src="bower_components/pikaday/pikaday.js"></script>
+  <script src="bower_components/pikaday-angular/pikaday-angular.js"></script>
+  <script src="bower_components/jquery-timepicker-jt/jquery.timepicker.js"></script>
+  <script src="bower_components/angular-jquery-timepicker/src/timepickerdirective.js"></script>
+  <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+  <script src="bower_components/scalyr/scalyr.js"></script>
+  <script src="bower_components/photoswipe/dist/photoswipe.js"></script>
+  <script src="bower_components/photoswipe/dist/photoswipe-ui-default.js"></script>
+  <script src="bower_components/ng-photoswipe/angular-photoswipe.min.js"></script>
+  <script src="bower_components/angular-input-masks/angular-input-masks-standalone.js"></script>
+  <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+  <script src="bower_components/object-hash/dist/object_hash.js"></script>
+  <script src="bower_components/chosen/chosen.jquery.js"></script>
+  <script src="bower_components/angular-chosen-localytics/dist/angular-chosen.js"></script>
+  <script src="bower_components/ng-currency/dist/ng-currency.js"></script>
+  <script src="bower_components/angular-google-analytics/dist/angular-google-analytics.min.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.min.js"></script>
+  <script src="//cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script>
+
+
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="bower_components/ez-plus/src/jquery.ez-plus.js"></script>
+  <script src="scripts/envconfig.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/angular-photoswipe.js"></script>
+  <script src="scripts/ng-infinite-scroll.min.js"></script>
+  <script src="scripts/moment-locale-es.js"></script>
+  <script src="scripts/angular-locale_es-mx.js"></script>
+  <script src="scripts/filters/roundcurrency.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/home.js"></script>
+  <script src="scripts/services/api.js"></script>
+  <script src="scripts/services/authservice.js"></script>
+  <script src="scripts/directives/listing-product.js"></script>
+  <script src="scripts/directives/product-gallery.js"></script>
+  <script src="scripts/directives/category-item.js"></script>
+  <script src="scripts/controllers/category.js"></script>
+  <script src="scripts/controllers/product.js"></script>
+  <script src="scripts/directives/sidebar-categories.js"></script>
+  <script src="scripts/directives/rfc-input-validator.js"></script>
+  <script src="scripts/services/categoriesservice.js"></script>
+  <script src="scripts/services/paymentOptionsConfig.js"></script>
+  <script src="scripts/services/cartservice.js"></script>
+  <script src="scripts/services/deliveryservice.js"></script>
+  <script src="scripts/services/commonservice.js"></script>
+  <script src="scripts/controllers/search.js"></script>
+  <script src="scripts/services/productservice.js"></script>
+  <script src="scripts/services/userservice.js"></script>
+  <script src="scripts/services/quotationservice.js"></script>
+  <script src="scripts/services/clientservice.js"></script>
+  <script src="scripts/services/orderservice.js"></script>
+  <script src="scripts/services/siteservice.js"></script>
+  <script src="scripts/services/pmperiodservice.js"></script>
+  <script src="scripts/services/srproductservice.js"></script>
+  <script src="scripts/directives/fixedelement.js"></script>
+  <script src="scripts/controllers/addquotation.js"></script>
+  <script src="scripts/controllers/clients/create.js"></script>
+  <script src="scripts/controllers/clients/profile.js"></script>
+  <script src="scripts/directives/table-list.js"></script>
+  <script src="scripts/services/dialogservice.js"></script>
+  <script src="scripts/services/formatservice.js"></script>
+  <script src="scripts/controllers/clients/list.js"></script>
+  <script src="scripts/controllers/users/profile.js"></script>
+  <script src="scripts/controllers/quotations/list.js"></script>
+  <script src="scripts/controllers/quotations/stockdialog.js"></script>
+  <script src="scripts/datatables.input.js"></script>
+  <script src="scripts/controllers/sr-services.js"></script>
+  <script src="scripts/controllers/quotations/edit.js"></script>
+  <script src="scripts/controllers/dashboard.js"></script>
+  <script src="scripts/controllers/checkout/invoicedialog.js"></script>
+  <script src="scripts/controllers/checkout/client.js"></script>
+  <script src="scripts/controllers/checkout/payments.js"></script>
+  <script src="scripts/controllers/continuequotation.js"></script>
+  <script src="scripts/controllers/commissions/list.js"></script>
+  <script src="scripts/controllers/orders/list.js"></script>
+  <script src="scripts/controllers/checkout/order.js"></script>
+  <script src="scripts/controllers/checkout/terminalpayment.js"></script>
+  <script src="scripts/controllers/checkout/depositpayment.js"></script>
+  <script src="scripts/controllers/cancellations/cancel-payment.js"></script>
+  <script src="scripts/controllers/users/broker.js"></script>
+  <script src="scripts/services/storeservice.js"></script>
+  <script src="scripts/controllers/offers.js"></script>
+  <script src="scripts/services/packageservice.js"></script>
+  <script src="scripts/services/commissionservice.js"></script>
+  <script src="scripts/services/paymentservice.js"></script>
+  <script src="scripts/controllers/delivery-policy.js"></script>
+  <script src="scripts/controllers/ensamble-policy.js"></script>
+  <script src="scripts/controllers/storage-policy.js"></script>
+  <script src="scripts/controllers/warranty-policy.js"></script>
+  <script src="scripts/services/invoiceservice.js"></script>
+  <script src="scripts/services/checkoutservice.js"></script>
+  <script src="scripts/services/ewalletservice.js"></script>
+  <script src="scripts/controllers/manual/pieles.js"></script>
+  <script src="scripts/controllers/manual/aceros.js"></script>
+  <script src="scripts/controllers/manual/aluminios.js"></script>
+  <script src="scripts/controllers/manual/cristales.js"></script>
+  <script src="scripts/controllers/manual/cromados.js"></script>
+  <script src="scripts/controllers/manual.js"></script>
+  <script src="scripts/controllers/manual/maderas.js"></script>
+  <script src="scripts/controllers/manual/piezas-plasticas.js"></script>
+  <script src="scripts/controllers/manual/textiles.js"></script>
+  <script src="scripts/controllers/manual/vinilos.js"></script>
+  <script src="scripts/controllers/manual/pintura-electrostatica.js"></script>
+  <script src="scripts/controllers/forgot-password.js"></script>
+  <script src="scripts/controllers/reset-password.js"></script>
+  <script src="scripts/directives/cashreport.js"></script>
+  <script src="scripts/services/productsearchservice.js"></script>
+  <!-- endbuild -->
+
+</body>
+
+</html>

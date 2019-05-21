@@ -1,0 +1,119 @@
+<section ng-if="vm.quotationStore" class="transfers-table-block">
+  <h2>Datos para transferencias</h2>
+  <h3><strong>Razón social: </strong> AH ACTUAL, S.A DE C.V.</h3>
+  <div class="table-list">
+    <table class="dataTable row-border hover">
+      <thead>
+        <tr>
+          <th>Moneda</th>
+          <th>Banco</th>
+          <th>Sucursal</th>
+          <th>Cuenta</th>
+          <th>CLABE</th>
+          <th>SWIFT</th>
+        </tr>
+      </thead>
+
+      <tbody ng-if="vm.quotationStore.code === 'actual_marketplace'">
+        <tr>
+          <td>Pesos</td>
+          <td>Banamex</td>
+          <td>7013</td>
+          <td>6383408</td>
+          <td>002691701363834085</td>
+          <td>BNMXMXMM</td>
+        </tr>
+      </tbody>
+
+      <tbody
+        ng-if="vm.quotationStore.group === 'studio' && vm.quotationStore.code !== 'actual_studio_merida' && vm.quotationStore.code !== 'actual_marketplace'"
+      >
+        <tr>
+          <td>Pesos</td>
+          <td>Banamex</td>
+          <td>7004</td>
+          <td>6988750</td>
+          <td>002691700469887500</td>
+          <td>BNMXMXMM</td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Bancomer</td>
+          <td></td>
+          <td>0194554957</td>
+          <td>012691001945549572</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Santander</td>
+          <td>7852</td>
+          <td>65504120542</td>
+          <td>014691655041205423</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Banorte</td>
+          <td></td>
+          <td>0201852130</td>
+          <td>072691002018521301</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Dólares</td>
+          <td>Banamex</td>
+          <td>0001</td>
+          <td>3416508</td>
+          <td>002691000134165082</td>
+          <td>BNMXMXMM</td>
+        </tr>
+      </tbody>
+
+      <tbody
+        ng-if="vm.quotationStore.group !== 'studio' || vm.quotationStore.code === 'actual_studio_merida' && vm.quotationStore.code !== 'actual_marketplace'"
+      >
+        <tr>
+          <td>Pesos</td>
+          <td>Banamex</td>
+          <td>7010</td>
+          <td>7336557</td>
+          <td>002691701073365572</td>
+          <td>BNMXMXMM</td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Bancomer</td>
+          <td></td>
+          <td>0105822122</td>
+          <td>012691001058221224</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Santander</td>
+          <td>7195</td>
+          <td>22000506285</td>
+          <td>014691220005062859</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Pesos</td>
+          <td>Banorte</td>
+          <td></td>
+          <td>0429431982</td>
+          <td>072691004294319827</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Dólares</td>
+          <td>Banamex</td>
+          <td>7002</td>
+          <td>9089130</td>
+          <td>002691700290891309</td>
+          <td>BNMXMXMM</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

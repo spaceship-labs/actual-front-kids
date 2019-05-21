@@ -1,0 +1,41 @@
+<section  class="dashboard-card chart-section">
+  <h2><a href="/orders/list"><i class="icon-pedidos"></i> <strong>PEDIDOS</strong></a></h2>
+  <div class="chart-section-inner">
+
+  <div layout="row">
+    <div class="chart-section-col" flex="45">
+      <h3>Cantidad</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-data="vm.ordersData.quantities.data"
+        chart-labels="vm.ordersData.quantities.labels"
+        chart-colors="vm.ordersData.quantities.colors">
+      </canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{vm.ordersData.todayQty}} | {{vm.ordersData.fortnightQty}}</p>
+    </div>
+
+    <div class="chart-section-col" flex="45">
+      <h3>Monto</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-data="vm.ordersData.ammounts.data"
+        chart-labels="vm.ordersData.ammounts.labels"
+        chart-colors="vm.ordersData.ammounts.colors"
+        chart-options="vm.ordersData.ammounts.options">
+      </canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{vm.ordersData.todayAmmount | currency}} | {{vm.ordersData.fortnightAmount | currency}}</p>
+    </div>
+  </div>
+
+  <div class="container container-xsm chart-section-legends" layout="row">
+    <p flex><span class="chart-section-sqr"></span> Hoy</p>
+    <p flex><span class="chart-section-sqr chart-section-sqr2"></span> Resto de la quincena</p>
+  </div>
+
+
+  </div>
+</section>

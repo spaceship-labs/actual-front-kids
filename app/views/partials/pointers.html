@@ -1,0 +1,104 @@
+<md-sidenav 
+  class="md-sidenav-right md-whiteframe-4dp pointers-sidenav" 
+  md-component-id="pointers"
+>
+
+  <md-button 
+    ng-click="main.togglePointerSidenav()" 
+    class="pointer-close-btn md-fab md-mini md-primary"
+  >
+    <i class="icon-cotizar"></i>
+  </md-button>
+
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">POINTERS <i class="icon-pointer"></i></h1>
+  </md-toolbar>
+  <md-content  layout-padding>
+    
+    <div
+      ng-show="main.pointersLoding"
+      layout-fill
+      layout="row"
+      layout-align="center center"
+      class="loading-circle"
+    >
+      <md-progress-circular md-mode="indeterminate" class="md-accent" md-diameter="150"></md-progress-circular>
+    </div>
+
+    <div ng-show="!main.pointersLoding" class="pointers-list">
+
+      <div class="pointer-item" ng-if="main.activeQuotation">
+        <div
+          class="pointer-item-head"
+        >
+          <a><span>Tráfico</span></a>
+        </div>
+
+        <div class="pointer-item-content">
+          <p>¿Cómo se entero de Actual?</p>
+          <md-radio-group ng-model="main.activeQuotation.source">
+
+            <div class="pointer-source-item" ng-repeat="pointerSource in main.pointersSources | orderBy:'label' track by $index">
+              <md-radio-button ng-value="pointerSource.value">
+                {{pointerSource.label}}
+              </md-radio-button>
+              <!--ng-init="main.activeQuotation.sourceType = pointerSource.childs[0].value"-->
+
+              <select 
+                ng-if="pointerSource.value === main.activeQuotation.source"
+                ng-options="option.value as option.label for option in pointerSource.childs | orderBy:'label' "
+                ng-init="main.activeQuotation.sourceType = main.getFirstPointerSourceValue(pointerSource.childs, main.activeQuotation)"                
+                placeholder="Selecciona una opción"
+                ng-model="main.activeQuotation.sourceType">
+              </select>
+            </div>
+
+            <md-radio-button  
+              value="Broker">
+              Broker
+            </md-radio-button>
+            
+            <div
+              ng-show="!main.brokers"
+              layout="row"
+              layout-align="center center"
+              class="loading-circle loading-circle-small"
+            >
+              <md-progress-circular md-mode="indeterminate" class="md-accent" md-diameter="30"></md-progress-circular>
+            </div>
+
+            <select 
+              class="broker-select" 
+              ng-model="main.activeQuotation.Broker" 
+              ng-show="main.brokers && (main.activeQuotation.source === 'Broker' || main.activeQuotation.Broker)">
+              <option 
+                value="" 
+                selected 
+                disabled 
+                hidden>
+                Escoge un broker
+              </option>
+              <option 
+                ng-repeat="broker in main.brokers | orderBy:'Name'" 
+                ng-value="broker.id"
+                ng-selected="broker.id === main.activeQuotation.Broker"
+              >
+                {{broker.Name}}
+              </option>
+            </select>
+
+          </md-radio-group>
+          <!--<a href="#" class="action-btn">GUARDAR</a>-->
+          <input 
+            class="action-btn" 
+            type="submit" 
+            value="GUARDAR" 
+            ng-click="main.saveSource(main.activeQuotation.source, main.activeQuotation.sourceType)">
+        </div>
+      </div>
+
+
+    </div>
+
+  </md-content>
+</md-sidenav>

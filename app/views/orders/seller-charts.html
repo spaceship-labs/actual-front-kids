@@ -1,0 +1,52 @@
+  <section class="chart-section">
+    <h2><i class="icon-login"></i> <strong>GRÁFICA DETALLADA DE VENTAS</strong></h2>
+    <div class="chart-section-inner">
+
+      <div layout="row" class="container container-md">
+        <div class="chart-section-col" flex="70">
+          <p class="chart-section-col-txt">
+            Alcance de meta: 
+            <strong ng-if="vm.getFortnightNumber() === 1">Primera quincena {{vm.currentDate | date:'MMMM yyyy'}}</strong>
+            <strong ng-if="vm.getFortnightNumber() === 2">Segunda quincena {{vm.currentDate | date:'MMMM yyyy'}}</strong>
+
+          </p>
+          <canvas id="pie"
+            class="chart chart-pie"
+            chart-data="vm.chartOptions.data"
+            chart-labels="vm.chartOptions.labels"
+            chart-colors="vm.chartOptions.colors"
+            chart-options="vm.chartOptions.options">
+          </canvas>
+          <div class="chart-legends">
+            <p>
+              <span class="legend-sqr"></span>
+              <span>Venta al {{vm.currentDate | date:'d/MMM/yyyy'}}</span>
+              <span class="legend-sqr legend-sqr2"></span> <span>Falta para objetivo</span>
+            </p>
+          </div>
+        </div>
+        <div class="chart-section-col" flex="30">
+          <ul>
+            <li>
+              <span><strong>Objetivo</strong></span>
+              <span>{{vm.goal | currency}}</span>
+            </li>
+            <li>
+              <span><strong>Real</strong></span>
+              <span>{{vm.current | currency}}</span>
+            </li>
+            <li>
+              <span><strong>Venta al {{vm.currentDate | date:'d/MMM/yyyy'}}</strong></span>
+              <span>{{vm.currentPercent | number:2}} %</span>
+            </li>
+            <li>
+              <span><strong>Falta para objetivo</strong>
+              </span><span>{{vm.remaining | currency}}</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>

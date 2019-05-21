@@ -1,0 +1,80 @@
+<div
+  ng-repeat="mainCategory in categoriesTree track by $index"
+  ng-if="mainCategory[storeCode]"
+  class="listing-view-nav-wrapper">
+  <h2>
+    <a
+      ng-href="/category/{{mainCategory.Handle}}"
+      ng-class="{'active': mainCategory.isActive}">
+      <i class="icon-{{getCategoryIcon(mainCategory.Handle)}}"></i>
+      <strong>{{mainCategory.Name}}</strong>
+      <span class="products-num">({{mainCategory[storeCode]}})</span>
+    </a>
+  </h2>
+
+  <ul class="listing-view-nav" ng-show="mainCategory.isActive">
+    <li
+      ng-repeat="category in mainCategory.Childs | orderBy: 'Name' "
+      ng-if="category[storeCode]"
+      ng-class="{'active': category.isActive}"
+    >
+      <h3>
+        <a
+          ng-if="category.Childs"
+          ng-href="/category/{{category.Handle}}"
+        >
+          <strong>{{category.Name}}</strong>
+          <span class="products-num">({{category[storeCode]}})</span>
+        </a>
+        <a
+          ng-if="!category.Childs"
+          ng-href="/category/{{category.Handle}}"
+        >
+          <strong>{{category.Name}}</strong>
+          <span class="products-num">({{category[storeCode]}})</span>
+        </a>
+      </h3>
+
+
+
+      <ul class="listing-view-subnav">
+        <li
+          ng-repeat="subcategory in category.Childs | orderBy: 'Name' "
+          ng-if="subcategory[storeCode]"
+        >
+          <a ng-href="/category/{{subcategory.Handle}}" ng-class="{'active': subcategory.isActive}">
+            {{subcategory.Name}} ({{subcategory[storeCode]}})
+          </a>
+        </li>
+
+
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<!--OFERTAS-->
+<div
+  class="listing-view-nav-wrapper">
+  <h2>
+    <a
+      ng-href="/ofertas"
+      ng-class="{'active': isActiveOffers}">
+      <i class="icon-ofertas"></i>
+      <strong>Ofertas</strong>
+    </a>
+  </h2>
+</div>
+
+
+<!--Servicios-->
+<div
+  class="listing-view-nav-wrapper">
+  <h2>
+    <a
+      ng-href="/servicios">
+      <i class="icon-envio"></i>
+      <strong>Servicios</strong>
+    </a>
+  </h2>
+</div>

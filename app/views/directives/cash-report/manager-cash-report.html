@@ -1,0 +1,160 @@
+<section>
+  <md-content>
+    <md-tabs md-dynamic-height>
+
+      <md-tab ng-repeat="store in report.stores" label="{{store.name}}" class="store-report">
+        <md-content class="cash-report-wrapper">
+          <h1>Corte de caja</h1>
+          <h2>Gerente de tienda</h2>
+
+          <div class="store-report-header" layout="row" layout-align="space-between start">
+            <div class="store-report-header-col">
+              <h3>
+                <strong>Usuario:</strong> {{user.firstName + ' ' + user.lastName}}</h3>
+              <h3>
+                <strong>Tienda:</strong> {{store.name}}</h3>
+            </div>
+
+            <div class="store-report-header-col">
+              <h3>
+                <strong>Período:</strong>
+                {{startDate | date:'dd/MM/yyyy h:mm a'}} | {{endDate | date:'dd/MM/yyyy h:mm a'}}
+              </h3>
+              <h3>
+                <strong>Total Global Ventas:</strong> {{ store.total | currency }} MXN
+              </h3>
+            </div>
+          </div>
+
+          <section ng-if="isWebStore(store)" class="cash-report-inner seller-item">
+            <ng-include src="'views/directives/cash-report/manager-website-cash-report.html'"></ng-include>
+          </section>
+
+          <section ng-if="!isWebStore(store) && seller.active || seller.total > 0" ng-repeat="seller in store.sellers"
+            class="cash-report-inner seller-item">
+
+            <div layout="row" layout-align="space-between center">
+              <h2>
+                <strong>Interiorista:</strong> {{seller.firstName + ' ' + seller.lastName}}
+              </h2>
+              <h2>
+                <strong>Total General Ventas MXN: </strong> {{ seller.total | currency }}
+              </h2>
+            </div>
+
+
+            <section class="payment-group" ng-repeat="division in seller.divisions">
+              <h2 class="payment-group-title">{{division.name}}</h2>
+
+              <div class="method-group" ng-repeat="subdivision in division.subdivisions track by $index">
+                <div class="subdivision-inner" ng-if="subdivision.payments && subdivision.payments.length > 0">
+                  <h3>
+                    <strong class="normalize-text">{{subdivision.name}}</strong>
+                  </h3>
+
+                  <table>
+                    <!--START METHOD HEADER-->
+                    <thead>
+                      <th class="payment-item-header">
+                        <strong>Folio</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>No. aut.</strong>
+                      </th>
+                      <th ng-if="requiresBankColumn(subdivision)" class="payment-item-header">
+                        <strong>Banco</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Fecha/Hora</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Pedido</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Tipo de cambio</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Estatus</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Moneda</strong>
+                      </th>
+                      <th class="payment-item-header">
+                        <strong>Cantidad</strong>
+                      </th>
+                    </thead>
+                    <!--END METHOD HEADER-->
+
+                    <tbody>
+                      <!--START METHOD ROWS-->
+                      <tr ng-repeat="payment in subdivision.payments" class="payment-item">
+                        <td class="payment-item-cell">{{payment.folio}}</td>
+                        <td class="payment-item-cell">{{payment.verificationCode}}</td>
+
+                        <!--BANK-->
+                        <td ng-if="payment.card && !isTransferOrDeposit(payment) " class="payment-item-cell">
+                          {{payment.card}}
+                        </td>
+                        <td ng-if="payment.terminal && isTransferOrDeposit(payment) " class="payment-item-cell">
+                          {{payment.terminal}}
+                        </td>
+                        <!--END BANK-->
+
+                        <td class="payment-item-cell">
+                          {{payment.createdAt | date:'dd/MM/yyyy h:mm a'}}
+                        </td>
+                        <td class="payment-item-cell">
+                          <span ng-if="payment.Order.folio">#{{payment.Order.folio}}</span>
+                          <span ng-if="!payment.Order.folio">-</span>
+                        </td>
+
+                        <!--EXCHANGE RATE-->
+                        <td class="payment-item-cell usd-payment" ng-if="isUsdPayment(payment)">
+                          {{payment.exchangeRate | currency}}
+                        </td>
+                        <td class="payment-item-cell not-usd-payment" ng-if="!isUsdPayment(payment)">
+                          {{ 0 | currency }}
+                        </td>
+                        <!--END EXCHANGE RATE-->
+
+                        <td class="payment-item-cell to-upper">
+                          {{ mapStatusType(payment.status) }}
+                        </td>
+
+                        <td class="payment-item-cell to-upper">
+                          {{payment.currency}}
+                        </td>
+                        <td class="payment-item-cell">{{payment.ammount | currency}}</td>
+
+                      </tr>
+
+                    </tbody>
+                  </table>
+                  <!--END METHOD ROWS-->
+
+                  <p class="pull-right total-method">
+                    <strong>TOTAL {{subdivision.name}} MXN: {{subdivision.total | currency}}</strong>
+                  </p>
+                  <p ng-if="isUsdPayment(subdivision)" class="pull-right total-method">
+                    <strong>TOTAL USD: {{subdivision.totalUsd | currency}}</strong>
+                  </p>
+
+                </div>
+              </div>
+              <h2 class="pull-right total-group">TOTAL GENERAL {{division.name}} MXN: {{division.total | currency}}</h2>
+            </section>
+            <hr />
+          </section>
+
+
+          <div layout="row" layout-align="center center" class="form-view-btns no-margin">
+            <button ng-click="print()" flex="50" class="form-view-btn form-view-btn-primary print-btn">
+              Imprimir reporte
+            </button>
+          </div>
+
+        </md-content>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</section>

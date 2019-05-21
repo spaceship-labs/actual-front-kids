@@ -1,0 +1,108 @@
+<section class="quotation-texts">
+  <div class="quotation-text-block">
+    <h3>⁠Políticas de Cotizaciones: ⁠⁠⁠</h3>
+    <p>
+      ⁠⁠Esta cotización es valida solo el día de su creación. Favor de
+      rectificar los precios de los artículos el día de la compra. Los precios
+      mostrados reflejan el máximo descuento posible, pagando de contado. Al
+      elegir otra forma de pago, los precios pueden variar. Aplica la política
+      de "No hay devoluciones de dinero". Cualquier tipo de cambio mencionado en
+      esta cotización es solo una referencia. Favor de rectificar el tipo de
+      cambio vigente el día del pago. Este documento no es un comprobante de
+      pago y no tiene validez fiscal. Favor de exigir su comprobante de pago
+      para futuras gestiones. Al comprar cualquier articulo, el cliente expresa
+      haber revisado y aprobado la lista de artículos adquiridos, expresa su
+      total conformidad con el trabajo a realizar en cuanto a tela, color,
+      acabado y diseño y acepta las siguientes políticas y condiciones:
+    </p>
+  </div>
+  <div class="quotation-text-block">
+    <ul>
+      <li>
+        <strong> ⁠⁠⁠Políticas de entrega:</strong> ⁠⁠⁠
+        <a href="/politicas-de-entrega" target="_blank"
+          >ventas.miactual.com/politicas-de-entrega</a
+        >
+      </li>
+      <li>
+        ⁠⁠⁠ <strong>Políticas de instalación y ensamble:</strong> ⁠⁠⁠
+        <a href="/politicas-de-instalacion-y-ensamble" target="_blank"
+          >ventas.miactual.com/politicas-de-instalacion-y-ensamble</a
+        >
+      </li>
+      <li>
+        ⁠⁠⁠ <strong>Políticas de almacenaje:</strong> ⁠⁠⁠
+        <a href="/politicas-de-almacenaje" target="_blank"
+          >ventas.miactual.com/politicas-de-almacenaje</a
+        >
+      </li>
+      <li>
+        ⁠⁠⁠ <strong>Políticas de garantía:</strong> ⁠⁠⁠
+        <a href="/politicas-de-garantia" target="_blank"
+          >ventas.miactual.com/politicas-de-garantia</a
+        >
+      </li>
+      <li>
+        ⁠⁠⁠ <strong>Manual de cuidados y recomendaciones:</strong> ⁠⁠⁠
+        <a href="/manual-de-cuidados-y-recomendaciones" target="_blank"
+          >ventas.miactual.com/manual-de-cuidados-y-recomendaciones</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <!-- VENDEDOR -->
+  <div class="quotation-text-block seller-data only-show-print">
+    <h3>
+      <strong> <i class="icon-vendedor"></i> VENDEDOR</strong>
+    </h3>
+    <div class="order-block-inner">
+      <p>
+        {{ vm.quotation.User.firstName + ' ' + vm.quotation.User.lastName }}
+      </p>
+      <p><strong>E-mail: </strong>{{ vm.quotation.User.email }}</p>
+      <p><strong>Telefono: </strong>{{ vm.quotation.User.phone }}</p>
+      <p><strong>Celular:</strong> {{ vm.quotation.User.mobilePhone }}</p>
+    </div>
+  </div>
+
+  <div class="signature-section">
+    <hr />
+
+    <p>
+      Recibí tríptico de información, el cual contiene Información de Entregas,
+      Condiciones Generales e Información de Garantías.
+    </p>
+    <p>
+      Estoy de acuerdo que para artículos con un descuento del 26% o más no
+      aplica cambio por garantía.
+    </p>
+
+    <div class="client-signature">
+      <div class="signature-block">
+        <p><span class="signature-line"></span></p>
+        <p><span>Firma del cliente</span></p>
+      </div>
+      <div class="signature-block">
+        <p><span class="signature-line"></span></p>
+        <p>
+          <span
+            >Firma del asesor
+            {{
+              vm.quotation.User.firstName + ' ' + vm.quotation.User.lastName
+            }}</span
+          >
+        </p>
+
+        <p></p>
+      </div>
+
+      <p>
+        Favor de solicitar su factura antes de realizar el pago, ya que no hay
+        refacturación
+      </p>
+    </div>
+  </div>
+
+  <!-- END VENDEDOR -->
+</section>

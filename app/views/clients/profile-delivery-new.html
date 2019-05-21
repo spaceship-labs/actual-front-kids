@@ -1,0 +1,213 @@
+  <form
+    class="client-item-info"
+    name="newContactForm"
+    ng-submit="vm.createContact(newContactForm)"
+  >
+
+    <div ng-show="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+      <md-progress-circular
+        md-mode="indeterminate"
+        md-diameter="150">
+      </md-progress-circular>
+    </div>
+
+    <h2>Registrar nueva dirección de contacto</h2>
+
+    <section>
+
+      <div class="checkbox-client-type">
+        <md-checkbox
+          ng-click="vm.copyPersonalDataToContact(vm.client, vm.newContact)"
+          ng-model="vm.newContact.copyingPersonalData"
+          aria-label="Copiar datos personales">
+          <strong>Los mismos que mis datos personales</strong>
+        </md-checkbox>    
+      </div>
+
+      <div layout="row">
+        <div flex="45" class="input-element">
+          <label><strong>Nombre(s) del destinatario <span class="hl-label">*</span></strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.FirstName" 
+              required>
+          </div>
+        </div>
+
+        <div flex="45" class="input-element">
+          <label><strong>Apellidos del destinatario <span class="hl-label">*</span></strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.LastName" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row">
+
+        <div flex="20" class="input-element">
+          <label>
+            <strong>Teléfono fijo<span class="hl-label">*</span></strong>
+          </label>
+          <div class="input-element-inner">
+            <input 
+              type="tel" 
+              placeholder="(Lada + Número)" 
+              ng-model="vm.newContact.Tel1" 
+              required>
+          </div>
+        </div>
+
+
+        <div flex="20" class="input-element">
+          <label>
+            <strong>Teléfono celular</strong> *
+          </label>
+          <div class="input-element-inner">
+            <input 
+              type="tel" 
+              placeholder="(Lada + Número)" 
+              ng-model="vm.newContact.Cellolar" 
+              required>
+          </div>
+        </div>
+
+
+        <div flex class="input-element">
+          <label><strong>Email</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="email" 
+              ng-model="vm.newContact.E_Mail" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <h4>
+        <strong>DIRECCIÓN DE ENTREGA</strong>
+      </h4>
+      <div layout="row">
+        <div flex class="input-element">
+          <label><strong>Calle</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.Address" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>No. exterior*</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Noexterior" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>No. interior</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Nointerior" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>Colonia</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Colonia" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>Municipio</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Mpio" 
+              required>
+          </div>
+        </div>
+      </div>
+
+      <div layout="row">
+        <div flex="25" class="input-element">
+          <label><strong>Ciudad</strong> *</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Ciudad" 
+              required >
+          </div>
+        </div>
+        <div flex="25" class="input-element select-element-wrapper">
+          <label><strong>Estado</strong> *</label>
+          <md-select 
+            ng-model="vm.newContact.U_Estado" 
+            class="select-element" 
+            required>
+            <md-option ng-repeat="state in vm.states" ng-value="state.Code">
+              {{state.Name}}
+            </md-option>
+          </md-select>
+        </div>
+        <div flex="15" class="input-element">
+          <label><strong>Codigo postal</strong> *</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_CP" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row">
+        <div flex="25" class="input-element">
+          <label><strong>Entre calle</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Entrecalle" >
+          </div>
+        </div>
+        <div flex="25" class="input-element">
+          <label><strong>Y calle</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Ycalle" >
+          </div>
+        </div>
+        <div flex="25" class="input-element">
+          <label><strong>Referencias cercanas</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-model="vm.newContact.U_Notes1">
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row" class="form-view-btns" layout-align="center center">
+        <input
+          class="form-view-btn form-view-btn-primary"
+          type="submit"
+          value="Guardar dirección"
+        >
+      </div>
+    </section>
+
+  </form>

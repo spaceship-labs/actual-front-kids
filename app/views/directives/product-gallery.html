@@ -1,0 +1,78 @@
+<div
+  ng-if="galleryImages.length > 0 && loadedSizes"
+  ng-photoswipe slides="galleryImages"
+  show="open"
+  slide-selector=".product-view-gallery-img-inner > img"
+  on-close="closeGallery()"
+  options="opts">
+</div>
+<div class="product-gallery">
+  <div
+    ng-if="product.maxDiscount && product.maxDiscount > 0"
+    class="product-view-gallery-discount"
+    layout="row"
+    layout-align="center center">
+    <strong>- {{product.maxDiscount}}%</strong>
+  </div>
+
+  <div
+    ng-if="product.slowMovement"
+    class="slow-movement-sticker"
+  >
+    <img src="images/slowmovement.png" alt="">
+  </div>
+
+  <div class="product-view-gallery">
+    <slick
+      id="slick-gallery"
+      init-onload="true"
+      data="areImagesLoaded"
+      arrows="true"
+      draggable="false"
+    >
+      <div
+        ng-repeat="image in galleryImages track by $index"
+        class="product-view-gallery-img"
+      >
+        <div class="product-view-gallery-img-inner">
+          <img
+            ng-src="{{image.src}}"
+            ng-click="showGallery($index)"
+            alt="{{product.icon_description}}"
+            >
+        </div>
+      </div>
+    </slick>
+  </div>
+
+  <div class="product-view-gallery-thumbs">
+    <slick
+      id="slick-thumbs"
+      infinite="false"
+      slides-to-show="4"
+      slides-to-scroll="1"
+      init-onload="true"
+      data="areImagesLoaded"
+      arrows="false"
+      draggable="false"
+    >
+      <div ng-repeat="image in galleryImages track by $index">
+        <div class="product-view-gallery-thumb">
+          <a
+            ng-click="setGalleryIndex($index)"
+            href=""
+            data-thumb="{{$index}}"
+            data-selected-index="{{selectedSlideIndex}}"
+            ng-class="
+            {
+              'product-view-gallery-thumb-inner-active' : $index === selectedSlideIndex,
+              'product-view-gallery-thumb-inner-inactive' : $index !== selectedSlideIndex
+            }"
+            class="product-view-gallery-thumb-inner">
+            <img ng-src="{{image.src}}" alt="">
+          </a>
+        </div>
+      </div>
+    </slick>
+  </div>
+</div>

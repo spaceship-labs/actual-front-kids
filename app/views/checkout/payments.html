@@ -1,0 +1,180 @@
+<div ng-if="vm.isLoading" layout="row" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<div 
+  ng-show="vm.isLoadingProgress" 
+  class="container container-xxlg loading-circle"
+  layout="row"
+  layout-align="center center">
+  <div class="progress-bar">
+    <p><strong>Procesando orden</strong></p>
+    <md-progress-linear 
+      class="md-accent"
+      md-mode="determinate" 
+      value="{{vm.loadingEstimate}}">
+    </md-progress-linear>
+  </div>
+</div>
+
+<form
+  name="createForm"
+  ng-submit="vm.createOrder(createForm)"
+  ng-show="!vm.isLoading && !vm.isLoadingProgress"
+  class="form-view cart-view checkout-view container container-xxlg"
+>
+
+  <div class="steps-bar" layout="row">
+    <a ng-href="/quotations/edit/{{vm.quotation.id}}" flex="25" class="steps-bar-item">
+      <span><i class="icon-carro"></i> 1. Mi carrito</span>
+    </a>
+    <a ng-href="/checkout/client/{{vm.quotation.id}}" flex="25" class="steps-bar-item">
+      <span><i class="icon-login"></i> 2. Datos personales</span>
+    </a>
+    <div flex="25" class="steps-bar-item steps-bar-item-active">
+      <span><i class="icon-terminal"></i> 3. Método de pago</span>
+    </div>
+    <div flex="25" class="steps-bar-item">
+      <span><i class="icon-oportunidades"></i> 4. Confirmación</span>
+    </div>
+  </div>
+
+  <div class="checkout-view-inner">
+    <h3 ng-if="!vm.isMinimumPaid(vm.quotation)">
+      <strong>1. Elige tu opción de pago</strong> Puedes aplicar múltiples pagos.
+    </h3>
+
+    <section layout="row">
+      <div flex="75">
+
+        <md-radio-group
+          ng-if="!vm.isMinimumPaid(vm.quotation)" 
+          ng-model="vm.activeMethod"
+        >
+
+          <div class="pay-method-wrap" >
+            <ng-include
+              ng-repeat="paymentGroup in vm.paymentMethodsGroups track by $index"
+              ng-if="vm.isActiveGroup(paymentGroup, vm.quotation)"
+              src="'views/checkout/payment-group.html'">
+            </ng-include>
+
+          </div>
+
+        </md-radio-group>
+
+        <div 
+          ng-show="vm.quotation.Payments && vm.quotation.Payments.length > 0" 
+          class="second-step-payment"
+        >
+
+          <section>
+            <h3><strong>2. Pagos aplicados</strong></h3>
+            <hr />
+
+            <div class="pay-method-wrap pay-method-wrap-v2" >
+              <ng-include src="'views/checkout/payments-applied.html'"></ng-include>
+            </div>
+          </section>
+
+        </div>
+
+
+        <ng-include src="'views/checkout/sap-connection-logs.html'"></ng-include>
+
+      </div>
+
+      <aside flex top="100"  class="cart-aside">
+        <h1 class="cart-title"><i class="icon-carro"><span>{{vm.quotation.totalProducts}}</span></i> <strong>RESUMEN</strong></h1>
+
+        <div class="cart-summary">
+          <table>
+            <tr>
+              <td><strong>Subtotal ({{ vm.quotation.totalProducts }} productos):</strong></td>
+              <td><strong>MXN {{ vm.quotation.subtotal | roundCurrency }}</strong></td>
+            </tr>
+            <tr>
+              <td>Descuento:</td>
+              <td><strong>MXN <span ng-show="vm.quotation.discount > 0">-</span>{{ vm.quotation.discount | currency }}</strong></td>
+            </tr>
+          </table>
+          <hr>
+          <div class="cart-totals" layout="row" layout-align="space-between end">
+            <div flex="30">
+              <h1><strong>TOTAL:</strong></h1>
+            </div>
+            <div flex="70">
+              <!--
+              <h3 class="price-crossed-block" ng-show="vm.quotation.subtotal != vm.quotation.total">
+                <span class="currency-label">MXN</span> <span class="price-crossed">{{ vm.quotation.subtotal | roundCurrency  }}</span>
+              </h3>
+              -->
+              <h1 class="price-main"><span class="currency-label">MXN</span> {{ vm.quotation.total | roundCurrency  }}</h1>
+            </div>
+          </div>
+          <hr>
+          <table>
+            <tr>
+              <td><strong>Pagado:</strong></td>
+              <td>
+                <strong>
+                  MXN {{ vm.quotation.ammountPaid | roundCurrency }}
+                </strong>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Porcentaje pagado:</strong></td>
+              <td>
+                <strong>
+                  {{ vm.getPaidPercentage(vm.quotation) | number:2 }}%
+                </strong>
+              </td>
+            </tr>
+
+            <tr>
+              <td><strong>Restante:</strong></td>
+              <td>
+                <strong
+                  ng-class="
+                    {
+                      'hl-text' : (vm.quotation.total - vm.quotation.ammountPaid) > 0,
+                      'hl-text-v2' : (vm.quotation.total - vm.quotation.ammountPaid) <= 0
+                    }
+                  ">
+                  MXN {{ (vm.quotation.total - vm.quotation.ammountPaid) | roundCurrency }}
+                </strong>
+              </td>
+            </tr>
+          </table>
+
+          <hr>
+
+          <input
+            type="submit"
+            value="CONTINUAR"
+            class="cart-view-btn"
+            ng-disabled="!vm.isMinimumPaid(vm.quotation)"
+            ng-class="{'cart-view-btn-disabled' : !vm.isMinimumPaid(vm.quotation) }">
+
+          <p 
+            ng-if="vm.isMinimumPaid(vm.quotation)"
+            class="cart-summary-note"
+          >
+            *Hacer click para generar el folio de la venta.
+          </p>
+
+          <p 
+            ng-if="!vm.isMinimumPaid(vm.quotation)"
+            class="cart-summary-note"
+          >
+            *Se necesita saldar el monto total para poder procesar la venta
+          </p>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </div>
+</form>

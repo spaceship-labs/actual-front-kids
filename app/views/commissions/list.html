@@ -1,0 +1,154 @@
+<section class="form-view container container-xlg">
+  <h1><i class="icon-comisiones"></i> <strong>COMISIONES</strong></h1>
+  <div layout layout-padding>
+    <md-input-container class="no-margin">
+      <md-select
+        class="select-element"
+        placeholder="Año"
+        ng-model="year"
+        ng-change = "vm.setFilterDate(year, month, period)"
+      >
+        <md-option
+          ng-repeat="year in vm.years"
+          value="{{year}}"
+        >
+          {{year}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="no-margin">
+      <md-select
+        class="select-element"
+        placeholder="Mes"
+        ng-model="month"
+        ng-change = "vm.setFilterDate(year, month, period)"
+      >
+        <md-option ng-repeat="month in vm.months" value="{{month[0]}}">
+          {{month[1]}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <md-input-container class="no-margin">
+      <md-select
+        class="select-element"
+        placeholder="Periodo"
+        ng-model="period"
+        ng-change = "vm.setFilterDate(year, month, period)"
+      >
+        <md-option
+          ng-repeat="option in [[1, 'primera mitad'], [2, 'segunda mitad']]"
+          value="{{option[0]}}"
+        >
+          {{option[1]}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+  </div>
+
+  <div class="nested-table">
+    <!--
+      IF MANAGER
+    -->
+    <h2 ng-if="vm.user.role.name === vm.USER_ROLES.STORE_MANAGER">
+      TIENDA: {{vm.user.mainStore.name}}
+    </h2>
+    <div
+      ng-repeat="seller in vm.sellers track by $index"
+      class="nested-item"
+    >
+      <div
+        class="nested-bar nested-bar3"
+        ng-click="seller.selected = !seller.selected"
+        layout="row"
+        layout-align="space-between center"
+      >
+        <span flex="60">{{seller.firstName + ' ' + seller.lastName}} </span>
+        <div flex layout layout-align="space-between center">
+          <span flex="50">
+            Monto vendido: {{seller.total | currency}}
+          </span>
+          <span flex="50">
+            Monto comisionado: {{seller.commissions | currency}}
+          </span>
+          <i class="icon-arrow dropdown-icon" ng-class="{'dropdown-icon-closed':!seller.selected}"></i>
+        </div>
+
+      </div>
+
+      <div ng-show="seller.selected" class="nested-content">
+
+        <section ng-if="seller.selected" class="table-list-wrap table-list-wrap-nomargin">
+          <div
+            table-list
+            class="table-list table-list-v2"
+            columns="vm.columns"
+            api-resource="vm.apiResource"
+            date-range="vm.dateRange"
+            filters="seller.filters">
+          </div>
+        </section>
+
+      </div>
+    </div>
+    <!--
+    END IF MANAGER
+    -->
+
+    <!---
+    IF SELLER
+    -->
+    <div
+      ng-if="vm.user.role.name === vm.USER_ROLES.SELLER"
+      class="nested-item"
+    >
+      <div
+        class="nested-bar nested-bar3"
+        ng-init="seller.selected  = true"
+        ng-click="seller.selected = !seller.selected"
+        layout="row"
+        layout-align="space-between center"
+      >
+        <span flex="60">{{vm.user.firstName + ' ' + vm.user.lastName}} </span>
+        <div flex layout layout-align="space-between center">
+          <span>
+            Monto vendido: {{vm.user.total | currency}}
+          </span>
+          <span>
+            Monto comisionado: {{vm.user.commissions | currency}}
+          </span>
+          <i class="icon-arrow dropdown-icon" ng-class="{'dropdown-icon-closed':!seller.selected}"></i>
+        </div>
+      </div>
+      <div ng-show="seller.selected" class="nested-content">
+        <section class="table-list-wrap table-list-wrap-nomargin">
+          <div
+            class="table-list table-list-v2 hide-top"
+            table-list
+            columns="vm.columns"
+            api-resource="vm.apiResource"
+            date-range="vm.dateRange"
+            filters="vm.filters"
+          >
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!--MANAGER-->
+  <div ng-if="user.role.name === 'store manager'">
+    <ng-include
+      src="'views/commissions/store-charts.html'">
+    </ng-include>
+  </div>
+  <!--END MANAGER-->
+
+  <!--SELLER-->
+  <ng-include
+    src="'views/commissions/seller-charts.html'">
+  </ng-include>
+  <!--END SELLER-->
+
+</section>

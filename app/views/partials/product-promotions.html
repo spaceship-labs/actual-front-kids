@@ -1,0 +1,72 @@
+<div ng-if="vm.mainPromo" class="product-view-data-block product-view-data-block-v2">
+  <h4 class="product-view-data-block-toggle" ng-click="vm.discountToggle = !vm.discountToggle">
+    <a flex href="#" >
+      <strong>MÁXIMO DESCUENTO</strong>
+    </a>
+  </h4>
+  <div ng-show="vm.discountToggle" class="hl-data">
+    <table class="promotions-table">
+      <tr>
+        <td>Precio Lista:</td>
+        <td class="price-col"><span class="currency-label">MXN</span> <strong>{{vm.product.priceBefore | currency }}</strong></td>
+      </tr>
+      <tr>
+        <td style="width:40%">
+          <strong>{{ vm.mainPromo.discountTextPg1 ||  'Pago ÚNICO'}}
+            <span class="hl-text">(-{{vm.mainPromo.discountPg1}}%)</span>
+          </strong>
+        </td>
+        <td class="price-col">
+          <span class="currency-label">MXN</span> <span class="crossed-text">{{vm.product.priceBefore | currency }}</span>
+           | <strong class="hl-text"><span class="currency-label">MXN</span> {{ vm.applyDiscount(vm.mainPromo.discountPg1,vm.product.priceBefore) | currency }}</strong>
+        </td>
+      </tr>
+      <tr ng-if="vm.validPayments.paymentGroup2">
+        <td>
+          <strong>{{ vm.mainPromo.discountTextPg2 ||  '3 Meses sin intereses'}}
+            <span class="hl-text">(-{{vm.mainPromo.discountPg2}}%)</span>
+          </strong>
+        </td>
+        <td class="price-col">
+          <span class="currency-label">MXN</span> <span class="crossed-text">{{vm.product.priceBefore | currency }}</span>
+           | <span class="currency-label">MXN</span> <strong>{{ vm.applyDiscount(vm.mainPromo.discountPg2,vm.product.priceBefore) | currency }}</strong>
+        </td>
+      </tr>
+      <tr ng-if="vm.validPayments.paymentGroup3">
+        <td>
+          <strong>{{ vm.mainPromo.discountTextPg3 ||  '6 y 9 Meses sin intereses'}}
+            <span class="hl-text">(-{{vm.mainPromo.discountPg3}}%)</span>
+          </strong>
+        </td>
+        <td class="price-col">
+          <span class="currency-label">MXN</span> <span class="crossed-text">{{vm.product.priceBefore | currency }}</span>
+           | <span class="currency-label">MXN</span> <strong>{{ vm.applyDiscount(vm.mainPromo.discountPg3,vm.product.priceBefore) | currency }}</strong>
+        </td>
+      </tr>
+      <tr ng-if="vm.validPayments.paymentGroup4">
+        <td>
+          <strong>{{ vm.mainPromo.discountTextPg4 ||  '12 Meses sin intereses'}}
+            <span class="hl-text">(-{{vm.mainPromo.discountPg4}}%)</span>
+          </strong>
+        </td>
+        <td class="price-col">
+          <span class="currency-label">MXN</span> <span class="crossed-text">{{vm.product.priceBefore | currency }}</span>
+           | <span class="currency-label">MXN</span> <strong>{{ vm.applyDiscount(vm.mainPromo.discountPg4,vm.product.priceBefore) | currency }}</strong>
+        </td>
+      </tr>
+      <tr ng-if="vm.validPayments.paymentGroup5">
+        <td>
+          <strong>{{ vm.mainPromo.discountTextPg5 ||  '18 Meses sin intereses'}}
+            <span class="hl-text">(-{{vm.mainPromo.discountPg5}}%)</span>
+          </strong>
+        </td>
+        <td class="price-col">
+          <span class="currency-label">MXN</span> <span class="crossed-text">{{vm.product.priceBefore | currency }}</span>
+           | <span class="currency-label">MXN</span> <strong>{{ vm.applyDiscount(vm.mainPromo.discountPg5,vm.product.priceBefore) | currency }}</strong>
+        </td>
+      </tr>
+
+    </table>
+    <p>*Descuento aplicado con promoción: {{vm.mainPromo.publicName}}</p>
+  </div>
+</div>

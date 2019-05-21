@@ -1,0 +1,59 @@
+<div class="container container-xlg">
+
+  <div ng-if="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+    <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+  </div>
+
+  <section ng-if="!vm.isLoading" class="add-quotation" layout="row">
+
+    <div flex="50" class="col-q" layout="row" layout-align="center center">
+      <div class="col-q-inner">
+        <a ng-href="/clients/create?checkoutProcess={{vm.activeQuotationId}}" class="absolute-link"></a>
+        <h2><i class="icon-login q-icon"></i></h2>
+        <h3>NUEVO CLIENTE</h3>
+        <a 
+          ng-href="/clients/create?checkoutProcess={{vm.activeQuotationId}}"
+          class="action-btn action-btn-xsm action-btn-save">
+          CREAR
+        </a>        
+      </div>
+    </div>
+    <div flex="50" class="col-q" layout="row" layout-align="center center">
+      <div class="col-q-inner">
+        <h2><i class="icon-login q-icon"></i></h2>
+        <h3>CLIENTES</h3>
+        <form action="/cart" method="GET" class="searcher-wrapper" layout="row">
+          <!--
+          <div class="searcher">
+            <div class="searcher-inner">
+              <i class="icon-search"></i>
+              <input type="text" name="term">
+            </div>
+          </div>
+          -->
+          <i class="icon-search search-icon"></i>
+          <md-autocomplete
+              md-no-cache="false"
+              md-selected-item="vm.selectedProduct"
+              md-search-text="vm.searchText"
+              md-items="item in vm.queryClients(vm.searchText)"
+              md-selected-item-change="vm.selectedItemChange(item)"
+              md-item-text="item.CardName + ' ' + item.CardCode"
+              md-min-length="0"
+              placeholder="Buscar cliente">
+            <md-item-template>
+              <span class="client-found" md-highlight-text="vm.searchText" md-highlight-flags="^i">{{item.CardName}} | {{item.CardCode}} | {{item.E_Mail}}</span>
+            </md-item-template>
+            <md-not-found>
+              No se encontro "{{vm.searchText}}".
+            </md-not-found>
+          </md-autocomplete>
+
+          <!--<input type="submit" value="BUSCAR" class="searcher-btn">-->
+        </form>
+      </div>
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,39 @@
+<section class="chart-section">
+  <h2><i class="icon-login"></i> <strong>OPORTUNIDADES</strong></h2>
+  <div class="chart-section-inner">
+
+  <div layout="row">
+    <div class="chart-section-col" flex="40">
+      <h3>Cantidad</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-options="vm.quotationsData.quantities.options"
+        chart-data="vm.quotationsData.quantities.data"
+        chart-labels="vm.quotationsData.quantities.labels"
+        chart-colors="vm.quotationsData.quantities.colors"></canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{ vm.quotationsData.untilTodayQty }} | {{vm.quotationsData.allByDateRangeQty}}</p>
+    </div>
+
+    <div class="chart-section-col chart-section-legends" flex="20">
+      <p><span class="chart-section-sqr"></span> Hoy</p>
+      <p><span class="chart-section-sqr chart-section-sqr2"></span> Total</p>
+    </div>
+
+    <div class="chart-section-col" flex="40">
+      <h3>Monto</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-options="vm.quotationsData.ammounts.options"
+        chart-data="vm.quotationsData.ammounts.data"
+        chart-labels="vm.quotationsData.ammounts.labels"
+        chart-colors="vm.quotationsData.ammounts.colors"></canvas>
+      <p><strong>Hoy</strong> | <strong>Total</strong></p>
+      <p>{{vm.quotationsData.untilTodayAmount | currency}} | {{vm.quotationsData.allByDateRangeAmount | currency}}</p>
+    </div>
+  </div>
+
+  </div>
+</section>

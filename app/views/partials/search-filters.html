@@ -1,0 +1,174 @@
+<md-sidenav 
+  class="md-sidenav-right md-whiteframe-4dp pointers-sidenav filters-sidenav" 
+  md-component-id="searchFilters"
+>
+  <md-button 
+    ng-click="vm.toggleSearchSidenav()" 
+    class="pointer-close-btn md-fab md-mini md-primary"
+  >
+    <i class="icon-cotizar"></i>
+  </md-button>
+
+  <!--
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Filtrar resultados <i class="icon-pointer"></i></h1>
+  </md-toolbar>
+  -->
+
+  <md-content>
+
+    <section class="filters">
+      <h3 class="filters-head"><!--<i class="icon-pointer"></i>--> FILTRAR RESULTADOS</h3>
+      <div class="filters-inner">
+        <div class="filter-block filter-block-prices">
+          <h4><strong>PRECIO:</strong></h4>
+          
+
+          <form class="filter-block-inner" ng-submit="vm.searchByFilters()">
+            <div layout="row" layout-align="space-between center">
+              <div flex class="input-element input-element-from">
+                <div class="input-element-inner">
+                  <input ng-model="vm.minPrice" ui-money-mask="0" placeholder="Min." type="text">
+                </div>
+              </div>
+              <span>a</span>
+              <div flex class="input-element input-element-to">
+                <div class="input-element-inner">
+                  <input ng-model="vm.maxPrice" ui-money-mask="0" placeholder="Max." type="text">
+                </div>
+              </div>
+              <button type="submit" class="filter-block-price-btn">
+                <img src="images/arrow-right.png" alt="">
+              </button>
+            </div>
+          </form>
+
+
+        </div>
+
+        <!--STOCK FILTER-->
+        <div class="filter-block">
+          <h4 ng-click="vm.isSocietyFilterActive = !vm.isSocietyFilterActive" ng-class="{'active-arrow': vm.isSocietyFilterActive}">
+            <strong>Sociedad:</strong>
+          </h4>
+          <div ng-show="vm.isSocietyFilterActive" class="filter-block-inner">
+
+            <div>
+              <md-checkbox
+                ng-repeat="society in vm.societyFilters"
+                ng-model="society.selected"
+                ng-change="vm.searchByFilters()"
+                aria-label="Checkbox Indeterminate">
+                {{society.label}}
+              </md-checkbox>
+            </div>
+
+          </div>
+        </div>
+        <!--END STOCK FILTER-->  
+
+        <!--BRAND FILTER-->
+        <div class="filter-block">
+          <h4 ng-click="vm.isBrandFilterActive = !vm.isBrandFilterActive" ng-class="{'active-arrow': vm.isBrandFilterActive}">
+            <strong>Marca:</strong>
+          </h4>
+          <div ng-show="vm.isBrandFilterActive" class="filter-block-inner">
+
+            <div>
+              <md-checkbox
+                ng-repeat="brand in vm.customBrands | orderBy:'Name' "
+                ng-model="brand.selected"
+                ng-change="vm.searchByFilters()"
+                aria-label="Checkbox Indeterminate">
+                {{brand.Name}}
+              </md-checkbox>
+            </div>
+
+          </div>
+        </div>
+        <!--END BRAND FILTER-->
+
+        <!--STOCK FILTER-->
+        <div class="filter-block">
+          <h4 ng-click="vm.isStockFilterActive = !vm.isStockFilterActive" ng-class="{'active-arrow': vm.isStockFilterActive}">
+            <strong>Disponibilidad:</strong>
+          </h4>
+          <div ng-show="vm.isStockFilterActive" class="filter-block-inner">
+
+            <div>
+              <md-checkbox
+                ng-repeat="stock in vm.stockFilters"
+                ng-model="stock.selected"
+                ng-change="vm.searchByFilters()"
+                aria-label="Checkbox Indeterminate">
+                {{stock.label}}
+              </md-checkbox>
+            </div>
+
+          </div>
+        </div>
+        <!--END STOCK FILTER-->
+
+        <!--DISCOUNT FILTER-->
+        <div class="filter-block">
+          <h4 ng-click="vm.isDiscountFilterActive = !vm.isDiscountFilterActive" ng-class="{'active-arrow': vm.isDiscountFilterActive}">
+            <strong>Promociones:</strong>
+          </h4>
+          <div ng-show="vm.isDiscountFilterActive" class="filter-block-inner">
+
+            <div>
+              <md-checkbox
+                ng-repeat="discount in vm.discountFilters"
+                ng-model="discount.selected"
+                ng-change="vm.searchByFilters()"
+                aria-label="Checkbox Indeterminate">
+                {{discount.label}}
+              </md-checkbox>
+            </div>
+
+          </div>
+        </div>
+        <!--END DISCOUNT FILTER-->
+              
+
+        <!--NORMAL FILTERS-->
+        <div class="filter-block" ng-repeat="filter in vm.filters track by $index">
+          <h4 ng-click="vm.filters[$index].active = !vm.filters[$index].active" ng-class="{'active-arrow': vm.filters[$index].active}">
+            <strong>{{filter.Name}}:</strong>
+          </h4>
+          <div ng-show="vm.filters[$index].active" class="filter-block-inner">
+
+            <div ng-if=" filter.Handle != 'color' " >
+              <md-checkbox
+                ng-repeat="value in filter.Values | orderBy:filter.orderBy"
+                ng-model="value.selected"
+                ng-change="vm.searchByFilters()"
+                aria-label="Checkbox Indeterminate">
+                {{value.Name}}
+              </md-checkbox>
+            </div>
+
+
+            <div ng-if=" filter.Handle == 'color' " class="color-picker-sp" layout="row" layout-wrap>
+              <a
+                class="color-picker-sp-value"
+                ng-repeat="value in filter.Values"
+                ng-click="vm.toggleColorFilter(value, filter)"
+                ng-style="{'background-color' : value.Code}"
+                ng-class="{'active': value.selected}"
+                href="#"
+                flex>
+                <span></span>
+              </a>
+            </div>
+
+          </div>
+        </div>
+        <!--END NORMAL FILTERS-->
+        
+
+      </div>
+    </section>
+
+  </md-content>
+</md-sidenav>

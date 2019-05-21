@@ -1,0 +1,78 @@
+<section class="dashboard-card chart-section">
+  <h2><i class="icon-attachment"></i> <strong>DESEMPEÑO</strong></h2>
+  
+  <div class="chart-section-inner performance-card">
+    
+    <div class="performance-card-title">
+      <p>Estadisticas al <strong>{{ vm.currentDate | date: 'd MMMM'}}</strong></p>
+    </div>
+
+    <!--PERFORMANCE TABLE-->
+    <div class="performance-table">
+      <div class="performance-table-header" layout="row">
+        <div flex="60"></div>
+        <div flex="20">
+          <p>Lugar</p>
+          <p><strong>Tienda</strong></p>
+        </div>
+        <div flex="20">
+          <p>Lugar</p>
+          <p><strong>Empresa</strong></p>
+        </div>
+      </div>
+
+      <div class="performance-table-row" layout="row" layout-align="start center">
+        <div flex="60">
+          <p class="row-label">#Oportunidades</p>
+          <p><strong>{{vm.quotationsData.fortnightQty}}</strong></p>
+        </div>
+        <div flex="20">
+          <p><strong>1</strong> | <span>3</span></p>
+        </div>
+        <div flex="20">
+          <p><strong>3</strong> | <span>36</span></p>
+        </div>
+      </div>
+
+      <div class="performance-table-row" layout="row" layout-align="start center">
+        <div flex="60">
+          <p class="row-label">#Tickets</p>
+          <p><strong>{{vm.ordersData.fortnightQty}}</strong></p>
+        </div>
+        <div flex="20">
+          <p><strong>1</strong> | <span>3</span></p>
+        </div>
+        <div flex="20">
+          <p><strong>3</strong> | <span>36</span></p>
+        </div>
+      </div>
+
+      <div class="performance-table-row" layout="row" layout-align="start center">
+        <div flex="60">
+          <p class="row-label">#Ticket promedio</p>
+          <p><strong>{{vm.getAverageTicket() | currency}}</strong></p>
+        </div>
+        <div flex="20">
+          <p><strong>1</strong> | <span>3</span></p>
+        </div>
+        <div flex="20">
+          <p><strong>3</strong> | <span>36</span></p>
+        </div>
+      </div>
+
+      <div class="performance-table-row" layout="row" layout-align="start center">
+        <div flex="60">
+          <p class="row-label">% Cierre</p>
+          <p><strong>{{vm.getClosingPercentage()}}</strong></p>
+        </div>
+        <div flex="20">
+          <p><strong>1</strong> | <span>3</span></p>
+        </div>
+        <div flex="20">
+          <p><strong>3</strong> | <span>36</span></p>
+        </div>
+      </div>
+    </div>
+    <!--END PERFORMANCE TABLE-->
+  </div>
+</section>

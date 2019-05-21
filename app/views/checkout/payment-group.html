@@ -1,0 +1,43 @@
+<div class="method-block" layout="row" layout-align="space-between center">
+  <ul flex="75">
+    <li ng-repeat="method in paymentGroup.methods" ng-show="vm.isActiveMethod(method, vm.quotation)" layout="row" layout-align="space-between center">
+      <div ng-attr-flex="{{method.cardsImages && '40' || '100' }}">
+
+        <md-radio-button ng-click="vm.choosePaymentMethod(method, vm.quotation)" ng-model="method" ng-value="method" class="md-primary">
+
+          <strong ng-class="{'remark': method.type === vm.CLIENT_BALANCE_TYPE}">
+            {{method.label}}
+          </strong>
+        </md-radio-button>
+        <span ng-if="!method.msi && method.type != 'single-payment-terminal' && method.type != 'credit-card' && method.type != 'debit-card' "
+          class="method-text">
+          {{method.description}}
+        </span>
+        <span ng-if="method.msi" class="method-text">Meses</span>
+        <div ng-if="method.msi" class="hl-label">
+          <strong>Sin intereses</strong>
+        </div>
+      </div>
+      <div ng-if="method.cardsImages" flex="60" class="bank-icons">
+        <img ng-repeat="card in method.cardsImages" ng-src="{{ vm.api.baseUrl + card}}" alt="" ng-class=" method.discountKey != 'discountPg1' ? 'card' : ''">
+        <span>
+          <img ng-if="method.moreCards" src="images/mas-bancos.png" alt="Más bancos" class="card">
+          <md-tooltip class="banks-tooltip">
+            <ul>
+              <li ng-repeat="card in method.cards track by $index">
+                {{card}}
+              </li>
+            </ul>
+          </md-tooltip>
+        </span>
+      </div>
+    </li>
+
+  </ul>
+  <div flex="20" class="method-block-prices" ng-show="!vm.areMethodsDisabled(paymentGroup.methods, vm.quotation)">
+    <h2 class="price-now" ng-class="{'price-hl' : $index == 0 }">
+      <span class="currency-label">MXN</span> {{ vm.calculateRemaining(paymentGroup.total, vm.quotation) | roundCurrency }}
+    </h2>
+    <p>Impuestos incluidos</p>
+  </div>
+</div>

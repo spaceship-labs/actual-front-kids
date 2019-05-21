@@ -1,0 +1,17 @@
+<form action="" name="basicForm" layout="column" layout-padding>
+  <p><strong>¿En qué tienda estas? </strong></p>
+  <md-input-container>
+    <md-select ng-model="companyActive"
+      placeholder="seleccione una tienda"
+    >
+      <md-option ng-repeat="company in companies" ng-value="company.id">
+        {{company.WhsName}}
+      </md-option>
+    </md-select>
+  </md-input-container>
+  <md-button
+    ng-click="saveCompanyActive(basicForm.$valid && companyActive)"
+  >
+    guardar
+  </md-button>
+</form>

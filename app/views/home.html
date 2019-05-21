@@ -1,0 +1,64 @@
+<div class="container container-xxlg">
+  <div
+    ng-if="main.isLoadingCategoriesTree"
+    layout-fill
+    layout="row"
+    layout-sm="column"
+    layout-align="center center"
+    class="loading-circle"
+  >
+    <md-progress-circular md-mode="indeterminate" class="md-accent" md-diameter="150"></md-progress-circular>
+  </div>
+</div>
+
+<div ng-if="!main.isLoadingCategoriesTree" class="content-block listing-view">
+  <div class="container container-xxlg" layout="row" layout-align="space-between start">
+    <!--START NAV-->
+    <aside flex="20">
+      <sidebar-categories 
+        categories-tree="main.categoriesTree"
+        active-store="vm.activeStore"
+      >
+      </sidebar-categories>
+    </aside>
+    <!--END NAV-->
+
+    <!--CATEGORIES-->
+    <div flex="75">
+      <div class="subs-container">
+        <div  class="subs-container-list" layout="row" layout-wrap>
+          <div
+            class="sub-wrapper"
+            ng-repeat="category in main.categoriesTree"
+            ng-if="category[vm.stockProperty] > 0"
+            flex="33">
+            <category-item category="category" stock-key="{{vm.stockProperty}}" />
+          </div>
+
+          <!--OFERTAS-->
+          <div
+            class="sub-wrapper"
+            flex="33">
+            <div
+              class="sub"
+              ng-style="main.getCategoryBackground('ofertas')">
+              <div class="sub-text">
+                <h4>
+                  <a ng-href="/ofertas">
+                    <strong>Ofertas</strong>
+                  </a>
+                </h4>
+              </div>
+              <a ng-href="ofertas" class="absolute-link"></a>
+            </div>
+          </div>
+          <!--END OFERTAS-->
+
+        </div>
+
+      </div>
+    </div>
+    <!-- END CATEGORIES-->
+
+  </div>
+</div>

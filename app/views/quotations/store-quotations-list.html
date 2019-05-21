@@ -1,0 +1,66 @@
+<div class="sellers-lists">
+  <h2>
+    TIENDA: {{store.name}}
+  </h2>
+  <div
+    ng-repeat="seller in store.sellers track by $index"
+    class="nested-item"
+  >
+    <div
+      class="nested-bar nested-bar3"
+      ng-click="seller.selected = !seller.selected"
+      layout="row"
+      layout-align="space-between center"
+    >
+      <span>TOTAL VENDEDOR: {{seller.firstName + ' ' + seller.lastName}} </span>
+      <span>
+        {{seller.total | currency}} <i class="icon-arrow dropdown-icon" ng-class="{'dropdown-icon-closed':!seller.selected}"></i>
+      </span>
+    </div>
+
+    <div ng-show="seller.selected" class="nested-content">
+
+      <!--FILTERS BY SELLER-->
+      <div 
+        layout="row" 
+        layout-align="end center" 
+      >
+
+        <div flex="30" class="input-element select-element-wrapper">
+          <select 
+            ng-init="seller.filters.isClosed = vm.closedOptions[0].value"
+            ng-model="seller.filters.isClosed" 
+            class="select-element"
+            ng-options="option.value as option.label for option in vm.closedOptions"
+          >
+          </select>
+        </div>
+
+        <div flex="30">
+          <a 
+            ng-click="vm.applyFilters()" 
+            href="#" 
+            class="action-btn">
+            Aplicar filtros
+          </a>
+        </div>
+
+      </div>
+      <!--END FILTERS BY SELLER-->
+
+      <section ng-if="seller.selected" class="table-list-wrap table-list-wrap-nomargin">
+        <div
+          table-list
+          class="table-list table-list-v2"
+          columns="vm.columnsLeads"
+          api-resource="vm.apiResourceQuotations"
+          date-range="vm.globalDateRange"
+          default-sort="vm.defaultSort"
+          created-row-cb="vm.createdRowCb"
+          client-search="true"
+          filters="seller.filters"></div>
+      </section>
+
+    </div>
+  </div>
+</div>

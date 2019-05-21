@@ -1,0 +1,25 @@
+<div
+  class="nested-bar nested-bar3"
+  ng-init="seller.selected = true"
+  ng-click="seller.selected = !seller.selected"
+  layout="row"
+  layout-align="space-between center"
+>
+  <span>TOTAL VENDEDOR: {{vm.user.firstName + ' ' + vm.user.lastName}} </span>
+  <span>
+    {{vm.totalDateRange | currency}} <i class="icon-arrow dropdown-icon" ng-class="{'dropdown-icon-closed':!seller.selected}"></i>
+  </span>
+</div>
+
+<div ng-show="seller.selected" class="nested-content">
+  <section class="table-list-wrap table-list-wrap-nomargin">
+    <div
+      table-list
+      class="table-list table-list-v2"
+      columns="vm.columnsOrders"
+      default-sort="vm.defaultSort"
+      api-resource="vm.apiResourceOrders"
+      date-range="vm.dateRange"
+      filters="vm.filters"></div>
+  </section>
+</div>

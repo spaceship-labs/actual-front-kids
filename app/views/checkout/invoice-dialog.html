@@ -1,0 +1,38 @@
+<md-dialog class="options-alert-dialog" aria-label="Invoice dialog"  ng-cloak>
+  <div class="options-alert-inner">
+		
+		<a 
+			href="#" 
+			ng-click="cancel()"
+			class="options-alert-cancel">
+			x
+		</a>
+
+		<h3>Favor de verificar si tu cliente requerirá factura fiscal</h3>
+		
+		<div 
+			class="btns-section" 
+			layout="row"
+			layout-align="space-between start">
+			<div flex class="btns-section-block">
+				<a 
+					href="#" 
+					ng-click="continue()"
+					class="action-btn action-btn-wide action-btn-inline action-btn-save ">
+						Continuar a pago
+				</a>
+				<!--<p class="center-content">Continuar a pago</p>-->
+			</div>
+			<div flex class="btns-section-block">
+				<a 
+					href="#" 
+					ng-click="modify()"
+					class="action-btn action-btn-wide action-btn-save action-btn-inline">
+						Registrar datos fiscales
+				</a>
+				<!--<p class="center-content">Crear factura</p>-->
+			</div>
+		</div>
+
+	</div>
+</md-dialog>

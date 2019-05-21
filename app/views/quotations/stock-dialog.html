@@ -1,0 +1,39 @@
+<md-dialog class="options-alert-dialog" aria-label="Alerta stock"  ng-cloak>
+  <div class="options-alert-inner">
+		
+		<a 
+			href="#" 
+			ng-click="cancel()"
+			class="options-alert-cancel">
+			x
+		</a>
+
+		<h2>Alerta</h2>
+		<p>El inventario y/o la fecha de entrega del articulo cotizado sufrió un cambio.</p>
+		
+		<div 
+			class="btns-section" 
+			layout="row"
+			layout-align="space-between start">
+			<div flex class="btns-section-block">
+				<a 
+					href="#" 
+					ng-click="delete()"
+					class="action-btn action-btn-inline action-btn-delete">
+						Eliminar
+				</a>
+				<p>Se eliminará el articulo de la cotización. Posteriormente podrás agregar cualquier articulo adicional.</p>
+			</div>
+			<div flex class="btns-section-block">
+				<a 
+					href="#" 
+					ng-click="modify()"
+					class="action-btn action-btn-save action-btn-inline">
+						Modificar
+				</a>
+				<p>Se eliminará el articulo de la cotización. Podrás ver el inventario y la fecha entrega actual del articulo para volver a incluirlo.</p>
+			</div>
+		</div>
+
+	</div>
+</md-dialog>

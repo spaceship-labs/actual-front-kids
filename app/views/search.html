@@ -1,0 +1,88 @@
+<div class="content-block listing-view search-view" id="search-page">
+
+  <!--FILTERS-->
+  <ng-include src="'views/partials/search-filters-trigger.html'"></ng-include>
+  <ng-include src="'views/partials/search-filters.html'"></ng-include>
+  <!--END FILTERS-->
+
+  <div class="container container-xxlg" layout="row" layout-align="space-between start">
+
+    <!--START NAV-->
+    <aside flex="20">
+      <sidebar-categories 
+        active-store="vm.activeStore"
+        categories-tree="main.categoriesTree">
+      </sidebar-categories>
+
+      <!--FILTERS-->
+      <ng-include src="'views/partials/search-filters.html'"></ng-include>
+      <!--END FILTERS-->
+
+    </aside>
+    <!--END NAV-->
+
+    <!--SUBCATEGORIES-->
+    <div flex="75">
+
+      <div class="subs-container">
+
+        <div class="results-block-header" layout="row" layout-align="space-between start">
+          <h2 ng-if="vm.search.term" class="listing-view-title">
+            Resultados para "{{vm.search.term}}"
+          </h2>
+          <h2 ng-if="vm.search.itemcode" class="listing-view-title">
+            Resultados para "{{vm.search.itemcode}}"
+          </h2>
+          <h2 ng-if="vm.search.keywords" class="listing-view-title">
+            Resultados para "<span class="keyword" ng-repeat="keyword in vm.search.keywords">{{keyword}}</span>"
+          </h2>
+
+          <h3 ng-if="!vm.isLoading">
+            <i class="icon-search"></i> <span class="hl-text">{{vm.totalResults}}</span> Resultados
+          </h3>
+        </div>
+
+
+        <ng-include src="'views/partials/search-options.html'"></ng-include>
+
+        <!--RESULTS-->
+        <div
+          ng-if="!vm.isLoading || vm.search.page > 1"
+          class="results"
+          infinite-scroll="vm.loadMore()"
+          infinite-scroll-disabled="!(vm.totalResults > vm.products.length && !vm.isLoading && vm.products.length > 0)"
+          infinite-scroll-distance="1"
+        >
+          <div
+            class="products-list"
+            layout="row"
+            layout-wrap
+            layout-align="start center">
+            <div flex="33" class="listing-product-wrap" ng-repeat="product in vm.products track by product.ItemCode">
+              <listing-product product="product"></listing-product>
+            </div>
+          </div>
+
+        </div>
+        <!--END RESULTS-->
+
+        <div ng-if="vm.isLoading" layout="row" layout-align="center center" class="loading-circle">
+          <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+        </div>
+
+<!--
+        <a
+          href="#" class="action-btn action-btn-sm"
+          ng-if="vm.totalResults > vm.products.length && !vm.isLoading && vm.products.length > 0"
+          ng-click="vm.loadMore()"
+        >
+          Cargar más
+        </a>
+-->
+
+      </div>
+    </div>
+    <!-- END SUBCATEGORIES-->
+
+  </div>
+</div>

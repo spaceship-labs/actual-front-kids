@@ -1,0 +1,66 @@
+<md-dialog class="form-dialog" aria-label="Terminal" ng-cloak>
+  <div class="form-dialog-inner">
+    <h2>
+      <i class="icon-transfer"></i> APLICA
+      <strong>EL PAGO</strong> COMO SE INDICA</h2>
+    <hr />
+    <h4 class="deposit-type">
+      <strong>{{payment.name}}</strong>
+    </h4>
+    <div class="dialog-block">
+      <p>
+        <strong>Cantidad:</strong>
+        <small>Se muestra el saldo total pendiente por cobrar. Puedes cobrar cualquier monto menor, pero después debes aplicar otro
+          cobro para saldar esta venta.</small>
+      </p>
+      <p class="error-msg" ng-if="errMsg">{{errMsg}}</p>
+
+      <div class="ammount-input" layout="row" layout-align="start center">
+        <div class="input-element" flex="60">
+          <div class="input-element-inner">
+            <input ng-if="maxAmount && maxAmount >=0" type="text" max="maxAmount" ng-model="payment.ammount" class="with-maxammount"
+              ng-currency ng-disabled="isConfirmationActive">
+            <input ng-if="!maxAmount" type="text" ng-currency ng-disabled="isConfirmationActive" ng-model="payment.ammount">
+
+          </div>
+        </div>
+        <div class="currency-label">
+          <span ng-if="payment.currency != 'usd'">MXN</span>
+          <span ng-if="payment.currency == 'usd'">
+            USD ({{ getAmmountMXN(payment.ammount, payment.exchangeRate) | currency}} MXN)
+          </span>
+        </div>
+      </div>
+      <p ng-if="payment.currency == 'usd'">
+        <small>Tipo de cambio: {{payment.exchangeRate | currency}} MXN</small>
+      </p>
+    </div>
+
+    <div layout="row" layout-align="space-between end">
+      <div flex="30"></div>
+      <a ng-show="!isConfirmationActive" ng-click="openConfirmation()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn action-btn-save"
+        href="#" flex="25">
+        <strong>GUARDAR</strong>
+      </a>
+    </div>
+
+    <section class="confirm-section" ng-if="isConfirmationActive">
+
+      <p>
+        <strong>Favor de confirmar que el monto ingresado es el correcto.</strong>
+      </p>
+
+      <div layout="row" layout-align="space-between center">
+        <a ng-click="save()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn action-btn-save" href="#" flex="45">
+          <strong>CONFIRMAR</strong>
+        </a>
+
+        <a ng-click="cancel()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn" href="#" flex="45">
+          <strong>CANCELAR</strong>
+        </a>
+      </div>
+
+    </section>
+
+  </div>
+</md-dialog>

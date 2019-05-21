@@ -1,0 +1,33 @@
+<h2>
+  TIENDA: {{store.name}}
+</h2>
+<div
+  ng-repeat="seller in store.sellers track by $index"
+  class="nested-item"
+>
+  <div
+    class="nested-bar nested-bar3"
+    ng-click="seller.selected = !seller.selected"
+    layout="row"
+    layout-align="space-between center"
+  >
+    <span>TOTAL VENDEDOR: {{seller.firstName + ' ' + seller.lastName}} </span>
+    <span>
+      {{seller.total | currency}} <i class="icon-arrow dropdown-icon" ng-class="{'dropdown-icon-closed':!seller.selected}"></i>
+    </span>
+  </div>
+
+  <div ng-show="seller.selected" class="nested-content">
+    <section ng-if="seller.selected" class="table-list-wrap table-list-wrap-nomargin">
+      <div
+        table-list
+        class="table-list table-list-v2"
+        columns="vm.columnsOrders"
+        api-resource="vm.apiResourceOrders"
+        default-sort="vm.defaultSort"
+        date-range="vm.dateRange"
+        filters="seller.filters"></div>
+    </section>
+
+  </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="content-block listing-view" id="category-page">
+
+  <ng-include ng-show="vm.enableFiltersTrigger" src="'views/partials/search-filters-trigger.html'"></ng-include>
+  <ng-include src="'views/partials/search-filters.html'"></ng-include>
+  
+  <div class="container container-xxlg" layout="row" layout-align="space-between start">
+    <!--START NAV-->
+    <aside flex="20">
+      <sidebar-categories
+        categories-tree="main.categoriesTree"
+        selected-category-id="vm.category.id"
+        active-store="main.activeStore">
+      </sidebar-categories>
+
+      <ng-include src="'views/partials/search-filters.html'"></ng-include>  
+      
+    </aside>
+    <!--END NAV-->
+
+    <!--SUBCATEGORIES-->
+    <div flex="75">
+
+      <div
+        ng-if="vm.isLoading"
+        layout-fill
+        layout="row"
+        layout-align="center center"
+        class="loading-circle"
+      >
+        <md-progress-circular md-mode="indeterminate" class="md-accent" md-diameter="150"></md-progress-circular>
+      </div>
+
+      <div ng-if="!vm.isLoading" class="subs-container">
+        <h2 class="listing-view-title">{{vm.category.Name}}</h2>
+        <!--SUBCATEGORIES LIST LEVEL 2-->
+        <div 
+          ng-if="vm.category.Childs.length > 0 && vm.showLevel2" 
+          class="subs-container-list" 
+          layout="row" 
+          layout-wrap
+        >
+          <div
+            class="sub-wrapper"
+            ng-repeat="subcategory in vm.category.Childs | filter: {CategoryLevel:2}"
+            ng-if="subcategory[main.activeStore.code] > 0"
+            flex="33"
+          >
+            <category-item category="subcategory" stock-key="{{main.activeStore.code}}" />            
+          </div>
+        </div>
+        <!--END SUBCATEGORIES LIST LEVEL 2-->
+
+
+        <!--SUBCATEGORIES LIST LEVEL 3-->
+        <div ng-if="vm.category.Childs.length > 0 && vm.showLevel3" class="subs-container-list" layout="row" layout-wrap>
+          <div
+            class="sub-wrapper"
+            ng-repeat="subcategory in vm.category.Childs | filter: {CategoryLevel:3}"
+            ng-if="subcategory[main.activeStore.code] > 0"
+            flex="33"
+          >
+            <category-item category="subcategory" stock-key="{{main.activeStore.code}}" />
+          </div>
+        </div>
+        <!--END SUBCATEGORIES LIST LEVEL 3-->
+
+        <!--RESULTS-->
+        <div id="products-results">
+
+          <ng-include src="'views/partials/search-options.html'"></ng-include>
+
+          <div 
+            ng-if="!vm.isLoadingProducts || vm.search.page > 1"
+            class="results"
+            infinite-scroll="vm.loadMore()"
+            infinite-scroll-disabled="!(vm.totalProducts > vm.products.length && !vm.isLoadingProducts && vm.products.length > 0)"
+            infinite-scroll-distance="1"
+          >
+            <h2 class="center-content">
+              <strong>
+                <i class="icon-search"></i> <span class="hl-text">{{vm.totalProducts}}</span> Resultados
+              </strong>
+            </h2>
+
+            <div
+              class="products-list"
+              layout="row"
+              layout-wrap
+              layout-align="start center"
+              ng-cloak
+            >
+              <div
+                flex="33"
+                class="listing-product-wrap"
+                ng-repeat="product in vm.products track by product.ItemCode">
+                <listing-product product="product"></listing-product>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <!--END RESULTS-->
+
+        <div ng-if="vm.isLoadingProducts" layout="row" layout-align="center center" class="loading-circle">
+          <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+        </div>
+
+      </div>
+    </div>
+    <!-- END SUBCATEGORIES-->
+
+  </div>
+</div>

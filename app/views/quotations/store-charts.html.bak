@@ -1,0 +1,37 @@
+<section class="chart-section">
+  <h2><i class="icon-login"></i> <strong>OPORTUNIDADES</strong></h2>
+  <div class="chart-section-inner">
+
+  <div layout="row" layout-align="center center">
+
+    <div class="table-list" flex="40">
+      <table class="dataTable row-border hover">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="seller in vm.sellers">
+            <td>{{seller.firstName + ' ' + seller.lastName}}</td>
+            <td>{{seller.total | currency}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-section-col" flex="40">
+      <h3>Monto</h3>
+      <canvas
+        id="pie"
+        class="chart chart-pie"
+        chart-options="vm.store.ammounts.options"
+        chart-data="vm.store.ammounts.data"
+        chart-labels="vm.store.ammounts.labels"
+        chart-colors="vm.store.ammounts.colors"></canvas>
+    </div>
+  </div>
+
+  </div>
+</section>

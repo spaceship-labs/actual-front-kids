@@ -1,0 +1,77 @@
+<div class="modal-header login-modal-header">
+  <div class="modal-header-top">
+    <h4>Bienvenido a <strong>MI ACTUAL</strong></h4>
+  </div>
+  <div class="modal-header-inner">
+    <h3><strong>INICIO DE SESIÓN</strong></h3>
+    <hr/>
+
+    <div ng-if="main.isLoadingLogin" layout="row" layout-sm="column" layout-align="space-around">
+      <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+    <form 
+      ng-if="!main.isLoadingLogin" 
+      name="loginForm" 
+      method="POST" 
+      ng-submit="main.signIn()"
+    >
+      <div class="input-element">
+        <div class="input-element-inner">
+          <input type="email" name="email"
+            placeholder="Email"
+            autocomplete="off"
+            ng-model="main.loginForm.email"
+            ng-model-options='{ debounce: 1000 }'
+            ng-change="main.getStores(main.loginForm.email)"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="input-element">
+        <div class="input-element-inner">
+          <input
+            type="password"
+            autocomplete="off"
+            placeholder="Contraseña"
+            name="password"
+            ng-model="main.loginForm.password"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="input-element">
+        <select 
+          class="select-element input-element-inner" 
+          name="activeStore"
+          ng-model="main.loginForm.activeStoreId" 
+          ng-options="store.id as store.name for store in main.stores"
+          required
+        >
+          <option value="" disabled hidden>
+            Tienda
+          </option>
+        </select>
+      </div>
+
+      <p ng-if="main.loginErr" class="error-msg">
+        {{main.loginErr}}
+      </p>
+
+      <input class="action-btn" type="submit" value="Iniciar sesión">
+
+    </form>
+
+    <p><a ng-href="/forgot-password">Olvide mi contraseña</a></p>
+    
+    <!--
+    <hr/>
+    <h3>¿Nuevo en <strong>Mi actual?</strong></h3>
+    <p>Registrate ahora mismo para tener acceso detallado para tus compras, puntos, pedidos, envios, ofertas y más.</p>
+    <a href="#" class="action-btn">Régistrate ahora</a>
+    -->
+
+  </div>
+</div>

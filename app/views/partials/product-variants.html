@@ -1,0 +1,64 @@
+<div ng-if="vm.hasVariants" class="product-view-data-block">
+  <h4 class="product-view-data-block-toggle" ng-class="{'opened-toggle': vm.toggleVariants}">
+    <a href="#"  ng-click="vm.toggleVariants = !vm.toggleVariants">
+      <strong>VARIANTES</strong>
+    </a>
+  </h4>
+  <div 
+    ng-show="vm.toggleVariants" 
+    class="hl-data variants-picker"
+  >
+  
+      <div ng-repeat="variant in vm.variants">
+        <div 
+          class="variant-row" 
+          ng-if="variant.products.length > 0" 
+          layout="row"
+        >
+          <div flex="30"><strong>{{variant.name}}:</strong></div>
+
+          <div 
+            ng-if=" variant.handle == 'color' " 
+            flex="70"
+            class="variant-row-options"
+          >
+
+            <div
+              class="variant-color"
+              layout="row"
+              layout-wrap
+              ng-repeat="prod in variant.products"
+              ng-click="vm.init(prod.id, true)"
+              ng-class="{'variant-color-on': prod.id == vm.product.ItemCode}"
+            >
+              <span
+                class="variant-color-val"
+                data-color="{{val.Name}}"
+                ng-repeat="val in prod.filterValues track by $index"
+                ng-style=" {'background' : val.Code, 'width' : (100 / prod.filterValues.length) +'%' } "
+              >
+              </span>
+
+            </div>
+
+          </div>
+
+          <div ng-if=" variant.handle != 'color'  " flex="70" >
+            <md-radio-group ng-model="vm.product.ItemCode" class="md-primary">
+
+              <md-radio-button
+                  ng-repeat="prod in variant.products"
+                  ng-value="prod.id"
+                  ng-click="vm.init(prod.id, true)"
+                  class="" >
+                 <span ng-repeat="val in prod.filterValues track by $index">
+                  {{val.Name}}<span ng-if="$index < (prod.filterValues.length-1) ">, </span>
+                 </span>
+              </md-radio-button>
+
+            </md-radio-group>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

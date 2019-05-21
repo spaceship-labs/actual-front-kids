@@ -1,0 +1,222 @@
+<section class="records-view">
+
+  <div layout="row" layout-align="space-between end">
+    <div flex>
+      <h1>
+        <i class="icon-attachment"></i>
+        <strong>BITÁCORA DE SEGUIMIENTO</strong>
+      </h1>
+      <p ng-if="!vm.quotation.isClosed">
+        <strong>CREAR NUEVO EVENTO</strong>
+      </p>
+    </div>
+
+    <div flex="40" ng-if="vm.isLoadingEstimatedCloseDate" layout-fill layout="row" layout-sm="column" layout-align="center center"
+      class="loading-circle loading-circle-small">
+      <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+    </div>
+
+    <div ng-if="!vm.quotation.isClosed && !vm.isLoadingEstimatedCloseDate" flex="40" class="estimated-close-date" layout="row"
+      layout-align="start center">
+      <div flex="80" class="input-element">
+        <label>
+          <strong>Fecha estimada cierre venta</strong>
+        </label>
+        <div class="input-element-inner">
+          <input pikaday="vm.estimatedCloseDateWrapper" set-default-date="true" default-date="{{vm.quotation.estimatedCloseDate}}"
+            ng-model="vm.quotation.estimatedCloseDateHolder" readonly required type="text" on-select="onPikadaySelect(pikaday)">
+        </div>
+      </div>
+      <div>
+        <a title="Guardar fecha estimada de cierre" href="#" ng-click="vm.setEstimatedCloseDate()">
+          <img src="/images/save.png" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <form ng-if="!vm.quotation.isClosed" ng-submit="vm.addRecord(newRecordForm)" name="newRecordForm" class="new-record">
+    <div layout="row" layout-align="space-between start
+    ">
+      <div flex="40">
+        <div class="input-element textarea-element">
+          <label>
+            <strong>NOTAS</strong>
+          </label>
+          <div class="input-element-inner">
+            <textarea ng-model="vm.newRecord.notes" rows="5"></textarea>
+          </div>
+        </div>
+      </div>
+      <div flex="55">
+        <div layout="row" layout-align="space-between start">
+
+          <div flex class="input-element select-element-wrapper">
+            <label>
+              <strong>Tipo de evento</strong>
+            </label>
+            <select required class="select-element" ng-model="vm.newRecord.eventType">
+              <option ng-repeat="recordType in vm.recordTypes" ng-value="recordType">
+                {{recordType}}
+              </option>
+            </select>
+          </div>
+
+          <div flex class="input-element select-element-wrapper">
+            <label>
+              <strong>Fecha de seguimiento</strong>
+            </label>
+            <div class="input-element-inner">
+              <input ng-if="!vm.isLoadingRecords" pikaday="vm.newRecord.date" readonly required type="text" on-select="onPikadaySelect(pikaday)">
+            </div>
+          </div>
+
+          <div flex class="input-element select-element-wrapper">
+            <label>
+              <strong>Hora de seguimiento</strong>
+            </label>
+            <div class="input-element-inner">
+              <input ng-if="!vm.isLoadingRecords" type="text" required ui-timepicker ui-timepicker="vm.timePickerOptions" ng-model="vm.newRecord.time">
+            </div>
+          </div>
+
+        </div>
+
+
+        <div layout="row" layout-align="start center" class="attachments-section">
+          <div flex="30">
+            <a href="#" ngf-select="vm.attachImage($file)">
+              <strong>
+                <i class="icon-attachment"></i>ADJUNTAR IMÁGEN</strong>
+            </a>
+          </div>
+          <div flex="30">
+            <a href="#" ngf-select="vm.attachImage($file)" ngf-capture="'camera'">
+              <strong>
+                <i class="icon-photo"></i>TOMAR FOTO</strong>
+            </a>
+          </div>
+        </div>
+        <p ng-show="vm.newRecord.file" class="note">
+          1 imagen a subir
+          <span>({{ (vm.newRecord.file.size / 1000) }} kb)</span> |
+          <a href="#" ng-click="vm.deattachImage()">Remover imagen</a>
+        </p>
+        <p class="note">Limite de tamaño para imagenes: 2mb</p>
+
+
+
+        <div ng-show="!vm.isLoadingRecords" layout="row" layout-align="space-between center">
+          <div flex="60">
+            <input type="submit" ng-submit="vm.addRecord(newRecordForm)" class="action-btn" value="Guardar nuevo evento en la bitácora">
+          </div>
+          <div flex="30">
+            <a ng-click="vm.showCloseQuotationForm = !vm.showCloseQuotationForm" href="#" class="action-btn close-btn">
+              Cerrar cotización
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <hr/>
+
+    </div>
+  </form>
+
+  <div ng-if="vm.isLoadingRecords" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+    <md-progress-circular md-mode="indeterminate" md-diameter="150"></md-progress-circular>
+  </div>
+
+  <!--CLOSE QUOTATION-->
+  <form ng-if="!vm.quotation.isClosed && vm.isUserAdminOrManager() && vm.showCloseQuotationForm" name="closeQuotationForm"
+    ng-submit="vm.closeQuotation(closeQuotationForm, vm.closeReason, vm.closeNote)">
+
+    <div class="record-item-block" layout="row" layout-align="space-between start">
+      <div flex="55">
+        <p>
+          <label>
+            <strong>AGREGAR COMENTARIOS</strong>
+          </label>
+        </p>
+        <textarea rows="7" ng-model="vm.closeNote"></textarea>
+      </div>
+      <div flex="40">
+        <p>
+          <label>
+            <strong>DECLARAR COMO PERDIDA:</strong>
+          </label>
+        </p>
+        <select required ng-model="vm.closeReason">
+          <option ng-repeat="closeType in vm.closeTypes" ng-value="closeType">
+            {{closeType}}
+          </option>
+        </select>
+        <input type="submit" class="action-btn" value="CERRAR OPORTUNIDAD" />
+      </div>
+    </div>
+
+  </form>
+  <!--END CLOSE QUOTATION-->
+
+  <table ng-if="!vm.isLoadingRecords" class="records-table">
+    <thead>
+      <tr>
+        <td>FECHA/HORA EVENTO</td>
+        <td>EVENTO</td>
+        <td>USUARIO</td>
+        <td>FECHA SEGUIMIENTO</td>
+        <td>ARCHIVO(S)</td>
+        <td>DETALLES</td>
+      </tr>
+    </thead>
+    <tbody ng-repeat="record in vm.quotation.Records">
+      <tr>
+        <td>{{record.createdAt | date: 'd/MMM/yyyy h:mm a'}}</td>
+        <td>{{record.eventType}}</td>
+        <td>{{record.User.firstName + ' ' + record.User.lastName}}</td>
+        <td>{{record.dateTime | date:'d/MMM/yyyy h:mm a' }}</td>
+        <td>{{record.files.length || 0}}</td>
+        <td>
+          <a ng-click="vm.toggleRecord(record)" href="#">
+            VER DETALLES
+            <img src="/images/arrow-down.png" alt="">
+          </a>
+        </td>
+      </tr>
+      <tr ng-show="record.isActive">
+        <td colspan="6" class="inner-content">
+          <div class="record-item">
+            <div class="record-item-block" layout="row" layout-align="space-between start">
+              <div flex="55">
+                <p>
+                  <label>
+                    <strong>NOTAS</strong>
+                  </label>
+                </p>
+                <textarea name="" id="" rows="4">{{record.notes}}</textarea>
+              </div>
+              <div flex="40" class="center-content">
+                <p>
+                  <strong>ARCHIVOS ADJUNTOS ({{record.files.length}})</strong>
+                </p>
+
+                <div class="record-item-block-attach">
+                  <a ng-repeat="file in record.files" ng-href="{{vm.api.cdnUrl + '/uploads/records/gallery/' + file.filename }}" target="_blank">
+                    <img ng-src="{{vm.api.cdnUrl + '/uploads/records/gallery/' + file.filename }}" alt="">
+                  </a>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+</section>

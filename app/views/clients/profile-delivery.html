@@ -1,0 +1,283 @@
+<section class="form-section-content">
+
+  <h2>Direcciones registradas</h2>
+
+  <!--CONTACT ADDRESS ITEM-->
+  <form
+    class="client-item-info"
+    ng-repeat="contact in vm.client.Contacts | orderBy:'CntctCode' track by $index"
+    name="contact.formWrapper"
+    ng-submit="vm.contactAction(contact.formWrapper, contact)"
+  >
+
+    <div 
+      ng-show="contact.isLoading" 
+      layout-fill 
+      layout="row" 
+      layout-sm="column" 
+      layout-align="center center" 
+      class="loading-circle"
+    >
+      <md-progress-circular
+        md-mode="indeterminate"
+        md-diameter="150">
+      </md-progress-circular>
+    </div>
+
+    <section ng-show="!contact.isLoading">
+
+      <div class="checkbox-client-type">
+        <md-checkbox
+          ng-click="vm.copyPersonalDataToContact(vm.client, contact)"
+          ng-model="contact.copyingPersonalData"
+          ng-disabled="!contact.editEnabled" 
+          aria-label="Copiar datos personales">
+          <strong>Los mismos que mis datos personales</strong>
+        </md-checkbox>    
+      </div>
+
+      <div layout="row">
+        <div flex="45" class="input-element">
+          <label><strong>Nombre(s) del destinatario <span class="hl-label">*</span></strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.FirstName" 
+              required>
+          </div>
+        </div>
+
+        <div flex="45" class="input-element">
+          <label><strong>Apellidos del destinatario <span class="hl-label">*</span></strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.LastName" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row">
+
+        <div flex="20" class="input-element">
+          <label>
+            <strong>Teléfono fijo<span class="hl-label">*</span></strong>
+          </label>
+          <div class="input-element-inner">
+            <input 
+              type="tel" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.Tel1" 
+              placeholder="(Lada + Número)" 
+              required>
+          </div>
+        </div>
+
+
+        <div flex="20" class="input-element">
+          <label>
+            <strong>Teléfono celular <span class="hl-label">*</span></strong>
+          </label>
+          <div class="input-element-inner">
+            <input 
+              type="tel" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.Cellolar" 
+              placeholder="(Lada + Número)" 
+              required>
+          </div>
+        </div>
+
+
+        <div flex class="input-element">
+          <label><strong>Email</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="email" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.E_Mail" 
+              required>
+          </div>
+        </div>
+
+        <div flex class="input-element">
+          <label><strong>Confirmar email</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="email" 
+              ng-model="contact._email" 
+              ng-pattern="contact.E_Mail"
+              ng-disabled="!contact.editEnabled" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <h4>
+        <strong>DIRECCIÓN DE ENTREGA</strong>
+      </h4>
+      <div layout="row">
+        <div flex class="input-element">
+          <label><strong>Calle</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.Address" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>No. exterior*</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Noexterior" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>No. interior</strong>*</label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Nointerior" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>Colonia</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Colonia" 
+              required>
+          </div>
+        </div>
+        <div flex class="input-element">
+          <label><strong>Municipio</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Mpio" 
+              required>
+          </div>
+        </div>
+      </div>
+
+      <div layout="row">
+        <div flex="25" class="input-element">
+          <label><strong>Ciudad</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Ciudad"  
+              required>
+          </div>
+        </div>
+        <div flex="25" class="input-element select-element-wrapper">
+          <label><strong>Estado</strong> <span class="hl-label">*</span></label>
+          <md-select 
+            ng-disabled="!contact.editEnabled" 
+            ng-model="contact.U_Estado" 
+            class="select-element"
+            required>
+            <md-option ng-repeat="state in vm.states" ng-value="state.Code">
+              {{state.Name}}
+            </md-option>
+          </md-select>
+        </div>
+        <div flex="15" class="input-element">
+          <label><strong>Codigo postal</strong> <span class="hl-label">*</span></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_CP" 
+              required>
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row">
+        <div flex="25" class="input-element">
+          <label><strong>Entre calle</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Entrecalle">
+          </div>
+        </div>
+        <div flex="25" class="input-element">
+          <label><strong>Y calle</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Ycalle" >
+          </div>
+        </div>
+        <div flex="25" class="input-element">
+          <label><strong>Referencias cercanas</strong></label>
+          <div class="input-element-inner">
+            <input 
+              type="text" 
+              ng-disabled="!contact.editEnabled" 
+              ng-model="contact.U_Notes1">
+          </div>
+        </div>
+
+      </div>
+
+      <div layout="row" class="form-view-btns" layout-align="center center">
+        <input
+          ng-if="contact.editEnabled"
+          class="form-view-btn form-view-btn-primary"
+          type="submit"
+          value="Guardar dirección"
+        >
+        <input
+          ng-if="!contact.editEnabled"
+          class="form-view-btn form-view-btn-primary"
+          type="submit"
+          value="Editar datos"
+        >
+      </div>
+    </section>
+
+  </form>
+  <!--END CONTACT ADDRESS ITEM-->
+
+  <div layout="row" layout-align="end center">
+    <a
+      href="#"
+      flex="30"
+      class="action-btn action-btn-save"
+      ng-if="!vm.isNewAddressFormActive && !vm.isContactEditModeActive()"
+      ng-click="vm.showNewAddressForm()">
+      Agregar nueva dirección 
+      <i class="icon-cotizar add-icon"></i>
+    </a>
+  </div>
+
+  <!--NEW CONTACT ITEM FORM-->
+  <ng-include 
+    src="'views/clients/profile-delivery-new.html'"
+    ng-if="vm.isNewAddressFormActive"
+    ></ng-include>
+  <!--END NEW CONTACT ITEM FORM-->
+
+
+</section>

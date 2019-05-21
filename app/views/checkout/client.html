@@ -1,0 +1,196 @@
+<div ng-if="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<section ng-show="!vm.isLoading" class="form-view cart-view checkout-view container container-xxlg" >
+
+  <div class="steps-bar" layout="row">
+    <a ng-href="/quotations/edit/{{vm.quotation.id}}" flex="25" class="steps-bar-item">
+      <span><i class="icon-carro"></i> 1. Mi carrito</span>
+    </a>
+    <div flex="25" class="steps-bar-item steps-bar-item-active">
+      <span><i class="icon-login"></i> 2. Datos personales</span>
+    </div>
+    <div flex="25" class="steps-bar-item">
+      <span><i class="icon-terminal"></i> 3. Método de pago</span>
+    </div>
+    <div flex="25" class="steps-bar-item">
+      <span><i class="icon-oportunidades"></i> 4. Confirmación</span>
+    </div>
+  </div>
+
+  <div class="checkout-view-inner" layout="row" layout-align="space-between start">
+
+    <section flex="75">
+      <h3>
+        <strong>Datos personales</strong>
+        <a class="small-link small-link-main" ng-href="/clients/profile/{{vm.quotation.Client.id}}">Editar</a>
+      </h3>
+      <form ng-submit="vm.continueProcess()" class="client-checkout" action="#">
+
+        <!--PERSONAL DATA-->
+        <section class="personal-section">
+          <div layout="row">
+            <div flex="45" class="input-element">
+              <label><strong>Nombre(s) del cliente</strong> <span class="hl-label">*</span></label>
+              <p>{{vm.quotation.Client.FirstName || vm.quotation.Client.CardName}}</p>
+            </div>
+            <div flex="45" class="input-element">
+              <label><strong>Apellido(s) del cliente</strong> <span class="hl-label">*</span></label>
+              <p>{{vm.quotation.Client.LastName}}</p>
+            </div>
+          </div>
+
+          <div layout="row">
+            <div flex="20" class="input-element">
+              <label><strong>Teléfono fijo <span class="hl-label">*</span></strong></label>
+              <p>{{vm.quotation.Client.Phone1}}</p>
+            </div>
+            <div flex="20" class="input-element">
+              <label><strong>Teléfono celular <span class="hl-label">*</span></strong></label>
+              <p>{{vm.quotation.Client.Cellular}}</p>
+            </div>
+            <div flex class="input-element">
+              <label><strong>Email</strong> <span class="hl-label">*</span></label>
+              <p>{{vm.quotation.Client.E_Mail}}</p>
+            </div>
+          </div>
+        </section>
+        <!--END PERSONAL DATA-->
+
+        <!--FISCAL SECTION-->
+        <hr/>
+        <section class="fiscal-section">
+          <h3><strong>Datos fiscales</strong> <a ng-href="/clients/profile/{{vm.client.id}}?activeTab=1&checkoutProcess={{vm.quotation.id}}" class="small-link small-link-main no-margin">Editar</a></h3>
+          <p>
+            <strong>Estatus:</strong> 
+            <span ng-show="vm.isClientFiscalDataValid(vm.client)">Completos</span>
+            <span ng-show="!vm.isClientFiscalDataValid(vm.client)">Incompletos</span>
+            | 
+            <strong>RFC:</strong> {{vm.client.LicTradNum}}
+            |
+            <strong>Uso CFDI:</strong> {{vm.mapCFDIuseCode(vm.client.cfdiUse).label }} ({{vm.mapCFDIuseCode(vm.client.cfdiUse).code}})
+          </p>
+        </section>
+        <!--END FISCAL SECTION-->
+
+        <!--DELIVERY SECTION-->
+        <hr/>
+        <section class="delivery-section">
+          <h3>
+            <strong>Dirección de entrega</strong>
+            <a
+              class="small-link small-link-main"
+              href="#"
+              ng-href="/clients/profile/{{vm.quotation.Client.id}}?activeTab=3&checkoutProcess={{vm.quotation.id}}">
+              Editar
+            </a>
+            
+          </h3>
+
+          <p ng-if="vm.contacts.length === 0">
+            <a ng-href="/clients/profile/{{vm.client.id}}?activeTab=3&checkoutProcess={{vm.quotation.id}}" class="small-link small-link-main no-margin">Agregar una dirección de entrega</a>
+          </p>
+
+          <section class="delivery-options">
+            <md-radio-group ng-model="vm.quotation.Address">
+
+              <div
+                class="delivery-option"
+                ng-repeat="contact in vm.contacts"
+                layout="row"
+                layout-align="start center"
+              >
+                <div class="delivery-option-radio" flex="10">
+                  <md-radio-button ng-value="contact.id"></md-radio-button>
+                </div>
+                <div  flex="80" class="delivery-option-data">
+                  <h4>Nombre:
+                    <strong>{{ vm.getContactName(contact) }}</strong>
+                  </h4>
+                  <ul>
+                    <li><strong>Email: </strong>{{contact.E_Mail}}</li>
+                    <li><strong>Télefono: </strong>{{contact.Tel1}}</li>
+                    <li><strong>Celular: </strong>{{contact.Cellolar}}</li>
+                    <li><strong>No. exterior: </strong>{{contact.U_Noexterior}}</li>
+                    <li><strong>No. interior: </strong>{{contact.U_Nointerior}}</li>
+                    <li><strong>Colonia: </strong>{{contact.U_Colonia}}</li>
+                    <li><strong>Municipio: </strong>{{contact.U_Mpio}}</li>
+                    <li><strong>Ciudad: </strong>{{contact.U_Ciudad}}</li>
+                    <li><strong>Estado: </strong>{{contact.U_Estado}}</li>
+                    <li><strong>C.P.: </strong>{{contact.U_CP}}</li>
+                    <li><strong>Calle: </strong>{{contact.Address}}</li>
+                    <li><strong>Entre calle: </strong>{{contact.U_Entrecalle}}</li>
+                    <li><strong>Y calle: </strong>{{contact.U_Ycalle}}</li>
+                    <li><strong>Referencias: </strong>{{contact.U_Notes1}}</li>
+
+                  </ul>
+                </div>
+              </div>
+
+            </md-radio-group>
+          </section>
+        </section>
+        <!--END DELIVERY SECTION-->
+
+      </form>
+    </section>
+
+    <aside flex class="cart-aside">
+      <h1 class="cart-title"><i class="icon-carro"><span>{{vm.quotation.totalProducts }}</span></i> <strong>RESUMEN</strong></h1>
+
+      <div class="cart-summary">
+        <table>
+          <tr>
+            <td><strong>Subtotal ({{ vm.quotation.totalProducts }} productos):</strong></td>
+            <td><strong>MXN {{ vm.quotation.subtotal | roundCurrency }}</strong></td>
+          </tr>
+          <tr>
+            <td>Descuento:</td>
+            <td><strong>MXN <span ng-show="vm.quotation.discount > 0">-</span>{{ vm.quotation.discount | currency }}</strong></td>
+          </tr>
+        </table>
+        <hr>
+
+        <div class="cart-totals" layout="row" layout-align="space-between end">
+          <div flex="30">
+            <h1><strong>TOTAL:</strong></h1>
+          </div>
+          <div flex="70">
+            <h3 class="price-crossed-block" ng-show="vm.quotation.subtotal != vm.quotation.total">
+              <span class="currency-label">MXN</span> <span class="price-crossed">{{ vm.quotation.subtotal | roundCurrency  }}</span>
+            </h3>
+            <h1 class="price-main"><span class="currency-label">MXN</span> {{ vm.quotation.total | roundCurrency  }}</h1>
+          </div>
+        </div>
+
+        <!--
+        <input 
+          type="submit" 
+          value="CONTINUAR" 
+          ng-click="vm.continueProcess()" 
+          class="cart-view-btn"
+          ng-disabled="!vm.isClientFiscalDataValid(vm.client)"
+          ng-class="{'cart-view-btn-disabled' : !vm.isClientFiscalDataValid(vm.client) }"
+          >
+        -->
+        <input 
+          type="submit" 
+          value="CONTINUAR" 
+          ng-disabled="vm.isLoadingClient"
+          ng-class="{'cart-view-btn-disabled' : vm.isLoadingClient }"
+          ng-click="vm.continueProcess()" 
+          class="cart-view-btn"
+          >
+
+
+        <p class="cart-summary-note">*Precios en Pesos Mexicanos con impuestos incluidos.</p>
+
+      </div>
+
+    </aside>
+
+
+  </div>
+
+</section>

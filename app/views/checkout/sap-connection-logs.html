@@ -1,0 +1,22 @@
+<div class="sap-connection-logs">
+  <div ng-if="vm.isLoadingSapLogs" layout="row" layout-align="center center" class="loading-circle">
+    <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+  </div>
+  <section ng-show="vm.sapLogs && vm.sapLogs.length > 0">
+    <p>
+      <a href="#" ng-click="vm.showSapLogs = !vm.showSapLogs">
+        Mostrar logs de conexiones a SAP
+        </a>
+    </p>
+
+    <div ng-show="vm.showSapLogs && !vm.isLoadingSapLogs">
+      <h3><strong>Logs de conexiones a SAP</strong></h3>
+      <ul>
+        <li ng-repeat="log in vm.sapLogs track by $index">
+          <strong>{{ log.createdAt | date:'h:mm:ss a d/MMM/yyyy' }}</strong>
+          <p>{{log.content}}</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>

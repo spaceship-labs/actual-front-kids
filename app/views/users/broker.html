@@ -1,0 +1,311 @@
+<section class="form-view container container-xlg">
+  <h1><i class="icon-login"></i> <strong>MI PERFIL |</strong> {{vm.user.firstName + ' ' + vm.user.lastName }}</h1>
+
+  <div ng-if="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+    <md-progress-circular md-mode="indeterminate"  md-diameter="150"></md-progress-circular>
+  </div>
+
+  <form ng-if="!vm.isLoading" name="updateForm" ng-submit="vm.update(updateForm)" class="form-view-content">
+
+    <section class="form-section">
+
+      <!--DATOS PERSONALES-->
+      <section action="#" class="form-section-content form-section-content-v2" layout="row" layout-align="space-between start">
+
+        <div flex="15" class="avatar-placeholder-wrap">
+          <div class="avatar-placeholder">
+            <span>+</span>
+          </div>
+          <p><strong>FOTO DE PERFIL</strong></p>
+        </div>
+
+        <div flex="80">
+          <div layout="row">
+            <div flex="40" class="input-element">
+              <label><strong>Nombre(s) <span class="hl-label">*</span></strong></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.firstName" required>
+              </div>
+            </div>
+
+            <div flex="40" class="input-element">
+              <label><strong>Apellidos <span class="hl-label">*</span></strong></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.lastName" required>
+              </div>
+            </div>
+
+          </div>
+
+          <div layout="row">
+
+            <div flex="40" class="input-element">
+              <label><strong>Email</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="email" ng-model="vm.user.email" required>
+              </div>
+            </div>
+
+           <div flex="40" class="input-element">
+              <label><strong>Confirmar email</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input 
+                  type="email" 
+                  ng-model="vm.user.email_confirm" 
+                  ng-pattern="vm.user.email" 
+                  required
+                >
+              </div>
+            </div>
+
+          </div>
+
+          <div layout="row">
+            <div flex="40" class="input-element">
+              <label><strong>Teléfono fijo <span class="hl-label">*</span></strong></label>
+              <div layout="row" layout-align="space-between center">
+                  <div flex="30" class="input-element-inner">
+                    <input type="text" ng-model="vm.user.dialCode" placeholder="Lada">
+                  </div>
+                  <div flex="60" class="input-element-inner">
+                    <input type="text" ng-model="vm.user.phone">
+                  </div>
+              </div>
+            </div>
+
+            <div flex="40" class="input-element">
+              <label><strong>Teléfono celular* <span class="hl-label">*</span></strong></label>
+              <div layout="row" layout-align="space-between center">
+                  <div flex="30" class="input-element-inner">
+                    <input type="text" ng-model="vm.user.mobileDialCode" placeholder="Lada">
+                  </div>
+                  <div flex="60" class="input-element-inner">
+                    <input type="text" ng-model="vm.user.mobilePhone">
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <h4>DIRECCIÓN</h4>
+
+          <div layout="row">
+            <div flex class="input-element">
+              <label><strong>Calle</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.street">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>No. exterior</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.externalNumber">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>No. interior</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.internalNumber">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>Colonia</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.neighborhood">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>Municipio</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.municipality">
+              </div>
+            </div>
+          </div>
+
+          <div layout="row">
+            <div flex="25" class="input-element">
+              <label><strong>Ciudad</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.city" >
+              </div>
+            </div>
+            <div flex="25" class="input-element select-element-wrapper">
+              <label><strong>Estado</strong> <span class="hl-label">*</span></label>
+              <md-select ng-model="vm.user.entity" class="select-element">
+                <md-option ng-repeat="state in vm.states" ng-value="state.name">
+                  {{state.name}}
+                </md-option>
+              </md-select>
+            </div>
+            <div flex="15" class="input-element">
+              <label><strong>Codigo postal</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.zipCode">
+              </div>
+            </div>
+
+          </div>
+
+          <div layout="row">
+            <div flex="25" class="input-element">
+              <label><strong>Entre calle</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.street">
+              </div>
+            </div>
+            <div flex="25" class="input-element">
+              <label><strong>Y calle</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.street2">
+              </div>
+            </div>
+            <div flex="25" class="input-element">
+              <label><strong>Referencias cercanas</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.references">
+              </div>
+            </div>
+
+          </div>
+
+          <hr/>
+
+          <h4><strong>DATOS PARA PAGO DE COMISIONES</strong></h4>
+
+          <div layout="row">
+            <div flex="30" class="input-element">
+              <label><strong>Nombre comercial</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.bussinessName">
+              </div>
+            </div>
+            <div flex="30" class="input-element">
+              <label><strong>Razón social</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.bussinessLegalName">
+              </div>
+            </div>
+            <div flex="30" class="input-element">
+              <label><strong>RFC</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.rfc">
+              </div>
+            </div>
+          </div>
+
+          <div layout="row">
+            <div flex="30" class="input-element">
+              <label><strong>Representante legal</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.legalRepresentative">
+              </div>
+            </div>
+          </div>
+
+          <h4><strong>DATOS BANCARIOS</strong></h4>
+
+          <div layout="row">
+            <div flex="30" class="input-element">
+              <label><strong>Banco</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.bank">
+              </div>
+            </div>
+            <div flex="30" class="input-element">
+              <label><strong>No. de cuenta</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.bankAccount">
+              </div>
+            </div>
+            <div flex="30" class="input-element">
+              <label><strong>Clabe interbancaria</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.interbankClabe">
+              </div>
+            </div>
+
+          </div>
+
+
+          <h4>DIRECCIÓN FISCAL</h4>
+
+          <div layout="row">
+            <div flex class="input-element">
+              <label><strong>Calle</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceStreet">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>No. exterior</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceExternalNumber">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>No. interior</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceInternalNumber">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>Colonia</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceNeighborhood">
+              </div>
+            </div>
+            <div flex class="input-element">
+              <label><strong>Municipio</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceMunicipality">
+              </div>
+            </div>
+          </div>
+
+          <div layout="row">
+            <div flex="25" class="input-element">
+              <label><strong>Ciudad</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceCity" >
+              </div>
+            </div>
+            <div flex="25" class="input-element select-element-wrapper">
+              <label><strong>Estado</strong> <span class="hl-label">*</span></label>
+              <md-select ng-model="vm.user.invoiceEntity" class="select-element">
+                <md-option ng-repeat="state in vm.states" ng-value="state.name">
+                  {{state.name}}
+                </md-option>
+              </md-select>
+            </div>
+            <div flex="15" class="input-element">
+              <label><strong>Codigo postal</strong> <span class="hl-label">*</span></label>
+              <div class="input-element-inner">
+                <input type="text" ng-model="vm.user.invoiceZipCode">
+              </div>
+            </div>
+
+          </div>
+
+
+          <p class="modify-password">
+            <a ng-href="/forgot-password">
+              <i class="icon-login"></i>
+              <strong>MODIFICAR CONTRASEÑA</strong>
+            </a>
+          </p>
+
+        </div>
+
+      </section>
+      <!--END DATOS PERSONALES-->
+
+    </section>
+    <!--END FORM SECTION-->
+
+    <div layout="row" class="form-view-btns">
+      <a href="" flex class="form-view-btn">Borrar todos los campos</a>
+      <a href="" ng-click="vm.update(updateForm)" flex class="form-view-btn form-view-btn-primary">Guardar información</a>
+    </div>
+
+  </form>
+  <!--END PROFILE EDIT-->
+</section>

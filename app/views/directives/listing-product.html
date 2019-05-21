@@ -1,0 +1,48 @@
+<div class="listing-product">
+  <a ng-href="/product/{{product.ItemCode}}" class="listing-product-link absolute-link">
+    <span>VER</span>
+  </a>
+  <div class="listing-product-gallery">
+
+    <div class="slow-movement-sticker" ng-show="product.slowMovement">
+      <img src="images/slowmovement.png" alt="Lento movimiento">
+    </div>
+
+    <div ng-if="product.Discount && product.Discount > 0" class="discount-batch" layout="row" layout-align="center center">
+      <strong>- {{product.Discount}}%</strong>
+    </div>
+
+    <img ng-if="images.length === 1" ng-src="{{images[0].url}}?d=600x600" alt="">
+    <slick ng-if="areImagesLoaded && images.length > 1" arrows="true">
+      <div ng-repeat="image in images track by $index">
+        <img ng-src="{{image.url}}" alt="">
+      </div>
+    </slick>
+
+  </div>
+  <div class="listing-product-info">
+    <div class="listing-product-info-main">
+      <p>
+        <strong>{{product.Name}}</strong>
+      </p>
+
+      <div layout="row" layout-align="space-between center">
+        <p flex="30" class="stock-available">
+          {{product[activeStore.code]}}
+          <strong class="small">disponibles</strong>
+        </p>
+        <p flex="70" class="price">
+          <span class="price-before-currency">MXN</span>
+          <span class="price-before">{{product.priceBefore | roundCurrency:'$':0}}</span>
+          <span ng-if="product.priceBefore">|</span>
+          <strong class="price-now-currency">MXN</strong>
+          <strong class="price-now">{{product.Price | roundCurrency:'$'}}</strong>
+          <br/>
+          <span class="taxes-included">Impuestos incluidos</span>
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</div>

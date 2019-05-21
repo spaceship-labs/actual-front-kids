@@ -1,0 +1,107 @@
+<div ng-if="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<div 
+  ng-show="vm.isLoadingProgress" 
+  class="container container-xxlg loading-circle"
+  layout="row"
+  layout-align="center center">
+  <div class="progress-bar">
+    <p><strong>Registrando cliente</strong></p>
+    <md-progress-linear 
+      class="md-accent"
+      md-mode="determinate" 
+      value="{{vm.loadingEstimate}}">
+    </md-progress-linear>
+  </div>
+</div>
+
+<section
+  name="createForm"
+  novalidate
+  ng-if="!vm.isLoading && !vm.isLoadingProgress"
+  class="form-view container container-xlg">
+  <h1><i class="icon-login"></i> <strong>NUEVO CLIENTE</strong></h1>
+  <section class="form-view-content">
+
+    <p class="form-view-hint">
+      <strong>SELECCIONA UNA PESTAÑA</strong>
+      | PARA VISUALIZAR Y/O EDITAR LA INFORMACIÓN REQUERIDA
+    </p>
+
+    <section class="form-section">
+
+      <div layout="row" class="form-section-tabs">
+        <div
+          flex
+          ng-click="vm.activeTab = 0"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 0}">
+          <a href="#">Datos personales</a>
+        </div>
+        <div
+          flex
+          ng-click="vm.activeTab = 1"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 1}">
+          <a href="#">Datos de facturación</a>
+        </div>
+        <div
+          flex
+          ng-click="vm.activeTab = 3"
+          class="form-section-tab"
+          ng-class="{'form-section-tab-active': vm.activeTab == 3}">
+          <a href="#">Datos de envío</a>
+        </div>
+
+      </div>
+
+      <!--DATOS PERSONALES-->
+      <ng-include ng-show="vm.activeTab === vm.PERSONAL_DATA_TAB" src="'views/clients/create-personal.html'"></ng-include>
+      <!--END DATOS PERSONALES-->
+
+
+      <!--DATOS DE FACTURACION-->
+      <ng-include ng-show="vm.activeTab === vm.FISCAL_DATA_TAB" src="'views/clients/create-fiscal.html'"></ng-include>
+      <!--END DATOS FACTURACION-->
+
+
+      <!--DATOS DEL ENVIO-->
+      <ng-include ng-show="vm.activeTab === vm.DELIVERY_DATA_TAB" src="'views/clients/create-delivery.html'"></ng-include>
+      <!--END DATOS DEL ENVIO-->
+
+    </section>
+    <!--END FORM SECTION-->
+
+    <div layout="row" class="form-view-btns">
+      <button flex class="form-view-btn" ng-click="vm.clearTabFields()">
+        Borrar todos los campos
+      </button>
+
+
+      <button
+        ng-if="vm.activeTab === vm.DELIVERY_DATA_TAB && !vm.showNewContact"
+        ng-click="vm.addContactForm()"        
+        class="form-view-btn form-view-btn-primary"
+        flex
+      >
+        Agregar nueva dirección
+        <i class="icon-cotizar add-icon"></i>
+      </button>
+
+      <button
+        ng-if="vm.activeTab !== vm.DELIVERY_DATA_TAB"
+        ng-click="vm.create(vm.createPersonalForm, vm.createFiscalForm, vm.createDeliveryForm)"
+        class="form-view-btn form-view-btn-primary"
+        flex
+      >
+        Guardar información
+      </button>
+    
+
+    </div>
+
+  </section>
+
+</section>

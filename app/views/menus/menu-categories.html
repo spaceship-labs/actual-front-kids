@@ -1,0 +1,42 @@
+<div class="menu-categories" ng-show="main.menuCategoriesOn" fixed-header ng-class="{'menu-categories-fixed': scrolled}">
+  <div layout="row" ng-init="vm.currentCategory = 0">
+
+    <ul flex="20" class="menu-categories-sidebar" ng-init="vm.currentmainCategory = 0">
+      <li
+        ng-repeat="mainCategory in main.categoriesTree track by $index"
+        ng-if="mainCategory.productsNum > 0"
+      >
+        <a ng-click="vm.currentmainCategory = $index" ng-class="{'active-item': $index == vm.currentmainCategory}" href="">
+          <i class="icon-{{main.getCategoryIcon(mainCategory.Handle)}}"></i>
+          {{mainCategory.Name}} ({{mainCategory.productsNum}})
+        </a>
+      </li>
+
+    </ul>
+    <div flex="80" class="menu-categories-list">
+
+      <div class="menu-categories-list-inner" ng-repeat="mainCategory in main.categoriesTree track by $index" layout="row"  layout-wrap ng-show="$index == vm.currentmainCategory">
+
+        <div
+          class="menu-categories-group"
+          flex="33"
+          ng-repeat="category in mainCategory.Childs"
+          ng-if="category.productsNum > 0"
+        >
+          <h3>
+            <a ng-href="/category/{{category.Handle}}">
+              <strong>{{category.Name}}</strong> ({{category.productsNum}})
+            </a>
+          </h3>
+          <ul>
+            <li ng-repeat="subCategory in category.Childs" ng-if="subCategory.productsNum > 0">
+              <a ng-href="/category/{{subCategory.Handle}}">{{subCategory.Name}} ({{subCategory.productsNum}})</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

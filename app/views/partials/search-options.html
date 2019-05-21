@@ -1,0 +1,96 @@
+<div 
+  class="filters-selected-list" 
+  ng-if="vm.searchValues.length > 0 || 
+    vm.brandSearchValues.length > 0 || 
+    vm.discountFiltersSelected.length > 0 || 
+    vm.stockFiltersSelected.length > 0 || 
+    vm.societyFiltersSelected.length > 0 ||
+    vm.minPrice || 
+    vm.maxPrice" 
+>
+  <span>Filtros aplicados:</span>
+
+  <span ng-repeat="searchValue in vm.searchValues track by $index" class="filters-selected-item">
+    {{vm.getFilterById(searchValue.Filter).Name}}: {{searchValue.Name}} 
+    <a href="#" ng-click="vm.removeSearchValue(searchValue)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span>
+
+  <span ng-repeat="brandValue in vm.brandSearchValues track by $index" class="filters-selected-item">
+    Marca: {{brandValue.Name}} 
+    <a href="#" ng-click="vm.removeBrandSearchValue(brandValue)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span>          
+
+  <span ng-repeat="discount in vm.discountFiltersSelected track by $index" class="filters-selected-item">
+    Descuento: {{discount.label}} 
+    <a href="#" ng-click="vm.removeSelectedDiscountFilter(discount)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span> 
+
+  <span ng-repeat="stock in vm.stockFiltersSelected track by $index" class="filters-selected-item">
+    Existencia: {{stock.label}} 
+    <a href="#" ng-click="vm.removeSelectedStockFilter(stock)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span> 
+
+  <span ng-repeat="society in vm.societyFiltersSelected track by $index" class="filters-selected-item">
+    Sociedad: {{society.label}} 
+    <a href="#" ng-click="vm.removeSelectedSocietyFilter(society)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span> 
+
+  <span class="filters-selected-item" ng-if="vm.minPrice">
+    Desde: {{vm.minPrice | currency}} 
+    <a href="#" ng-click="vm.removeMinPrice()" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span> 
+
+  <span class="filters-selected-item" ng-if="vm.maxPrice">
+    Hasta: {{vm.maxPrice | currency}} 
+    <a href="#" ng-click="vm.removeMaxPrice()" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span> 
+
+
+  <!--
+  <span ng-repeat="keyword in vm.search.keywords track by $index" class="filters-selected-item">
+    "{{keyword}}"
+    <a href="#" ng-click="vm.removeKeyword(keyword)" class="remove-item">
+      <i class="icon-cotizar"></i>
+    </a>
+  </span>
+  -->
+</div>
+
+<div 
+  ng-if="vm.enableSortOptions" 
+  class="orderby-section"
+  fixed-element  
+  top="70" 
+  ng-class="{'orderby-section-fixed': scrolled}"
+>  
+  <div layout="row" class="orderby-selectors">
+    <a 
+      ng-repeat="sortOption in vm.sortOptions track by $index"
+      ng-attr-flex="{{sortOption.key === 'spotlight' && '30' || '' }}"
+      class="orderby-item" 
+      ng-class="{
+        'orderby-item-active': vm.activeSortOption.key === sortOption.key,
+        'orderby-item-desc': vm.activeSortOption.direction === 'DESC'
+      }"
+      ng-click="vm.setActiveSortOption(sortOption)"
+      href="#"
+    >
+      <span>{{sortOption.label}}</span>
+      <!--<img src="/images/arrow-down.png" alt="">-->
+    </a>
+  </div>
+</div>

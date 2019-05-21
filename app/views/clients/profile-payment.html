@@ -1,0 +1,75 @@
+<section ng-show="vm.activeTab==2" action="#" class="form-section-content">
+
+  <hr>
+
+  <h4><strong>AGREGAR UNA TARJETA DE CRÉDITO O DÉBITO</strong></h4>
+
+  <div layout="row">
+    <div flex="45" class="input-element">
+      <label><strong>Nombre(s) del titular <span class="hl-label">*</span> <span class="hint">(Tal cual aparece en el plastico)</span></strong></label>
+      <div class="input-element-inner">
+        <input type="text" required>
+      </div>
+    </div>
+
+    <div flex="45" class="input-element">
+      <label><strong>Apellidos del titular <span class="hl-label">*</span> <span class="hint">(Tal cual aparece en el plastico)</span></strong></label>
+      <div class="input-element-inner">
+        <input type="text" required>
+      </div>
+    </div>
+  </div>
+
+  <div layout="row">
+    <div flex="45" class="input-element">
+      <label><strong>Número de tarjeta  <span class="hint">(Ingresar los 16 dígitos)</span> <span class="hl-label">*</span></strong></label>
+      <div class="input-element-inner">
+        <input type="text" required>
+      </div>
+    </div>
+
+    <div flex="25" class="input-element select-element-wrapper">
+      <label><strong>País</strong> <span class="hint">(Selecciona de la lista) *</span></label>
+
+      <select ng-model="vm.clientCountry" class="select-element">
+        <option ng-repeat="country in vm.countries" ng-value="country.code">
+          {{country.name}}
+        </option>
+      </select>
+
+    </div>
+
+    <div flex="15" class="input-element">
+      <label><strong>Código postal <span class="hl-label">*</span></strong></label>
+      <div class="input-element-inner">
+        <input type="text" required>
+      </div>
+    </div>
+
+  </div>
+
+  <div layout="row">
+
+    <div flex="20" class="input-element">
+      <label><strong>Fecha de vencimiento <span class="hl-label">*</span></strong></label>
+      <div layout="row" layout-align="space-between center">
+          <div flex="45" class="input-element-inner">
+            <input type="text" placeholder="mm" required>
+          </div>
+          <div flex="45" class="input-element-inner">
+            <input type="text" placeholder="aa" required>
+          </div>
+      </div>
+    </div>
+
+
+    <div flex="35" class="input-element">
+      <label><strong>Alias <span class="hl-label">*</span></strong></label>
+      <div class="input-element-inner">
+        <input type="text" required>
+      </div>
+    </div>
+
+  </div>
+
+</section>

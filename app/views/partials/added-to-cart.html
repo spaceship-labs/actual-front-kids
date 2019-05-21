@@ -1,0 +1,54 @@
+<md-dialog ng-cloak>
+  <div layout="row" class="cart-view">
+    <!-- PRODUCT ADDED-->
+    <div flex="50">
+      <h4 class="cart-view-title">Agregaste <strong>(1) Producto en tu carrito</strong></h4>
+      <div class="cart-item">
+        <div layout="row">
+          <div class="cart-item-img" flex="50">
+            <img src="/images/getMain8-287x287.jpg" alt="">
+          </div>
+          <div class="cart-item-data">
+            <h5><strong>MESA REDONDA MIMBRE</strong></h5>
+            <p class="cart-item-data-price-crossed">$MXN 18,699</p>
+            <p class="cart-item-data-price"><strong class="hl-text">$14,699</strong></p>
+            <div class="select-element">
+              <label>Cantidad:</label>
+              <select ng-model="ctrl.userState">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--END PRODUCT ADDED-->
+
+    <!--CART TOTAL-->
+    <div flex="50">
+      <h4 class="cart-view-title cart-view-title-right"><i class="icon-carro"></i> <strong>RESUMEN DE MI CARRITO</strong></h4>
+
+      <div class="cart-view-total">
+        <table>
+          <tr>
+            <td>Subtotal <strong>(1 productos)</strong></td>
+            <td><strong>MXN $18, 699</strong></td>
+          </tr>
+          <tr>
+            <td>Descuento</td>
+            <td><strong>MXN $4,000</strong></td>
+          </tr>
+          <tr>
+            <td>Costo de envio</td>
+            <td><strong>MXN $0.00</strong></td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+    <!--END CART TOTAL-->
+
+  </div>
+</md-dialog>

@@ -1,0 +1,531 @@
+<div ng-if="vm.isLoading" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<section ng-show="!vm.isLoading" class="form-view cart-view checkout-view order-view container container-xxlg">
+
+  <div class="steps-bar" layout="row">
+    <a flex="25" class="steps-bar-item">
+      <span>
+        <i class="icon-carro"></i> 1. Mi carrito</span>
+    </a>
+    <div flex="25" class="steps-bar-item">
+      <span>
+        <i class="icon-login"></i> 2. Datos personales</span>
+    </div>
+    <div flex="25" class="steps-bar-item">
+      <span>
+        <i class="icon-terminal"></i> 3. Método de pago</span>
+    </div>
+    <div flex="25" class="steps-bar-item steps-bar-item-active">
+      <span>
+        <i class="icon-oportunidades"></i> 4. Confirmación</span>
+    </div>
+  </div>
+
+  <div class="checkout-view-inner">
+
+    <div class="checkout-title order-title" layout="row" layout-align="space-between center">
+      <h1 flex="40">
+        <strong>
+          <span>
+            <i class="icon-checkmark"></i> NÚMERO DE ORDEN:
+            <span class="order-folio">#{{vm.order.folio}}</span>
+        </strong>
+      </h1>
+      <div flex="50" class="order-title-extra">
+        <span class="order-date">{{vm.order.createdAt | date:'d/MMM/yyyy'}}</span>
+        <a href="#" ng-click="vm.print()" class="action-btn action-btn-save print-btn">
+          <strong>IMPRIMIR RECIBO</strong>
+        </a>
+
+        <p ng-if="!vm.invoiceExists && !vm.showInvoiceErrorIfNeeded(vm.alegraLogs)">
+          <strong>Generación/Lectura de factura en proceso</strong>
+        </p>
+
+        <a href="#" ng-if="vm.invoiceExists" ng-click="vm.sendInvoice()" class="action-btn action-btn-save print-btn">
+          <strong>ENVIAR FACTURA</strong>
+        </a>
+      </div>
+    </div>
+    <div class="order-text-block">
+      <h3>
+        <strong>¡GRACIAS POR SU COMPRA!</strong>
+      </h3>
+      <p ng-if="vm.isCanceled(vm.order)">
+        <strong>Estatus: Cancelado</strong>
+      </p>
+      <p>Estimado
+        <strong>{{vm.order.Client.CardName}}</strong>
+      </p>
+      <p>Su compra ha sido procesada y en breve estará recibiendo su confirmación al correo electrónico
+        <strong>{{vm.order.Client.E_Mail}}</strong>
+        <!--<strong>{{vm.order.Address.E_Mail || vm.order.Client.E_Mail}}</strong>-->.</p>
+
+      <p>
+        <strong>Tienda:</strong> {{vm.order.Store.name}}</p>
+      <br />
+    </div>
+
+    <!--ORDER ITEMS-->
+    <div class="order-block">
+      <h3>
+        <strong>
+          <i class="icon-checkout-ticket"></i> ARTÍCULOS ADQUIRIDOS</strong>
+      </h3>
+      <div class="order-items order-block-inner">
+
+        <div class="order-table-header" layout="row" layout-align="space-between start">
+          <div flex="35"></div>
+          <div flex="20">
+            <strong>CANTIDAD</strong>
+          </div>
+          <div flex="20">
+            <strong>ENTREGA APROXIMADA</strong>
+          </div>
+          <div flex="20">
+            <strong>PRECIO</strong>
+          </div>
+        </div>
+
+        <div class="order-item" ng-repeat="detailGroup in vm.order.DetailsGroups track by $index">
+          <h3>
+            <strong>{{detailGroup.Product.Name}}</strong>
+          </h3>
+
+          <div layout="row" layout-align="space-between start">
+            <div flex="35" layout="row">
+              <div class="order-item-img">
+                <img src="{{detailGroup.Product.icons[0].url}}?d=300x300" alt="">
+              </div>
+              <div flex class="order-item-features">
+                <ul>
+                  <li>
+                    <strong>Código: </strong> {{detailGroup.Product.ItemCode}}</li>
+                  <li ng-repeat="filter in detailGroup.Product.Filters" ng-if="
+                      filter.Handle == 'codigo' ||
+                      filter.Handle == 'material' ||
+                      filter.Handle == 'garantia'
+                    ">
+                    <strong>{{filter.Name}}: </strong>
+                    <span ng-repeat="value in filter.Values track by $index">
+                      <span ng-if="value.Handle != 'color-paleta'">{{value.Name}}</span>
+                      <span ng-if="$index < (filter.Values.length-1)">,</span>
+                    </span>
+                  </li>
+                  <li ng-if="detailGroup.Product.DetailedColor">
+                    <strong>Color:</strong>
+                    <span>{{detailGroup.Product.DetailedColor}}</span>
+                  </li>
+                  <li ng-show="detailGroup.hasSeries">
+                    <strong>Series:</strong>
+                    <span ng-repeat="detail in detailGroup.details track by $index">
+                      <span ng-if="detail.productSerie">
+                        <a class="comma-separated" ng-repeat="number in detail.productSerie.seriesNumbers">
+                          {{number}}
+                        </a>
+                      </span>
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div flex="20" class="order-item-data">
+              <span>{{detailGroup.quantity}}</span>
+            </div>
+            <div flex="20" class="order-item-data">
+              <span>
+                {{detailGroup.shipDate | date:'d/MMM/yyyy'}}</span>
+              <span class="immediate-delivery-tag" ng-if="detailGroup.immediateDelivery && !detailGroup.isSRService">
+                Entrega en tienda
+              </span>
+            </div>
+            <div flex="20" class="order-item-data">
+              <span>{{detailGroup.total | currency}} MXN</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <!--END ORDER ITEMS-->
+
+
+    <!--ORDER PAYMENTS-->
+    <div class="order-block">
+      <h3>
+        <strong>
+          <i class="icon-metodo-pago"></i> PAGOS</strong>
+      </h3>
+      <div class="order-block-inner">
+        <div class="order-table-header" layout="row" layout-align="space-between start">
+          <div flex class="pull-left">
+            <strong>FORMA DE PAGO</strong>
+          </div>
+          <div flex>
+            <strong>FECHA</strong>
+          </div>
+          <div flex>
+            <strong>FOLIO</strong>
+          </div>
+          <div flex>
+            <strong>TIPO DE PAGO</strong>
+          </div>
+          <div flex>
+            <strong>TERMINAL</strong>
+          </div>
+          <div flex>
+            <strong>MONTO COBRADO</strong>
+          </div>
+        </div>
+
+        <div class="order-payment-item" layout="row" layout-align="space-between center" ng-repeat="payment in vm.order.Payments">
+          <div ng-if="payment.type == 'cash'" flex class="order-payment-item-data">
+            <span>
+              <i class="icon-cash"></i>
+            </span>
+            <strong>Pago en efectivo (MXN)</strong>
+          </div>
+          <div ng-if="payment.type == 'cash-usd'" flex class="order-payment-item-data">
+            <span>
+              <i class="icon-cash"></i>
+            </span>
+            <strong>Pago en efectivo (USD)</strong>
+            <p class="small-note">Tipo de cambio: {{payment.exchangeRate | currency}} MXN</p>
+          </div>
+
+          <div ng-if="payment.currency === 'usd' && payment.type !== 'cash-usd' " flex class="order-payment-item-data">
+            <span>
+              <i class="icon-terminal"></i>
+            </span>
+            <strong>{{payment.name}}</strong>
+            <p class="small-note">Tipo de cambio: {{payment.exchangeRate | currency}} MXN</p>
+          </div>
+
+          <div ng-if="payment.type !== 'cash' && payment.type !== 'cash-usd' && payment.currency !== 'usd' " flex class="order-payment-item-data">
+            <span>
+              <i class="icon-terminal"></i>
+            </span>
+            <strong>{{payment.name}}</strong>
+          </div>
+
+          <div flex class="order-payment-item-data">
+            <span>{{payment.createdAt | date:'d/MMM/yyyy'}}</span>
+          </div>
+          <div flex class="order-payment-item-data">
+            <span>#{{payment.folio}}</span>
+          </div>
+          <div flex class="order-payment-item-data">
+            <span>{{vm.getPaymentTypeString(payment)}}</span>
+          </div>
+          <div flex class="order-payment-item-data">
+            <span>{{ vm.mapTerminalCode(payment.terminal) }}</span>
+          </div>
+          <div flex class="order-payment-item-data">
+            <span ng-if="payment.currency !== 'usd'">{{payment.ammount | currency}} MXN</span>
+            <span ng-if="payment.currency === 'usd'">{{payment.ammount | currency}} USD.</span>
+            <span ng-if="vm.isPaymentCanceled(payment)">(Cancelado)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-payment-totals" layout="row" layout-align="space-between center">
+        <div flex="60">
+          <p class="order-payment-totals-note">* Todos los montos incluyen impuestos.</p>
+        </div>
+        <div class="reduction" flex="20">
+          <p>
+            <strong>SUBTOTAL COMPRA:</strong>
+          </p>
+          <p>
+            <strong>DESCUENTOS COMPRA:</strong>
+          </p>
+          <p>
+            <strong>TOTAL COMPRA:</strong>
+          </p>
+          <p>
+            <strong>TOTAL PAGADO:</strong>
+          </p>
+          <p>
+            <strong>SALDO:</strong>
+          </p>
+
+          <br />
+          <p>
+            <strong>SALDO CLIENTE:</strong>
+          </p>
+        </div>
+        <div class="price-reduction" flex="20">
+          <p>
+            <strong>{{vm.order.subtotal | currency}} MXN</strong>
+          </p>
+
+          <p ng-if="vm.order.discount > 0">
+            <strong>-{{vm.order.discount | currency}} MXN</strong>
+          </p>
+          <p ng-if="vm.order.discount <= 0">
+            <strong>{{vm.order.discount | currency}} MXN</strong>
+          </p>
+
+          <p>
+            <strong>{{vm.order.total | roundCurrency}} MXN</strong>
+          </p>
+          <p>
+            <strong>{{vm.order.ammountPaid | roundCurrency}} MXN</strong>
+          </p>
+          <p>
+            <strong>{{vm.calculateBalance( vm.order.ammountPaid, vm.order.total ) | currency }} MXN</strong>
+          </p>
+
+          <br />
+          <p>
+            <strong>{{(vm.order.Client.Balance) | currency}}</strong>
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+    <!--END ORDER PAYMENTS-->
+
+    <!--ENVIO-->
+    <div class="order-block delivery-block order-block-info">
+      <h3>
+        <strong>
+          <i class="icon-envio"></i> ENVÍO</strong>
+      </h3>
+      <div class="order-block-inner">
+        <div class="resp-delivery" layout="row" layout-xs="column">
+          <div flex>
+            <p>
+              <strong>Email: </strong>{{vm.order.E_Mail}}</p>
+            <p>
+              <strong>Télefono: </strong>{{vm.order.Tel1}}</p>
+            <p>
+              <strong>Celular: </strong>{{vm.order.Cellolar}}</p>
+            <p>
+              <strong>Calle:</strong>{{vm.order.address}}</p>
+            <p>
+              <strong>No. exterior: </strong>{{vm.order.U_Noexterior}}</p>
+            <p>
+              <strong>No. interior: </strong>{{vm.order.U_Nointerior}}</p>
+            <p>
+              <strong>Colonia: </strong>{{vm.order.U_Colonia}}</p>
+          </div>
+          <div flex>
+            <p>
+              <strong>Municipio: </strong>{{vm.order.U_Mpio}}</p>
+            <p>
+              <strong>Ciudad: </strong>{{vm.order.U_Ciudad}}</p>
+            <p>
+              <strong>Estado: </strong>{{vm.order.U_Estado}}</p>
+            <p>
+              <strong>C.P.: </strong>{{vm.order.U_CP}}</p>
+            <p>
+              <strong>Entre calle: </strong>{{vm.order.U_Entrecalle}}</p>
+            <p>
+              <strong>Y calle: </strong>{{vm.order.U_Ycalle}}</p>
+            <p>
+              <strong>Referencias: </strong>{{vm.order.U_Notes1}}</p>
+          </div>
+        </div>
+        <br>
+        <p>El personal de entrega le estará contactando vía telefónica en varias ocasiones:</p>
+        <ul>
+          <li>
+            <strong>Coordinación de la fecha de entrega:</strong> En los siguientes 24 horas hábiles después de la
+            compra.</li>
+          <li>
+            <strong>Coordinación de la hora de entrega:</strong> Mínimo 24 horas antes de la entrega.</li>
+          <li>
+            <strong>Aviso de la llegada de la unidad de entrega</strong> 1 hora antes de la entrega</li>
+        </ul>
+      </div>
+    </div>
+    <!--END ENVIO-->
+
+    <!--ATENCION A CLIENTES-->
+    <div class="order-block seller-block order-block-info">
+      <h3>
+        <strong>
+          <i class="icon-vendedor"></i> ATENCIÓN A CLIENTES</strong>
+      </h3>
+      <div class="order-block-inner" layout="row" layout-align="space-between center">
+        <div flex="40">
+          <p>
+            <strong>Celular: </strong>(998) 195 8376</p>
+          <p>
+            <strong>Celular: </strong>(998) 195 6839</p>
+          <p>
+            <strong>Email:</strong> clientes@actualg.com</p>
+        </div>
+        <div flex="20">
+          <a href="#" ng-click="vm.print()" class="action-btn action-btn-save print-btn">
+            <strong>IMPRIMIR RECIBO</strong>
+          </a>
+          <a href="#" ng-if="!vm.invoiceExists && vm.isUserAdmin" ng-click="vm.generateInvoice()" class="action-btn action-btn-save print-btn">
+            <strong>GENERAR FACTURA</strong>
+          </a>
+          <a href="#" ng-if="vm.invoiceExists" ng-click="vm.sendInvoice()" class="action-btn action-btn-save print-btn">
+            <strong>ENVIAR FACTURA</strong>
+          </a>
+          <a href="#" ng-if="!vm.isCanceled(vm.order) && (vm.isUserAdmin)" ng-click="vm.cancel()" class="action-btn action-btn-save print-btn">
+            <strong>CANCELAR PEDIDO</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--END ATENCION A CLIENTES-->
+
+  </div>
+
+  <hr />
+
+  <ng-include src="'views/checkout/order-policies.html'"></ng-include>
+
+  <section id="records-view" class="records-view">
+    <h1>
+      <i class="icon-attachment"></i>
+      <strong>BITÁCORA DE SEGUIMIENTO</strong>
+    </h1>
+
+    <div ng-if="vm.isLoadingRecords" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+      <md-progress-circular md-mode="indeterminate" md-diameter="150"></md-progress-circular>
+    </div>
+
+    <table ng-if="!vm.isLoadingRecords" class="records-table">
+      <thead>
+        <tr>
+          <td>FECHA/HORA EVENTO</td>
+          <td>EVENTO</td>
+          <td>USUARIO</td>
+          <td>FECHA SEGUIMIENTO</td>
+          <td>ARCHIVO(S)</td>
+          <td>DETALLES</td>
+        </tr>
+      </thead>
+      <tbody ng-repeat="record in vm.records">
+        <tr>
+          <td>{{record.createdAt | date: 'MMM d, y h:mm:ss a'}}</td>
+          <td>{{record.eventType}}</td>
+          <td>{{record.User.firstName + ' ' + record.User.lastName}}</td>
+          <td>{{record.dateTime | date:'MMM d, y h:mm:ss a' }}</td>
+          <td>{{record.files.length || 0}}</td>
+          <td>
+            <a ng-click="vm.toggleRecord(record)" href="#">
+              VER DETALLES
+              <img src="/images/arrow-down.png" alt="">
+            </a>
+          </td>
+        </tr>
+        <tr ng-show="record.isActive">
+          <td colspan="6" class="inner-content">
+            <div class="record-item">
+              <div class="record-item-block" layout="row" layout-align="space-between start">
+                <div flex="55">
+                  <p>
+                    <label>
+                      <strong>NOTAS</strong>
+                    </label>
+                  </p>
+                  <textarea name="" id="" rows="4">{{record.notes}}</textarea>
+                </div>
+                <div flex="40" class="center-content">
+                  <p>
+                    <strong>ARCHIVOS ADJUNTOS ({{record.files.length}})</strong>
+                  </p>
+
+                  <div class="record-item-block-attach">
+                    <a ng-repeat="file in record.files" ng-href="{{vm.api.cdnUrl + '/uploads/records/gallery/' + file.filename }}"
+                      target="_blank">
+                      <img ng-src="{{vm.api.cdnUrl + '/uploads/records/gallery/' + file.filename + '?d=300x300' }}" alt="">
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </section>
+
+  <hr />
+
+  <section ng-show="vm.order.OrdersSap && vm.order.OrdersSap.length > 0" class="sap-docs only-hide-print">
+    <h3>
+      <strong>Documentos SAP</strong>
+    </h3>
+    <ul>
+      <li ng-repeat="orderSap in vm.order.OrdersSap">
+        <p ng-show="orderSap.document">
+          <strong>Orden SAP</strong>: {{orderSap.document}}
+        </p>
+        <p ng-show="orderSap.invoiceSap">
+          <strong>Factura de deudores SAP</strong>: {{orderSap.invoiceSap}}
+        </p>
+        <p>
+          <strong>Pagos</strong>:</p>
+        <ul>
+          <li ng-repeat="paymentSap in orderSap.PaymentsSap">{{paymentSap.document}}</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <ng-include class="only-hide-print" src="'views/checkout/sap-connection-logs.html'"></ng-include>
+  <ng-include class="only-hide-print" src="'views/checkout/alegra-connection-logs.html'"></ng-include>
+
+
+  <!--SELLER-->
+  <div class="order-block seller-block seller-block-last order-block-info" layout="row" layout-align="space-between end">
+
+    <div>
+      <h3>
+        <strong>
+          <i class="icon-vendedor"></i> ASESOR DE INTERIORES</strong>
+      </h3>
+      <div class="order-block-inner">
+        <p>
+          <strong>{{vm.order.User.firstName + ' ' + vm.order.User.lastName}}</strong>
+        </p>
+        <p>
+          <strong>Teléfono: </strong>{{vm.order.User.phone}}</p>
+        <p>
+          <strong>Celular: </strong>{{vm.order.User.mobilePhone}}</p>
+        <p>
+          <strong>Email:</strong> {{vm.order.User.email}}</p>
+      </div>
+    </div>
+
+    <section class="order-texts">
+      <div class="signature-section signature-section-flex">
+
+        <div class="client-signature">
+          <p>
+            <span class="signature-line"></span>
+          </p>
+          <p>
+            <span>Firma Asesor de Interiores {{vm.order.User.firstName + ' ' +vm.order.User.lastName}}:</span>
+          </p>
+          <p>Recibí las formas de pagos aplicadas en esta orden</p>
+          <p>Estimado cliente:
+            En nuestras tiendas tenemos muebles creados por verdaderos artistas y artesanos, estos productos de línea:</p>
+          <p>Son fabricados con maderas naturales y están tapizados a mano. Por ésta razón podrán contar con diferencias en
+            cuanto a tonos, nudos y poros. Así como diferencias de hasta 3cm en sus medidas.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <hr class="only-show-print" />
+  <p class="only-show-print show-print" style="font-size: 19px">Favor de solicitar su factura antes de realizar el
+    pago, ya que no hay refacturación</p>
+  <!--END SELLER-->
+
+</section>

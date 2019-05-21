@@ -1,0 +1,65 @@
+<section>
+  <!--CASH REPORT-->
+  <section ng-if="isUserAdminOrManager(user)" class="cash-report-config">
+
+    <h2>Generar corte de caja</h2>
+
+    <section layout="row" layout-align="space-between center">
+      <div class="input-element" flex="40" flex-sm="100" flex-xs="100">
+        <label>
+          <strong>Fecha de inicio*</strong>
+        </label>
+        <div layout="row">
+          <div flex="60" class="input-element-inner">
+            <input type="text" pikaday="myPickerStartDate" set-default-date="true" default-date="{{startDate.toString()}}" on-select="onSelectStartDate(pikaday)"
+              format="DD/MM/YYYY" readonly required>
+          </div>
+          <div flex="40" class="input-element-inner">
+            <input type="text" ui-timepicker ui-timepicker="timePickerOptions" ng-model="startTime" placeholder="Hora" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-element" flex="40" flex-sm="100" flex-xs="100">
+        <label>
+          <strong>Fecha de vencimiento*</strong>
+        </label>
+        <div layout="row">
+          <div flex="60" class="input-element-inner">
+            <input type="text" pikaday="myPickerEndDate" set-default-date="true" format="DD/MM/YYYY" default-date="{{endDate.toString()}}"
+              on-select="onSelectEndDate(pikaday)" readonly required>
+          </div>
+          <div flex="40" class="input-element-inner">
+            <input type="text" ui-timepicker ui-timepicker="timePickerOptions" ng-model="endTime" placeholder="Hora" required>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <div layout="row" class="form-view-btns no-margin">
+      <button ng-click="getCashReport()" flex="50" class="form-view-btn form-view-btn-primary">
+        Generar reporte
+      </button>
+    </div>
+
+  </section>
+  <!--END CASH REPORT-->
+
+
+  <div ng-if="isLoadingReport" layout-fill layout="row" layout-sm="column" layout-align="center center" class="loading-circle">
+    <md-progress-circular md-mode="indeterminate" md-diameter="150"></md-progress-circular>
+  </div>
+
+  <section ng-if="!isLoadingReport && isUserAdminOrManager(user)" id="cash-report" class="cash-report container container-xlg"
+    ng-class="{
+      'manager-report': isManagerReport
+    }">
+    <ng-include ng-if="isManagerReport" src="'views/directives/cash-report/manager-cash-report.html'"></ng-include>
+
+    <ng-include ng-if="isGeneralReport" src="'views/directives/cash-report/general-cash-report.html'"></ng-include>
+
+
+  </section>
+
+</section>

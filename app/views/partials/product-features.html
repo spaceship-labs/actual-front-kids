@@ -1,0 +1,92 @@
+<div class="product-view-data-block no-padding-top">
+  <h4 ng-click="vm.nextSlide()"><strong>CARACTERISTICAS</strong></h4>
+  <table>
+    <tr>
+      <td>Código:</td>
+      <td><strong>{{vm.product.ItemCode}}</strong></td>
+    </tr>
+    <tr>
+      <td>Sociedad (SAP):</td>
+      <td><strong>{{vm.sas[vm.product.U_Empresa]}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.CustomBrand">
+      <td>Marca</td>
+      <td><strong>{{vm.product.CustomBrand.Name}}</strong></td>
+    </tr>
+    <tr ng-repeat="filter in vm.filters">
+      <td 
+        ng-if="filter.Values.length > 0 && filter.Handle != 'color' && filter.Handle != 'ubicacion-uso'">
+        {{filter.Name}}: 
+      </td>
+      <td 
+        ng-if="filter.Values.length > 0 && filter.Handle != 'color' && filter.Handle != 'ubicacion-uso'"
+      >
+        <span ng-repeat="value in filter.Values track by $index">
+          <strong>{{value.Name}}</strong>
+          <span ng-if="$index < (filter.Values.length-1)">,</span>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>Color</td>
+      <td><strong>{{vm.product.DetailedColor || vm.product.U_COLOR}}</strong></td>
+    </tr>
+  </table>
+
+</div>
+
+<div class="product-view-data-block"
+  ng-if="
+    vm.product.Length ||
+    vm.product.Width  ||
+    vm.product.Height ||
+    vm.product.Volume ||
+    vm.product.Weight ||
+    vm.product.Depth  ||
+    vm.product.SeatHeight ||
+    vm.product.ChairBackHeight||
+    vm.product.ArmRestHeight
+  "
+>
+  <h4><strong>DIMENSIONES</strong></h4>
+  <table>
+    <tr ng-if="vm.product.Length && vm.product.Length > 0">
+      <td>Largo:</td>
+      <td><strong>{{vm.product.Length | number:2}} {{vm.product.LengthUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.Width && vm.product.Width > 0">
+      <td>Ancho:</td>
+      <td><strong>{{vm.product.Width | number:2}} {{vm.product.WidthUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.Height && vm.product.Height > 0">
+      <td>Alto:</td>
+      <td><strong>{{vm.product.Height | number:2}} {{vm.product.HeightUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.Volume && vm.product.Volume > 0">
+      <td>Volumen:</td>
+      <td><strong>{{vm.product.Volume | number:2}} {{vm.product.VolumeUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.Weight && vm.product.Weight > 0">
+      <td>Peso:</td>
+      <td><strong>{{vm.product.Weight | number:2}} {{vm.product.WeightUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.Depth && vm.product.Depth > 0">
+      <td>Profundidad: </td>
+      <td><strong>{{vm.product.Depth | number:2}} {{vm.product.DepthUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.SeatHeight && vm.product.SeatHeight > 0">
+      <td>Altura asiento: </td>
+      <td><strong>{{vm.product.SeatHeight | number:2}} {{vm.product.SeatHeightUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.ChairBackHeight && vm.product.ChairBackHeight > 0">
+      <td>Altura respaldo: </td>
+      <td><strong>{{vm.product.ChairBackHeight | number:2}} {{vm.product.ChairBackHeightUnitMsr}}</strong></td>
+    </tr>
+    <tr ng-if="vm.product.ArmRestHeight && vm.product.ArmRestHeight > 0">
+      <td>Altura reposa brazos: </td>
+      <td><strong>{{vm.product.ArmRestHeight | number:2}} {{vm.product.ArmRestHeightUnitMsr}}</strong></td>
+    </tr>
+
+
+  </table>
+</div>

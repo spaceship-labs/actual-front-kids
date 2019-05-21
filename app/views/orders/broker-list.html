@@ -1,0 +1,20 @@
+<div
+  class="nested-bar nested-bar3"
+  layout="row"
+  layout-align="space-between center"
+>
+  <span>BROKER: {{vm.user.firstName + ' ' + vm.user.lastName}} </span>
+</div>
+
+<div  class="nested-content">
+  <section class="table-list-wrap table-list-wrap-nomargin">
+    <div
+      table-list
+      class="table-list table-list-v2"
+      columns="vm.columnsOrders"
+      api-resource="vm.apiResourceOrders"
+      date-range="vm.dateRange"
+      default-sort="vm.defaultSort"
+      filters="vm.filters"></div>
+  </section>
+</div>

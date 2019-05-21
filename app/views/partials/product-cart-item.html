@@ -1,0 +1,166 @@
+<div 
+  class="cart-item" 
+>
+  <h3>
+    <a ng-href="/product/{{detailGroup.Product.ItemCode}}">
+      <strong>{{detailGroup.Product.Name || detailGroup.Product.ItemCode}}</strong>
+    </a>
+  </h3>
+  <div layout="row">
+
+    <!--ITEM PROD IMG-->
+    <div flex="40" class="cart-item-prod">
+      <div layout="row">
+        <div class="cart-item-prod-img">
+          <a ng-href="/product/{{detailGroup.Product.ItemCode}}">
+            <img ng-src="{{detailGroup.Product.icons[0].url}}" alt="">
+          </a>
+        </div>
+        <div>
+          <ul>
+            <li><strong>Código: </strong> {{detailGroup.Product.ItemCode}}</li>
+            <li
+              ng-repeat="filter in detailGroup.Product.Filters"
+              ng-if="
+                (
+                  filter.Handle == 'codigo' ||
+                  filter.Handle == 'material' ||
+                  filter.Handle == 'garantia'
+                )
+                &&
+                filter.Values.length > 0
+              "
+            >
+              <strong>{{filter.Name}}: </strong>
+              <span ng-repeat="value in filter.Values track by $index">
+                <span ng-if="value.Handle != 'color-paleta'">{{value.Name}}</span>
+                <span ng-if="$index < (filter.Values.length-1)">,</span>
+              </span>
+            </li>
+            <li ng-if="detailGroup.Product.DetailedColor">
+              <strong>Color</strong>
+              <span>{{detailGroup.Product.DetailedColor}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--END ITEM PROD IMG-->
+
+    <!--ITEM DATA-->
+    <div class="cart-item-data" flex="55">
+      <div class="cart-item-data-inner">
+
+        <div class="cart-item-data-prices" layout="row" layout-align="space-between center">
+          <div flex="35">
+            <p 
+              ng-if="detailGroup.discountPercent > 0" 
+              class="discount-label"
+            >
+              -{{detailGroup.discountPercentPromos}}%
+            </p>
+            <p 
+              ng-if="vm.getUnitPriceWithDiscount(detailGroup.unitPrice, detailGroup.discountPercent) != detailGroup.unitPrice"
+            >
+              <span class="currency-label">MXN</span> <span class="price-crossed">{{ detailGroup.unitPrice | roundCurrency }}</span>
+            </p>
+            <p class="price-hl">
+              <span class="currency-label">MXN</span>
+              <strong>{{ vm.getUnitPriceWithDiscount(detailGroup.unitPrice, detailGroup.discountPercent) | roundCurrency }}
+              </strong>
+            </p>
+          </div>
+          <div flex="25" class="cart-item-data-qty">
+            <p>
+              {{detailGroup.quantity}}
+              <span ng-show="detailGroup.quantity == 1 && !detailGroup.isSRService">pieza</span>
+              <span ng-show="detailGroup.quantity > 1 && !detailGroup.isSRService">piezas</span>
+
+              <span ng-show="detailGroup.quantity == 1 && detailGroup.isSRService">unidad</span>
+              <span ng-show="detailGroup.quantity > 1 && detailGroup.isSRService">unidades</span>
+
+            </p>
+          </div>
+          <div flex>
+            <h3 class="product-view-price-hl product-view-price-main">
+              <span class="currency-label">MXN</span>
+              <strong>{{detailGroup.total | roundCurrency }}</strong>
+            </h3>
+            <p class="included-taxes-label pull-right">Impuesto incluido</p>
+          </div>
+        </div>
+      </div>
+
+      <p ng-if="!detailGroup.immediateDelivery" class="bottom-text">
+        <strong>Entrega aproximada: </strong> {{detailGroup.shipDate | date: "d/MMM/yyyy"}}
+      </p>
+
+      <p ng-if="detailGroup.immediateDelivery && !detailGroup.isSRService" class="bottom-text">
+        <span class="immediate-delivery-label">Entrega en tienda</span>
+      </p>
+
+      
+      <p class="bottom-text" ng-show="vm.ENV.name === 'sandbox' || vm.ENV.name === 'dev' " ng-repeat="detail in detailGroup.details">
+        <strong>Entrega aproximada:</strong>
+        {{detail.shipDate | date: "d/MMM/yyyy"}}
+        (en {{vm.daysDiff(detail.shipDate)}} días)  
+        <span 
+          ng-if="detail.immediateDelivery && !detail.isSRService"
+          class="immediate-delivery-label"
+        >
+          Entrega en tienda
+        </span>
+        | {{ vm.getWarehouseById(detail.shipCompanyFrom).WhsName }}  | Cantidad: {{detail.quantity}} | Valido: {{detail.validStock}}
+      </p>
+      
+
+      <p
+        ng-if="
+          vm.appliesForPackageOrPromotionDiscount(detailGroup) == 'packageDiscount'
+        "
+        class="bottom-text"
+      >
+        Paquete: {{detailGroup.discountName}}
+      </p>
+      <div 
+        ng-if="vm.appliesForPackageOrPromotionDiscount(detailGroup) == 'promoDiscount'"
+      >
+        <p class="bottom-text">
+          Promoción: {{detailGroup.discountName}}
+        </p>
+        <p class="bottom-text" ng-if="detailGroup.ewallet > 0">
+          Beneficio monedero eléctronico: {{detailGroup.ewallet | currency}}
+        </p>                  
+      </div>
+    </div>
+    <!--END ITEM DATA-->
+
+    <div flex="5" class="cart-item-remove-wrap">
+      <a href="#"
+        ng-if="!vm.quotation.Order && !vm.quotation.isClosed"
+        ng-click="vm.alertRemoveDetail($event,detailGroup, $index)"
+        class="cart-item-remove"
+      >
+        x
+      </a>
+    </div>
+
+    <div 
+      ng-show="!detailGroup.validStock && !vm.quotation.Order" 
+      layout="row"
+      layout-align="center center"
+      class="stock-alert-layer"
+      ng-click="vm.showDetailGroupStockAlert($event, detailGroup)"
+    > 
+      <div class="stock-alert-content">
+        <p>
+          <a><i class="icon-alert"></i></a>
+        </p>
+        <p>
+          <a>ALERTA</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<section  class="form-section-content">
+
+  <form 
+    name="profileForm" 
+    ng-submit="vm.personalDataAction(profileForm)">
+
+    <div class="checkbox-client-type">
+      <md-checkbox
+        ng-model="vm.client.isMoral"
+        ng-disabled="!vm.personalEditEnabled"
+        aria-label="Persona moral">
+        <strong>Persona moral</strong>
+      </md-checkbox>    
+    </div>
+
+    <div layout="row" ng-if="!vm.client.isMoral">
+
+      <div flex="20" class="input-element select-element-wrapper">
+        <label><strong>Titulo</strong></label>
+        <md-select 
+          ng-model="vm.client.Title" 
+          class="select-element"
+          ng-disabled="!vm.personalEditEnabled">
+          <md-option ng-repeat="title in vm.titles" ng-value="title.value">
+            {{title.label}}
+          </md-option>
+        </md-select>
+      </div>
+
+      <div flex="20" class="input-element select-element-wrapper">
+        <label><strong>Genero</strong></label>
+        <md-select 
+          ng-model="vm.client.Gender" 
+          class="select-element"
+          ng-disabled="!vm.personalEditEnabled">
+          <md-option  ng-repeat="gender in vm.genders" ng-value="gender.value">
+            {{gender.label}}
+          </md-option>
+        </md-select>
+      </div>
+
+      <div flex="20" class="input-element">
+        <label><strong>Fecha de nacimiento</strong></label>
+        <div class="input-element-inner">
+          <input
+            ng-if="vm.client.Birthdate"
+            type="text"
+            pikaday="vm.pikadayDate"
+            set-default-date="true"
+            year-range="[1900,2016]"
+            default-date="{{vm.client.Birthdate}}"
+            readonly
+            show-month-after-year="true"
+            on-select="vm.onPikadaySelect(pikaday)"
+            ng-disabled="!vm.personalEditEnabled"
+          >
+        </div>
+      </div>
+
+
+    </div>
+
+    <div layout="row">
+      <div flex="50" class="input-element">
+        <label ng-show="!vm.client.isMoral">
+          <strong>Nombres
+            <span class="hl-label">*</span>
+          </strong>
+        </label>
+        <label ng-show="vm.client.isMoral">
+          <strong>Razón social
+            <span class="hl-label">*</span>
+          </strong>
+        </label>    
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.client.FirstName" 
+            required
+            ng-disabled="!vm.personalEditEnabled">
+        </div>
+      </div>
+
+      <div ng-if="!vm.client.isMoral" flex class="input-element">
+        <label><strong>Apellidos <span class="hl-label">*</span></strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.client.LastName" 
+            required
+            ng-disabled="!vm.personalEditEnabled">
+        </div>
+      </div>
+
+    </div>
+
+    <div layout="row">
+
+      <div flex="20" class="input-element">
+        <label>
+          <strong>
+            Teléfono fijo<span class="hl-label">*</span>
+          </strong>
+        </label>
+          <div class="input-element-inner">
+            <input
+              type="tel"
+              name="phone"
+              ng-model="vm.client.Phone1"
+              placeholder="Lada + Número"
+              required
+              ng-disabled="!vm.personalEditEnabled"
+            >
+          </div>
+      </div>
+
+
+      <div flex="20" class="input-element">
+        <label>
+          <strong>
+            Teléfono celular<span class="hl-label">*</span>
+          </strong>
+        </label>
+        <div class="input-element-inner">
+          <input
+            type="tel"
+            name="mobile"
+            ng-model="vm.client.Cellular"
+            placeholder="Lada + Número"
+            required
+            ng-disabled="!vm.personalEditEnabled"
+          >
+        </div>
+
+      </div>
+
+
+      <div flex class="input-element">
+        <label><strong>Email</strong> <span class="hl-label">*</span></label>
+        <div class="input-element-inner">
+          <!--SOLO HACER UPDATE SI ESTA VACIO-->
+          <input type="email" 
+            ng-if="!vm.client.E_Mail" 
+            ng-model="vm.client.E_Mail" 
+            required
+            ng-disabled="!vm.personalEditEnabled"
+          >
+          <input 
+            type="email" 
+            ng-if="vm.client.E_Mail" 
+            ng-model="vm.client.E_Mail" 
+            readonly 
+            required
+            ng-disabled="!vm.personalEditEnabled"
+          >
+
+        </div>
+      </div>
+
+    </div>
+
+    <div layout="row" class="form-view-btns" layout-align="center center">
+      <input
+        ng-if="!vm.personalEditEnabled"
+        class="form-view-btn form-view-btn-primary"
+        type="submit"
+        value="Editar"
+      >
+      <input
+        ng-if="vm.personalEditEnabled"
+        class="form-view-btn form-view-btn-primary"
+        type="submit"
+        value="Guardar"
+      >      
+    </div>
+
+</section>

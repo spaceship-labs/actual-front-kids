@@ -1,0 +1,39 @@
+<section class="form-view container container-xxlg">
+
+  <div layout="row" layout-align="space-between center" class="action-links">
+    <div flex="">
+      <h1><i class="icon-login"></i> <strong>CLIENTES</strong></h1>
+    </div>
+    <div flex="25">
+      <h4 class="pull-right">
+        <a href="/clients/create" class="primary-link">
+          <i class="icon-cotizar"></i> CREAR NUEVO CLIENTE
+        </a>
+      </h4>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!--
+  <div layout="row" layout-align="end end" class="form-view-filters">
+    <div flex="30" class="input-element select-element-wrapper">
+      <label><strong>Buscar sobre:</strong></label>
+      <select 
+        ng-options="option.value as option.label for option in vm.filterOptions"
+        ng-model="vm.filters.SlpCode" 
+        class="select-element"
+      >
+      </select>
+    </div>
+    <div flex="20">
+      <a ng-click="vm.applyFilters()" href="#" class="action-btn">Aplicar filtros</a>
+    </div>
+  </div>
+  -->
+
+  <section class="table-list-wrap table-list-wrap-nomargin">
+    <div table-list class="table-list" columns="vm.columnsClients" filters="vm.filters" api-resource="vm.apiResourceClients"></div>
+  </section>
+
+</section>

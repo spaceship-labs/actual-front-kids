@@ -1,0 +1,52 @@
+<div class="product-view-data-block">
+  <h4 ng-show="vm.isLoadingDeliveries">
+    <strong>CARGANDO DISPONIBILIDAD...</strong>
+  </h4>
+  <h4 ng-show="!vm.isLoadingDeliveries">
+    <strong>DISPONIBILIDAD:</strong> quedan <strong>{{vm.available | number: 0}} {{ vm.getPiecesString(vm.available) }}</strong> disponibles
+  </h4>
+
+  <div 
+    ng-if="vm.isLoadingDeliveries" 
+    layout-fill layout="row" 
+    layout-sm="column" 
+    layout-align="center center" 
+    class="loading-circle-small">
+    <md-progress-circular 
+      md-mode="indeterminate" 
+      class="md-accent" 
+      md-diameter="50">
+    </md-progress-circular>
+  </div>
+
+  <div ng-if="vm.available">
+    <table class="delivery-table">
+      <tr 
+        ng-repeat="deliveryGroup in vm.deliveriesGroups"
+      >
+        <td>
+          {{deliveryGroup.date | date: "d/MMM/yyyy"}} 
+          <span ng-show="!vm.isImmediateDelivery(deliveryGroup.date)">
+            (en {{deliveryGroup.days}} días)
+          </span>
+          <span ng-show="vm.isImmediateDeliveryGroup(deliveryGroup)" class="immediate-delivery">
+            Entrega en tienda
+          </span> 
+
+          <div ng-show="vm.ENV.name === 'sandbox' || vm.ENV.name === 'dev' ">
+            <p>Debug</p>                       
+            <span 
+                class="comma-separated"
+                ng-repeat="d in deliveryGroup.deliveries track by $index"
+              >
+              {{ vm.getWarehouseName(d.companyFrom) }}: {{d.available}} ({{d.date | date: 'd/MMM/yyyy'}})
+            </span>
+          </div>
+        </td>
+        <td class="delivery-date-stock">
+          {{deliveryGroup.available | number: 0}} {{vm.getPiecesString(deliveryGroup.available)}}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

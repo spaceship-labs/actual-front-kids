@@ -1,0 +1,242 @@
+<form
+  class="form-section-content"
+  name="vm.createFiscalForm"
+>
+
+  <div class="input-element">
+    <label class="rfc-label"><strong>Registro Federal de Contribuyente (RFC)  <span class="ast">*</span></strong></label>
+    <div class="input-element-inner">
+      <input 
+        type="text" 
+        ng-model="vm.client.LicTradNum"
+        name="rfc" 
+        rfc-input-validator
+        required
+      />
+    </div>
+    <br/>
+    <label ng-show="vm.createFiscalForm.rfc.$error.rfcValidation" class="generic-error-msg">
+      <strong>
+        La estructura del RFC no es valida, puedes verificar en el sitio oficial del RFC <a target="_blank" href="https://portalsat.plataforma.sat.gob.mx/ConsultaRFC/">https://portalsat.plataforma.sat.gob.mx/ConsultaRFC/</a>
+      </strong>
+    </label>
+    <label ng-show="!vm.createFiscalForm.rfc.$error.rfcValidation" class="generic-ok-msg">
+      <strong>
+        La estructura del RFC es correcta <a target="_blank" href="https://portalsat.plataforma.sat.gob.mx/ConsultaRFC/">https://portalsat.plataforma.sat.gob.mx/ConsultaRFC/</a>
+      </strong>
+    </label>
+  
+  </div>
+
+  <div class="client-item-info">
+
+    <div layout="row">
+      <div flex="45" class="input-element">
+        <label><strong>Razón social <span class="ast">*</span></strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.fiscalAddress.companyName" 
+            min="vm.fiscalAddressConstraints.companyName.min" 
+            ng-maxlength="vm.fiscalAddressConstraints.companyName.max"
+            maxlength="vm.fiscalAddressConstraints.companyName.max"
+            max="vm.fiscalAddressConstraints.companyName.max" 
+            name="companyName"
+            required
+          />
+        </div>
+        <p
+          ng-if="vm.fiscalAddress" 
+          class="input-note">
+          Caracteres <strong>{{vm.createFiscalForm.companyName.$viewValue.length || 0}} de {{ vm.fiscalAddressConstraints.companyName.max }}</strong>        </p>
+      </div>
+      <div flex="40" class="input-element select-element-wrapper">
+        <label><strong>Uso CFDI</strong></label>
+        <select
+          class="select-element"
+          ng-model="vm.client.cfdiUse"
+          ng-options="use.code as use.label + ' (' + use.code +  ')' for use in vm.cfdiUseList | orderBy:'label'"
+        >
+        </select>
+        
+      </div>
+
+
+    </div>
+
+    <div layout="row">
+      <!--
+      <div flex="20" class="input-element">
+        <label><strong>RFC <span class="ast">*</span></strong></label>
+        <div class="input-element-inner">
+          <input type="text" ng-model="vm.fiscalAddress.rfc" required>
+        </div>
+      </div>
+      -->
+
+      <div flex="25" class="input-element">
+        <label><strong>Teléfono <span class="ast">*</span></strong></label>
+        <div class="input-element-inner">
+          <input
+            type="tel"
+            name="phone"
+            ng-model="vm.fiscalAddress.Phone1"
+            required
+            autocomplete="tel"
+            placeholder="Lada + Número">
+        </div>
+        <p class="input-note">Caracteres numéricos</p>                    
+      </div>
+
+      <div flex="30" class="input-element">
+        <label><strong>Email</strong>*</label>
+        <div class="input-element-inner">
+          <input 
+            type="email"
+            name="email" 
+            ng-model="vm.fiscalAddress.U_Correos" 
+            required
+            autocomplete="email">
+        </div>
+      </div>
+    </div>
+
+
+    <h4>DIRECCIÓN FISCAL</h4>
+    <div layout="row">
+
+      <div flex="20" class="input-element">
+        <label><strong>Calle</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.fiscalAddress.Street"
+            ng-maxlength="vm.fiscalAddressConstraints.Street.max"
+            maxlength="vm.fiscalAddressConstraints.Street.max"
+            autocomplete="street-address" 
+            name="Street"
+          >
+        </div>
+        <p
+          ng-if="vm.fiscalAddress" 
+          class="input-note">
+          Caracteres <strong>{{vm.createFiscalForm.Street.$viewValue.length || 0}} de {{ vm.fiscalAddressConstraints.Street.max }}</strong>        </p>
+        </p>          
+      </div>
+
+      <div flex="10" class="input-element">
+        <label><strong>No. exterior</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.fiscalAddress.U_NumExt"
+            ng-maxlength="vm.fiscalAddressConstraints.U_NumExt.max"
+            maxlength="vm.fiscalAddressConstraints.U_NumExt.max"
+            name="U_NumExt"
+          />
+        </div>
+        <p
+          ng-if="vm.fiscalAddress" 
+          class="input-note">
+          Carac. <strong>{{vm.createFiscalForm.U_NumExt.$viewValue.length || 0}} de {{ vm.fiscalAddressConstraints.U_NumExt.max }}</strong>        </p>
+        </p>         
+      </div>
+
+      <div flex="10" class="input-element">
+        <label><strong>No. interior</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.fiscalAddress.U_NumInt"
+            ng-maxlength="vm.fiscalAddressConstraints.U_NumInt.max"
+            maxlength="vm.fiscalAddressConstraints.U_NumInt.max"
+            name="U_NumInt"
+          />
+        </div>
+        <p
+          ng-if="vm.fiscalAddress" 
+          class="input-note">
+          Carac. <strong>{{vm.createFiscalForm.U_NumInt.$viewValue.length || 0}} de {{ vm.fiscalAddressConstraints.U_NumInt.max }}</strong>        </p>
+        </p>         
+      </div>
+
+      <div flex="25" class="input-element">
+        <label><strong>Colonia</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text"
+            ng-model="vm.fiscalAddress.Block"
+            ng-maxlength="vm.fiscalAddressConstraints.Block.max"
+            maxlength="vm.fiscalAddressConstraints.Block.max" 
+            name="Block"         
+          >
+        </div>
+        <p
+          ng-if="vm.fiscalAddress" 
+          class="input-note">
+          Carac. <strong>{{vm.createFiscalForm.Block.$viewValue.length || 0}} de {{ vm.fiscalAddressConstraints.Block.max }}</strong>        </p>
+        </p>         
+      </div>
+
+      <div flex="20" class="input-element">
+        <label><strong>Municipio</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            ng-model="vm.fiscalAddress.U_Localidad"
+            autocomplete="address-level1">
+        </div>
+      </div>
+
+    </div>
+
+    <div layout="row">
+
+      <div flex="20" class="input-element">
+        <label><strong>Ciudad</strong></label>
+        <div class="input-element-inner">
+          <input 
+          type="text" 
+          name="city"
+          ng-model="vm.fiscalAddress.City"
+          autocomplete="address-level2" 
+          >
+        </div>
+      </div>
+
+
+      <div flex="30" class="input-element select-element-wrapper">
+        <label><strong>Estado</strong><span class="ast">*</span></label>
+        <md-select 
+          ng-model="vm.fiscalAddress.State" 
+          required 
+          class="select-element">
+          <md-option ng-repeat="state in vm.states" ng-value="state.Code">
+            {{state.Name}}
+          </md-option>
+        </md-select>
+      </div>
+
+      <div flex="15" class="input-element">
+        <label><strong>Código postal*</strong></label>
+        <div class="input-element-inner">
+          <input 
+            type="text" 
+            name="postal"
+            ng-model="vm.fiscalAddress.ZipCode"
+            autocomplete="postal-code"
+            required
+            minlength="5"
+            maxlength="5" 
+          >
+        </div>
+        <p class="input-note">Caracteres numéricos</p>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+</form>

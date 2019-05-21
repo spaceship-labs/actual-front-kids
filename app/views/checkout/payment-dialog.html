@@ -1,0 +1,163 @@
+<md-dialog class="form-dialog" aria-label="Terminal" ng-cloak>
+  <div class="form-dialog-inner">
+    <h2>
+      <i class="icon-transfer"></i> APLICA
+      <strong>EL PAGO</strong> COMO SE INDICA</h2>
+    <hr />
+    <h4 class="deposit-type">
+      <strong>{{payment.name}}</strong>
+    </h4>
+
+    <div ng-show="isTransferPayment(payment) || isDepositPayment(payment) ">
+      <strong>Banco</strong>
+      <p ng-show="isTransferPayment(payment)">
+        Selecciona el banco en el cual el cliente realizó la transferencia.
+      </p>
+      <p ng-show="isDepositPayment(payment)">
+        Selecciona el banco en el cual el cliente realizó el deposito.
+      </p>
+    </div>
+
+    <div class="dialog-block main-dialog-block" layout="row" layout-align="space-between end" layout-wrap>
+      <!--TERMINALS-->
+      <div flex="45" ng-if="isTransferPayment(payment) || isDepositPayment(payment) ">
+        <div class="input-element select-element-wrapper">
+          <md-select ng-model="payment.terminal" class="select-element" ng-disabled="isConfirmationActive">
+            <md-option ng-repeat="terminal in payment.terminals track by $index" ng-selected="$index==0" ng-value="terminal.value">
+              {{terminal.label}}
+            </md-option>
+          </md-select>
+        </div>
+      </div>
+      <!--END TERMINALS-->
+
+      <!--NATION TYPE-->
+      <div flex="45" ng-if="isCardPayment(payment)">
+        <div>
+          <p>
+            <strong>Origen tarjeta</strong>
+          </p>
+          <p>
+            <small>Selecciona si la tarjeta es nacional o extranjera</small>
+          </p>
+        </div>
+
+        <div class="input-element select-element-wrapper">
+          <md-select ng-model="payment.isInternational" ng-change="onChangePaymentNation(payment)" class="select-element" required>
+            <md-option ng-selected="true" ng-value="false">
+              Nacional
+            </md-option>
+            <md-option ng-selected="false" ng-value="true">
+              Extranjera
+            </md-option>
+          </md-select>
+        </div>
+      </div>
+      <!--END NATION TYPE-->
+
+      <!--CARDs-->
+      <div flex="45" ng-if="payment.options.length > 0">
+
+        <div ng-if="isCardPayment(payment)">
+          <p>
+            <strong>Tarjeta</strong>
+          </p>
+          <p>
+            <small>Selecciona la tarjeta de credito/debito a utilizar </small>
+          </p>
+        </div>
+
+        <div class="input-element select-element-wrapper">
+
+          <!--NATIONAL OPTIONS-->
+          <md-select ng-if="payment.options.length > 0 && !payment.isInternational" ng-model="payment.card" required ng-change="onChangeCard(payment.card)"
+            class="select-element">
+            <md-option ng-repeat="option in payment.options track by $index" ng-selected="$index==0" ng-value="option.card.value">
+              {{option.card.label}}
+            </md-option>
+          </md-select>
+
+          <!--INTERNATIONAL OPTIONS-->
+          <md-select ng-if="payment.options.length > 0 && payment.isInternational" ng-model="payment.card" required ng-change="onChangeCard(payment.card)"
+            class="select-element" ng-disabled="isConfirmationActive">
+            <md-option ng-repeat="option in payment.options track by $index" ng-selected="$index==0" ng-value="option.card.value">
+              {{option.card.label}}
+            </md-option>
+          </md-select>
+
+        </div>
+      </div>
+      <!--END CARDS-->
+
+    </div>
+
+    <p ng-show="terminal">
+      <strong>Terminal:</strong>
+      <small>La terminal de cobro que debes usar es: </small>
+      <strong class="to-upper">{{terminal.label}}</strong>
+    </p>
+
+    <div class="dialog-block">
+      <p>
+        <strong>Cantidad:</strong>
+        <small>Se muestra el saldo total pendiente por cobrar. Puedes cobrar cualquier monto menor, pero después debes aplicar otro
+          cobro para saldar esta venta.</small>
+      </p>
+      <p class="error-msg" ng-if="errMsg">{{errMsg}}</p>
+
+      <div class="ammount-input" layout="row" layout-align="start center">
+        <div class="input-element" flex="60">
+          <div class="input-element-inner">
+            <input ng-if="maxAmmount && maxAmmount >=0" type="text" max="{{maxAmmount}}" ng-model="payment.ammount" class="with-maxammount"
+              ng-currency ng-disabled="isConfirmationActive">
+            <input ng-if="!maxAmmount" type="text" ng-currency ng-disabled="isConfirmationActive" ng-model="payment.ammount">
+
+          </div>
+        </div>
+        <div class="currency-label">
+          <span ng-if="payment.currency != 'usd'">MXN</span>
+          <span ng-if="payment.currency == 'usd'">USD ({{ getAmmountMXN(payment.ammount, payment.exchangeRate) | currency}} MXN)</span>
+        </div>
+      </div>
+      <p ng-if="payment.currency == 'usd'">
+        <small>Tipo de cambio: {{payment.exchangeRate | currency}} MXN</small>
+      </p>
+    </div>
+
+    <div layout="row" layout-align="space-between end">
+      <div ng-if="needsVerification" flex="70">
+        <p>
+          <strong># AUTORIZACIÓN:</strong>
+          <small>Ingresa el # de autorización de esta transacción</small>
+        </p>
+        <div class="input-element verification-code">
+          <div class="input-element-inner">
+            <input type="text" ng-model="payment.verificationCode" required max="27" ng-maxlength="27" maxlength="27" ng-disabled="isConfirmationActive">
+          </div>
+        </div>
+      </div>
+      <div flex="30" ng-if="!needsVerification"></div>
+      <a ng-show="!isConfirmationActive" ng-click="openConfirmation()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn action-btn-save"
+        href="#" flex="25">
+        <strong>GUARDAR</strong>
+      </a>
+    </div>
+
+    <section class="confirm-section" ng-if="isConfirmationActive">
+      <p>
+        <strong>Favor de confirmar que el monto ingresado es el correcto.</strong>
+      </p>
+      <div layout="row" layout-align="space-between center">
+        <a ng-click="save()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn action-btn-save" href="#" flex="45">
+          <strong>CONFIRMAR</strong>
+        </a>
+
+        <a ng-click="cancel()" ng-class="{'action-btn-disabled': !isValidPayment() }" class="action-btn" href="#" flex="45">
+          <strong>CANCELAR</strong>
+        </a>
+      </div>
+
+    </section>
+
+  </div>
+</md-dialog>

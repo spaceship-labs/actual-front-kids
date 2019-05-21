@@ -1,0 +1,95 @@
+<div ng-if="vm.isLoading" layout="row" layout-align="center center" class="loading-circle">
+  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+</div>
+
+<form
+  name="createForm"
+  ng-show="!vm.isLoading"
+  class="form-view cart-view checkout-view container container-xxlg"
+>
+
+  <div class="checkout-view-inner">
+    <h3><strong>1. Elige el tipo de reembolso a aplicar</strong></h3>
+
+    <section layout="row">
+      <div flex="75">
+
+        <md-radio-group ng-model="vm.activeOption">
+
+          <div class="pay-method-wrap" >
+            <div 
+              class="method-block" 
+              layout="row" 
+              layout-align="space-between center"
+            >
+              <ul flex="75">              
+                <ng-include
+                  ng-repeat="option in vm.refundOptions track by $index"
+                  src="'views/partials/refund-option.html'">
+                </ng-include>                
+              </ul>
+
+            </div>
+          </div>
+
+        </md-radio-group>
+
+        <div class="second-step-payment">
+          <section>
+            <h3><strong>2. Reembolsos aplicados</strong></h3>
+            <hr />
+
+            <div class="pay-method-wrap pay-method-wrap-v2" >
+              <ng-include src="'views/partials/refunds-applied.html'"></ng-include>
+            </div>
+
+          </section>
+        </div>
+
+      </div>
+
+      <aside flex top="100"  class="cart-aside">
+        <h1 class="cart-title"><i class="icon-carro"><span>{{vm.order.totalProducts}}</span></i> <strong>RESUMEN</strong></h1>
+
+        <div class="cart-summary">
+          <table>
+            <tr>
+              <td><strong>Subtotal:</strong></td>
+              <td><strong>{{ vm.order.subtotal | roundCurrency }}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Descuento:</strong></td>
+              <td><strong>{{ vm.order.discount | roundCurrency }}</strong></td>
+            </tr>
+            <tr>
+              <td>Costo de envío:</td>
+              <td><strong>GRATIS</strong></td>
+            </tr>
+          </table>
+          <hr>
+          <div class="cart-totals" layout="row" layout-align="space-between end">
+            <div flex="30">
+              <h1><strong>TOTAL:</strong></h1>
+            </div>
+            <div flex="70">
+              <h1 class="price-main">
+                <strong>{{ vm.order.total | roundCurrency }}</strong>
+              </h1>
+            </div>
+          </div>
+
+          <input
+            type="submit"
+            value="CONTINUAR"
+            class="cart-view-btn"
+            ng-disabled="!vm.isMinimumPaid()"
+            ng-class="{'cart-view-btn-disabled' : !vm.isMinimumPaid() }">
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </div>
+</form>
