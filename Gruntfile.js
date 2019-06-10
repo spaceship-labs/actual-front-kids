@@ -591,6 +591,9 @@ function getEnvironmentTask(envOption) {
     case 'demo':
       task = 'ngconstant:demo';
       break;
+    case 'staging':
+      task = 'ngconstant:staging';
+      break;
     case 'production':
       task = 'ngconstant:production';
       break;
