@@ -468,17 +468,17 @@ module.exports = function(grunt) {
           }
         }
       },
-      demo: {
+      staging: {
         options: {
           dest: '<%= yeoman.app %>/scripts/envconfig.js'
         },
         constants: {
           ENV: {
-            name: 'demo',
-            apiEndpoint: 'http://demo-actual-api.herokuapp.com',
+            name: 'staging',
+            apiEndpoint: 'http://sandboxapikids.miactual.com',
             cdnUrl: 'https://d116li125og699.cloudfront.net',
-            adminUrl: 'http://sandboxadmin.miactual.com',
-            tokenPrefix: 'demo'
+            adminUrl: 'http://sandboxadminkids.miactual.com',
+            tokenPrefix: 'staging'
           }
         }
       },
@@ -489,8 +489,7 @@ module.exports = function(grunt) {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'http://13.58.136.42:8082',
-            //apiEndpoint: 'http://api.miactual.com',
+            // apiEndpoint: 'http://sandboxapikids.miactual.com',
             cdnUrl: 'https://d116li125og699.cloudfront.net',
             adminUrl: 'http://admin.miactual.com',
             tokenPrefix: 'production'
