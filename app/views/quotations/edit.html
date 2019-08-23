@@ -1,37 +1,52 @@
-<div ng-if="vm.isLoading" layout="row" layout-align="center center" class="loading-circle">
-  <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+<div
+  ng-if="vm.isLoading"
+  layout="row"
+  layout-align="center center"
+  class="loading-circle"
+>
+  <md-progress-circular
+    class="md-accent"
+    md-diameter="100px"
+  ></md-progress-circular>
 </div>
 
-<section 
-  ng-show="!vm.isLoading" 
+<section
+  ng-show="!vm.isLoading"
   class="form-view container container-xlg quotation-view"
 >
   <div class="center-content company-data">
-    <h1>AH ACTUAL SA DE CV</h1>
-    <p>AV. XCARET MZA. 2 LOTE 3 04 B SM 36 CANCUN, BENITO JUAREZ Q.R</p>
-    <p>RFC: AAC130902PR7</p>
+    <h1>ACTUAL KIDS, S.A. DE C.V.</h1>
+    <p>MZA 2 LOTE 3 04 CALLE ESMERALDA SM 36 77507 CANCUN, BENITO JUAREZ Q.R</p>
+    <p>RFC: AKI1403067H5</p>
   </div>
 
-  <h1 class="hide-print"><i class="icon-attachment"></i> <strong>OPORTUNIDAD #{{vm.quotation.folio}}</strong></h1>
-  <h1 class="show-print"><i class="icon-attachment"></i> <strong>COTIZACIÓN #{{vm.quotation.folio}}</strong></h1>
-  <hr/>
-
+  <h1 class="hide-print">
+    <i class="icon-attachment"></i>
+    <strong>OPORTUNIDAD #{{ vm.quotation.folio }}</strong>
+  </h1>
+  <h1 class="show-print">
+    <i class="icon-attachment"></i>
+    <strong>COTIZACIÓN #{{ vm.quotation.folio }}</strong>
+  </h1>
+  <hr />
 
   <section class="quotation-data">
     <div class="only-hide-print">
       <label>Status</label>
       <p>
-        <span 
+        <span
           ng-class="{
             'active': !vm.quotation.Order,
             'closed': vm.quotation.Order || vm.quotation.isClosed,
-          }">
-          {{vm.status}}
+          }"
+        >
+          {{ vm.status }}
         </span>
         <a
           class="order-link"
-          ng-href="/checkout/order/{{vm.quotation.Order.id}}"
-          ng-if="vm.quotation.Order">
+          ng-href="/checkout/order/{{ vm.quotation.Order.id }}"
+          ng-if="vm.quotation.Order"
+        >
           | Haz click aqui para ver el pedido
         </a>
       </p>
@@ -39,15 +54,17 @@
     <div layout="row" class="quotation-data-row">
       <div flex="25">
         <label for="">Nombre del cliente</label>
-        <p>{{vm.quotation.Client.CardName || 'Sin cliente asignado'}}</p>
+        <p>{{ vm.quotation.Client.CardName || 'Sin cliente asignado' }}</p>
       </div>
       <div flex="25">
         <label for="">E-mail</label>
-        <p>{{vm.quotation.Client.E_Mail || 'No proporcionado'}}</p>
-      </div>      
+        <p>{{ vm.quotation.Client.E_Mail || 'No proporcionado' }}</p>
+      </div>
       <div flex="25">
         <label for="">Vendedor</label>
-        <p>{{vm.quotation.User.firstName + ' ' + vm.quotation.User.lastName}}</p>
+        <p>
+          {{ vm.quotation.User.firstName + ' ' + vm.quotation.User.lastName }}
+        </p>
       </div>
       <div flex="25" class="only-hide-print">
         <p><label for="">Broker</label></p>
@@ -58,122 +75,165 @@
           ng-options="broker.id as broker.Name for broker in vm.brokers | orderBy:'Name'"
         >
         </select>
-
       </div>
     </div>
 
     <div layout="row" layout-align="start center" class="quotation-data-row">
       <div flex="25">
         <label for="">Télefono fijo</label>
-        <p>{{vm.quotation.Client.Phone1 || 'No proporcionado'}}</p>
+        <p>{{ vm.quotation.Client.Phone1 || 'No proporcionado' }}</p>
       </div>
       <div flex="25">
         <label for="">Télefono celular</label>
-        <p>{{vm.quotation.Client.Cellular || 'No proporcionado'}}</p>
+        <p>{{ vm.quotation.Client.Cellular || 'No proporcionado' }}</p>
       </div>
       <div flex="25">
         <label for="">Fecha de cotización</label>
-        <p>{{vm.quotation.createdAt | date: 'd/MMM/yyyy'}}</p>
+        <p>{{ vm.quotation.createdAt | date: 'd/MMM/yyyy' }}</p>
       </div>
       <div flex="25">
         <label>Hora</label>
-        <p>{{vm.quotation.createdAt | date: 'h:mm a'}}</p>        
+        <p>{{ vm.quotation.createdAt | date: 'h:mm a' }}</p>
       </div>
     </div>
 
     <div layout="row" layout-align="start center" class="quotation-data-row">
-
       <div flex="25" ng-if="vm.quotation.source" class="quotation-data-row">
         <label>¿Cómo se entero de Actual?</label>
-        <p>{{ vm.getSourceName() }} 
-          <span ng-show="vm.quotation.sourceType">| {{ vm.getSourceTypeName() }}</span>
+        <p>
+          {{ vm.getSourceName() }}
+          <span ng-show="vm.quotation.sourceType"
+            >| {{ vm.getSourceTypeName() }}</span
+          >
         </p>
       </div>
 
-      <div flex="25"  ng-show="vm.quotation.estimatedCloseDate" class="only-hide-print">
+      <div
+        flex="25"
+        ng-show="vm.quotation.estimatedCloseDate"
+        class="only-hide-print"
+      >
         <label for="">Fecha estimada de cierre</label>
-        <p>{{vm.quotation.estimatedCloseDate | date: 'd/MMM/yyyy'}}</p>
-      </div>      
+        <p>{{ vm.quotation.estimatedCloseDate | date: 'd/MMM/yyyy' }}</p>
+      </div>
 
-      <div flex="25"  ng-show="vm.quotation.isClosedReason">
+      <div flex="25" ng-show="vm.quotation.isClosedReason">
         <label for="">Motivo de cierre</label>
-        <p>{{vm.quotation.isClosedReason}}</p>
-      </div>      
-
-
+        <p>{{ vm.quotation.isClosedReason }}</p>
+      </div>
     </div>
 
     <div class="quotation-data-row quotation-validity">
       <label>Vigencia</label>
       <p>Hasta agotar existencias y sujeto a términos de promociones.</p>
     </div>
-  
+
     <div class="hr">
       <hr />
     </div>
-
   </section>
 
-  <form 
-    ng-submit="vm.continueBuying()" 
-    class="cart-view container container-xxlg" 
+  <form
+    ng-submit="vm.continueBuying()"
+    class="cart-view container container-xxlg"
   >
     <div layout="row" layout-align="space-between start">
-
       <section flex="70" class="cart-list">
         <h1 class="cart-title"><strong>ARTICULOS AGREGADOS</strong></h1>
-        <div ng-if="vm.isLoadingDetails" layout="row" layout-align="center center" class="loading-circle">
-          <md-progress-circular class="md-accent" md-diameter="100px"></md-progress-circular>
+        <div
+          ng-if="vm.isLoadingDetails"
+          layout="row"
+          layout-align="center center"
+          class="loading-circle"
+        >
+          <md-progress-circular
+            class="md-accent"
+            md-diameter="100px"
+          ></md-progress-circular>
         </div>
-        
+
         <!--<hr class="style1">-->
 
         <div ng-if="!vm.isLoadingDetails" class="cart-items">
-          <ng-include 
+          <ng-include
             class="cart-item-wrapper"
-            ng-repeat="detailGroup in vm.quotation.DetailsGroups track by $index" 
-            src="'views/partials/product-cart-item.html'"></ng-include>    
+            ng-repeat="detailGroup in vm.quotation.DetailsGroups track by $index"
+            src="'views/partials/product-cart-item.html'"
+          ></ng-include>
         </div>
-        <hr>
+        <hr />
         <a
           href="#"
           ng-if="!vm.quotation.Order && !vm.quotation.isClosed"
           ng-click="vm.addNewProduct()"
-          class="action-btn-print print-btn">
+          class="action-btn-print print-btn"
+        >
           AGREGAR NUEVO ARTÍCULO
         </a>
         <div class="client-signature" layout="row">
           <span flex="25">Firma cliente:</span>
           <span flex class="signature-line"></span>
         </div>
-
       </section>
 
       <aside flex class="cart-aside">
-        <h1 class="cart-title"><i class="icon-carro"><span>{{ vm.quotation.totalProducts }}</span></i> <strong>MI CARRITO</strong></h1>
+        <h1 class="cart-title">
+          <i class="icon-carro"
+            ><span>{{ vm.quotation.totalProducts }}</span></i
+          >
+          <strong>MI CARRITO</strong>
+        </h1>
 
         <div class="cart-summary">
           <table>
             <tr>
-              <td><strong>Subtotal ({{ vm.quotation.totalProducts }} productos):</strong></td>
-              <td><strong>MXN {{ vm.quotation.subtotal | currency }}</strong></td>
+              <td>
+                <strong
+                  >Subtotal ({{
+                    vm.quotation.totalProducts
+                  }}
+                  productos):</strong
+                >
+              </td>
+              <td>
+                <strong>MXN {{ vm.quotation.subtotal | currency }}</strong>
+              </td>
             </tr>
             <tr>
               <td>Descuento:</td>
-              <td><strong>MXN <span ng-show="vm.quotation.discount > 0">-</span>{{ vm.quotation.discount | currency }}</strong></td>
+              <td>
+                <strong
+                  >MXN <span ng-show="vm.quotation.discount > 0">-</span
+                  >{{ vm.quotation.discount | currency }}</strong
+                >
+              </td>
             </tr>
           </table>
-          <hr>
 
-          <div class="cart-totals" layout="row" layout-align="space-between end">
+          <hr />
+
+          <div
+            class="cart-totals"
+            layout="row"
+            layout-align="space-between end"
+          >
             <div flex="30">
               <h1><strong>TOTAL:</strong></h1>
             </div>
             <div flex="70">
-              <h3 class="price-crossed-block" ng-show="vm.quotation.subtotal != vm.quotation.total">
-                <span class="currency-label">MXN</span> <span class="price-crossed">{{ vm.quotation.subtotal | roundCurrency  }}</span>
+              <h3
+                class="price-crossed-block"
+                ng-show="vm.quotation.subtotal != vm.quotation.total"
+              >
+                <span class="currency-label">MXN</span>
+                <span class="price-crossed">{{
+                  vm.quotation.subtotal | roundCurrency
+                }}</span>
               </h3>
-              <h1 class="price-main"><span class="currency-label">MXN</span> {{ vm.quotation.total | roundCurrency  }}</h1>
+              <h1 class="price-main">
+                <span class="currency-label">MXN</span>
+                {{ vm.quotation.total | roundCurrency }}
+              </h1>
             </div>
           </div>
 
@@ -184,7 +244,7 @@
             ng-disabled="!vm.isValidStock(vm.quotation.Details) || vm.isValidatingStock || vm.quotation.Details.length === 0"
             ng-class="{'cart-view-btn-disabled' : !vm.isValidStock(vm.quotation.Details) || vm.isValidatingStock || vm.quotation.Details.length === 0 }"
             class="cart-view-btn print-btn"
-          >
+          />
 
           <input
             type="submit"
@@ -193,11 +253,14 @@
             ng-if="!vm.quotation.Order && !vm.quotation.isClosed && !vm.quotation.Client"
             ng-class="{'cart-view-btn-disabled' : !vm.isValidStock(vm.quotation.Details) || vm.quotation.Details.length === 0 }"
             class="cart-view-btn print-btn"
+          />
+
+          <p
+            class="cart-summary-note"
+            ng-show="vm.isValidatingStock && vm.quotation.Details"
           >
-          
-          <p class="cart-summary-note" ng-show="vm.isValidatingStock && vm.quotation.Details">
             Validando disponibilidad...
-          </p>          
+          </p>
 
           <p class="cart-summary-note" ng-show="!vm.quotation.Client">
             A continuación puedes elegir un cliente o asignar un nuevo cliente
@@ -206,13 +269,11 @@
           <p class="cart-summary-note" ng-show="vm.quotation.Client">
             *Precios en Pesos Mexicanos con impuestos incluidos.
           </p>
-
         </div>
 
-
-        <div 
-          layout="row" 
-          layout-align="space-between center" 
+        <div
+          layout="row"
+          layout-align="space-between center"
           layout-xs="column"
         >
           <div flex="45">
@@ -220,7 +281,8 @@
               ng-if="vm.quotation.Client && vm.quotation.Details.length > 0"
               href="#"
               ng-click="vm.print()"
-              class="action-btn-print print-btn">
+              class="action-btn-print print-btn"
+            >
               IMPRIMIR
             </a>
           </div>
@@ -229,35 +291,30 @@
               ng-if="vm.quotation.Client && vm.quotation.Details.length > 0"
               ng-click="vm.sendByEmail()"
               href="#"
-              class="action-btn-print print-btn">
+              class="action-btn-print print-btn"
+            >
               ENVIAR POR EMAIL
             </a>
           </div>
         </div>
       </aside>
-
     </div>
-
   </form>
 
-  <ng-include 
-    src="'views/quotations/quotation-records.html'"></ng-include>    
+  <ng-include src="'views/quotations/quotation-records.html'"></ng-include>
 
   <section>
     <div class="hr"><hr /></div>
-    <ng-include src="'views/quotations/payments-options.html'">
-    </ng-include>
+    <ng-include src="'views/quotations/payments-options.html'"> </ng-include>
   </section>
 
   <div class="hr"><hr /></div>
-  
-  <ng-include 
-    src="'views/quotations/transfers-table.html'"></ng-include>    
-    
+
+  <ng-include src="'views/quotations/transfers-table.html'"></ng-include>
+
   <div class="hr"><hr /></div>
 
   <ng-include src="'views/quotations/quotation-seller-info.html'"></ng-include>
 
   <ng-include src="'views/quotations/quotation-texts.html'"></ng-include>
-
 </section>
